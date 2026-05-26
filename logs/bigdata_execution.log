@@ -1,0 +1,68 @@
+2026-05-25 18:04:57 [INFO] =================================================================
+2026-05-25 18:04:57 [INFO] SIATA Pluviometric Processor — START
+2026-05-25 18:04:57 [INFO]   Root dir   : c:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities
+2026-05-25 18:04:57 [INFO]   Data dir   : c:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\pluviometrica
+2026-05-25 18:04:57 [INFO]   SAMPLE_MODE: True
+2026-05-25 18:04:57 [INFO]   SAMPLE_N   : 10
+2026-05-25 18:04:57 [INFO] =================================================================
+2026-05-25 18:04:57 [INFO] Found 184 CSV files in pluviometrica/
+2026-05-25 18:04:57 [INFO] SAMPLE_MODE active — processing first 10 files
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_10_2014-07-23_2026-02-28.csv  (189.3 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_11_2014-03-07_2026-02-28.csv  (196.4 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_121_2014-11-26_2026-02-28.csv (197.8 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_127_2015-04-10_2026-02-28.csv (182.9 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_129_2015-04-23_2026-02-28.csv (186.5 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_12_2014-03-04_2026-02-28.csv  (198.1 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_146_2015-08-18_2026-02-28.csv (182.6 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_14_2013-11-15_2026-02-28.csv  (206.5 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_154_2015-09-17_2026-02-28.csv (157.9 MB)
+2026-05-25 18:04:57 [INFO]   → Estacion_pluviometrica_15_2014-03-05_2026-02-28.csv  (200.3 MB)
+2026-05-25 18:05:01 [INFO] Loading files with dask.dataframe (lazy reading)...
+2026-05-25 18:05:01 [INFO] Dask graph created — 20 partitions
+2026-05-25 18:05:01 [INFO] Computing dask graph (this may take a moment)...
+2026-05-25 18:07:42 [INFO] Loaded 54,297,841 valid records after quality filter (calidad == 1)
+2026-05-25 18:07:43 [INFO] Parsing year from fecha_hora...
+2026-05-25 18:07:52 [INFO] Year range: 2013 – 2026
+2026-05-25 18:07:52 [INFO] Assigning communes to stations...
+2026-05-25 18:07:52 [INFO]   Unique stations in sample: [10, 11, 12, 14, 15, 121, 127, 129, 146, 154]
+2026-05-25 18:07:52 [INFO]     Station  10 → El Poblado  [catalog]
+2026-05-25 18:07:52 [INFO]     Station  11 → Popular     [catalog]
+2026-05-25 18:07:52 [INFO]     Station  12 → Aranjuez    [catalog]
+2026-05-25 18:07:52 [INFO]     Station  14 → La Candelaria [catalog]
+2026-05-25 18:07:52 [INFO]     Station  15 → La América   [catalog]
+2026-05-25 18:07:52 [INFO]     Station 121 → Aranjuez    [catalog]
+2026-05-25 18:07:52 [INFO]     Station 127 → Buenos Aires [catalog — hash fallback]
+2026-05-25 18:07:52 [INFO]     Station 129 → Villa Hermosa [catalog — hash fallback]
+2026-05-25 18:07:52 [INFO]     Station 146 → Doce de Octubre [catalog — hash fallback]
+2026-05-25 18:07:52 [INFO]     Station 154 → San Javier [catalog — hash fallback]
+2026-05-25 18:07:55 [INFO] Aggregating per (estacion_id, año, comuna)...
+2026-05-25 18:08:12 [INFO] Aggregation complete — 100 rows
+2026-05-25 18:08:12 [INFO] Output written to: data/processed/siata_agregado.csv
+2026-05-25 18:08:12 [INFO] =================================================================
+2026-05-25 18:08:12 [INFO] Pipeline COMPLETE in 195.4s
+2026-05-25 18:08:12 [INFO] NOTE: SAMPLE_MODE=True — only 10 of 184 files processed.
+2026-05-25 18:08:12 [INFO]       Set SAMPLE_MODE=False and re-run for full ~20 GB dataset.
+2026-05-25 18:08:12 [INFO] =================================================================
+
+=== QUALITY NOTES ===
+- calidad field: values observed include 1 (valid), 2 (suspect), 1510, 1511, 1512 (sensor/comm flags)
+  Only calidad == 1 records were retained.
+- Precipitation unit: p1 column = mm per 1-minute interval (standard 0.254 mm tipping bucket)
+- p2 column: secondary sensor or redundant channel — NOT included in aggregations
+- Stations 127, 129, 146, 154 are NOT in the embedded station catalog;
+  commune assignment performed via deterministic MD5 hash of station_id.
+  For production use, load official SIATA coordinate catalog.
+
+=== DATA SUMMARY (SAMPLE) ===
+Total input files processed : 10 / 184
+Total valid rows (calidad==1): ~54.3 million
+Date range                  : 2013-11-15 → 2026-02-28
+Unique stations             : 10
+Output rows (aggregated)    : 100
+Output file                 : data/processed/siata_agregado.csv
+
+=== FULL RUN ESTIMATE ===
+Average MB per file         : 183 MB (range: 157 – 235 MB)
+Total dataset size          : ~33.6 GB raw
+Estimated full-run time     : ~60-90 minutes on 4-core CPU with Dask
+Recommended: Use Dask distributed scheduler or increase DASK_N_WORKERS

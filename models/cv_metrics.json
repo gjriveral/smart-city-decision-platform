@@ -1,0 +1,73 @@
+{
+  "cv_folds": [
+    {
+      "fold": 1,
+      "train_years": "[2007, 2008, 2009, 2010]",
+      "test_years": "[2010, 2011, 2012, 2013]",
+      "RMSE": 0.02606409266737045,
+      "MAE": 0.019134861559864415,
+      "R2": 0.9224496725224537,
+      "best_params": "{'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 3, 'n_estimators': 200, 'subsample': 0.8}"
+    },
+    {
+      "fold": 2,
+      "train_years": "[2007, 2008, 2009, 2010, 2011, 2012, 2013]",
+      "test_years": "[2013, 2014, 2015, 2016]",
+      "RMSE": 0.011471371614743663,
+      "MAE": 0.008959087097984573,
+      "R2": 0.9746773858864697,
+      "best_params": "{'colsample_bytree': 0.8, 'learning_rate': 0.05, 'max_depth': 3, 'min_child_weight': 3, 'n_estimators': 200, 'subsample': 0.8}"
+    },
+    {
+      "fold": 3,
+      "train_years": "[2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]",
+      "test_years": "[2016, 2017, 2018, 2019]",
+      "RMSE": 0.00866196798659371,
+      "MAE": 0.006656625798825773,
+      "R2": 0.9821246324766136,
+      "best_params": "{'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 1, 'n_estimators': 200, 'subsample': 0.8}"
+    },
+    {
+      "fold": 4,
+      "train_years": "[2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]",
+      "test_years": "[2019, 2020, 2021, 2022]",
+      "RMSE": 0.019103398869400143,
+      "MAE": 0.013242212216035727,
+      "R2": 0.9138274763393445,
+      "best_params": "{'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 3, 'n_estimators': 200, 'subsample': 0.8}"
+    },
+    {
+      "fold": 5,
+      "train_years": "[2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]",
+      "test_years": "[2022, 2023, 2024]",
+      "RMSE": 0.009817247341187968,
+      "MAE": 0.006959975861030499,
+      "R2": 0.9781541439005906,
+      "best_params": "{'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 1, 'n_estimators': 200, 'subsample': 0.8}"
+    }
+  ],
+  "mean_RMSE": 0.015023615695859189,
+  "mean_MAE": 0.010990552506748196,
+  "mean_R2": 0.9542466622250944,
+  "std_RMSE": 0.007394796033947172,
+  "full_data_RMSE": 0.0030511582180752657,
+  "full_data_R2": 0.9985119639552152,
+  "training_time_s": 5.209386348724365,
+  "best_params": {
+    "colsample_bytree": 0.8,
+    "learning_rate": 0.1,
+    "max_depth": 3,
+    "min_child_weight": 1,
+    "n_estimators": 200,
+    "subsample": 0.8
+  },
+  "features": [
+    "idx_desempleo",
+    "idx_habitat",
+    "idx_educacion",
+    "idx_riesgo_clima",
+    "idx_pobreza",
+    "idx_tejido_social",
+    "año_normalizado"
+  ]
+}

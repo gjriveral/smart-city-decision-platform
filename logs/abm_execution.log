@@ -1,0 +1,73 @@
+2026-05-25 18:29:38,048 [ERROR] Mesa not installed. Run: pip install mesa
+2026-05-25 18:29:47,812 [ERROR] Mesa not installed. Run: pip install mesa
+2026-05-25 18:30:28,026 [INFO] Mesa version detected: 3.5.1
+2026-05-25 18:30:28,028 [INFO] ============================================================
+2026-05-25 18:30:28,029 [INFO] ABM Urban Investment Model — Medellín
+2026-05-25 18:30:28,029 [INFO] ============================================================
+2026-05-25 18:30:28,097 [INFO] Loaded IVC from CSV: C:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\ModeloDatos\ModeloDatos\data\processed\indices_comunas.csv
+2026-05-25 18:30:28,098 [INFO] IVC data loaded for 16 communes.
+2026-05-25 18:30:28,098 [INFO]   Santa Cruz          : IVC=0.5005
+2026-05-25 18:30:28,098 [INFO]   Manrique            : IVC=0.4832
+2026-05-25 18:30:28,098 [INFO]   Villa Hermosa       : IVC=0.4751
+2026-05-25 18:30:28,098 [INFO]   Popular             : IVC=0.4732
+2026-05-25 18:30:28,098 [INFO]   San Javier          : IVC=0.3990
+2026-05-25 18:30:28,098 [INFO]   Aranjuez            : IVC=0.3936
+2026-05-25 18:30:28,098 [INFO]   Robledo             : IVC=0.3809
+2026-05-25 18:30:28,098 [INFO]   Buenos Aires        : IVC=0.3767
+2026-05-25 18:30:28,098 [INFO]   Castilla            : IVC=0.3330
+2026-05-25 18:30:28,098 [INFO]   La Candelaria       : IVC=0.3285
+2026-05-25 18:30:28,098 [INFO]   Doce de Octubre     : IVC=0.3259
+2026-05-25 18:30:28,098 [INFO]   Guayabal            : IVC=0.2940
+2026-05-25 18:30:28,098 [INFO]   Laureles            : IVC=0.2897
+2026-05-25 18:30:28,098 [INFO]   El Poblado          : IVC=0.2866
+2026-05-25 18:30:28,098 [INFO]   Belén               : IVC=0.2778
+2026-05-25 18:30:28,098 [INFO]   La América          : IVC=0.2454
+2026-05-25 18:30:28,099 [INFO] Running scenario: 'focalizado' for 10 years ...
+2026-05-25 18:30:28,100 [INFO] Scenario 'focalizado' complete. Records: 160
+2026-05-25 18:30:28,101 [INFO] Running scenario: 'distribuido' for 10 years ...
+2026-05-25 18:30:28,102 [INFO] Scenario 'distribuido' complete. Records: 160
+2026-05-25 18:30:28,103 [INFO] Running scenario: 'adaptativo' for 10 years ...
+2026-05-25 18:30:28,104 [INFO] Scenario 'adaptativo' complete. Records: 160
+2026-05-25 18:30:28,111 [INFO] Results saved → C:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\data\processed\simulation_results.csv
+2026-05-25 18:30:28,115 [INFO] Total rows: 480
+2026-05-25 18:30:28,115 [INFO] 
+── Year-10 Mean Wellbeing by Scenario ──
+2026-05-25 18:30:28,123 [INFO]   focalizado     : 0.9321
+2026-05-25 18:30:28,124 [INFO]   distribuido    : 0.9283
+2026-05-25 18:30:28,125 [INFO]   adaptativo     : 0.9302
+2026-05-25 18:31:17,704 [INFO] ============================================================
+2026-05-25 18:31:17,704 [INFO] Scenario Analysis — Loading simulation results
+2026-05-25 18:31:17,704 [INFO] ============================================================
+2026-05-25 18:31:17,711 [INFO] Loaded 480 rows, columns: ['scenario', 'year', 'comuna', 'ivc_initial', 'investment_allocated', 'wellbeing', 'ivc_current', 'infrastructure_capacity', 'cumulative_investment']
+2026-05-25 18:31:17,714 [INFO] Year-10 | focalizado      → Wellbeing: 0.9321 | Infra: 0.9709
+2026-05-25 18:31:17,717 [INFO] Year-10 | distribuido     → Wellbeing: 0.9283 | Infra: 1.0000
+2026-05-25 18:31:17,719 [INFO] Year-10 | adaptativo      → Wellbeing: 0.9302 | Infra: 1.0000
+2026-05-25 18:31:17,722 [INFO] Best scenario: focalizado
+2026-05-25 18:31:17,722 [INFO] Generating Figure 1 — Wellbeing evolution ...
+2026-05-25 18:31:17,922 [INFO] Generating Figure 2 — Heatmap ...
+2026-05-25 18:31:18,285 [INFO] Generating Figure 3 — Budget allocation ...
+2026-05-25 18:31:18,806 [INFO] Generating Figure 4 — Infrastructure capacity ...
+2026-05-25 18:31:18,974 [INFO] All figures generated.
+2026-05-25 18:31:38,415 [INFO] ============================================================
+2026-05-25 18:31:38,415 [INFO] Scenario Analysis — Loading simulation results
+2026-05-25 18:31:38,415 [INFO] ============================================================
+2026-05-25 18:31:38,421 [INFO] Loaded 480 rows, columns: ['scenario', 'year', 'comuna', 'ivc_initial', 'investment_allocated', 'wellbeing', 'ivc_current', 'infrastructure_capacity', 'cumulative_investment']
+2026-05-25 18:31:38,425 [INFO] Year-10 | focalizado      → Wellbeing: 0.9321 | Infra: 0.9709
+2026-05-25 18:31:38,426 [INFO] Year-10 | distribuido     → Wellbeing: 0.9283 | Infra: 1.0000
+2026-05-25 18:31:38,427 [INFO] Year-10 | adaptativo      → Wellbeing: 0.9302 | Infra: 1.0000
+2026-05-25 18:31:38,429 [INFO] Best scenario: focalizado
+2026-05-25 18:31:38,429 [INFO] Generating Figure 1 — Wellbeing evolution ...
+2026-05-25 18:31:38,586 [INFO] Generating Figure 2 — Heatmap ...
+2026-05-25 18:31:38,906 [INFO] Generating Figure 3 — Budget allocation ...
+2026-05-25 18:31:39,400 [INFO] Generating Figure 4 — Infrastructure capacity ...
+2026-05-25 18:31:39,565 [INFO] All figures generated.
+2026-05-25 18:31:39,593 [INFO] HTML report saved → C:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\reports\scenario_report.html
+2026-05-25 18:31:39,593 [INFO] 
+============================================================
+2026-05-25 18:31:39,593 [INFO] FINAL SUMMARY
+2026-05-25 18:31:39,593 [INFO] ============================================================
+2026-05-25 18:31:39,594 [INFO]   A — Focalizado        : Mean Wellbeing Year 10 = 0.9321
+2026-05-25 18:31:39,594 [INFO]   B — Distribuido       : Mean Wellbeing Year 10 = 0.9283
+2026-05-25 18:31:39,595 [INFO]   C — Adaptativo        : Mean Wellbeing Year 10 = 0.9302
+2026-05-25 18:31:39,595 [INFO]   Best scenario: FOCALIZADO
+2026-05-25 18:31:39,595 [INFO]   Report: C:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\reports\scenario_report.html

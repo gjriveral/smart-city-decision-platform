@@ -1,0 +1,13 @@
+xlrd
+tqdm
+numpy
+pandas
+pyxlsb
+loguru
+openpyxl
+ipykernel
+unidecode
+pyjanitor
+missingno
+geopandas
+python-dotenv

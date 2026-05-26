@@ -1,0 +1,9 @@
+pluviometrica/
+*.csv
+*.xlsx
+*.pkl
+venv/
+env/
+__pycache__/
+*.pyc
+.env

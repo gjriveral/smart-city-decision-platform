@@ -1,0 +1,175 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# config.yaml — Configuración de Ciudad
+# Plataforma de Inversión Estratégica en Ciudades Colombianas · UdeA TG 2026
+#
+# Para replicar en otra ciudad, edita sólo este archivo.
+# Ejemplo Bogotá: unidad_territorial: "localidad"
+# Ejemplo Cali:   unidad_territorial: "corregimiento"
+# ══════════════════════════════════════════════════════════════════════════════
+
+ciudad:
+  nombre:               "Medellín"
+  departamento:         "Antioquia"
+  codigo_dane:          "05001"
+  # Nombre de la unidad territorial de análisis.
+  # Define el nombre de columna usado en todos los CSVs, mapas y logs.
+  unidad_territorial:   "comuna"
+  # Sistema de referencia de coordenadas (EPSG code).
+  crs:                  "EPSG:4326"
+  # Coordenadas del centroide de la ciudad (para centrar mapas).
+  centro:
+    lat: 6.2442
+    lon: -75.5812
+
+# ── Rutas relativas a la raíz del proyecto ────────────────────────────────────
+rutas:
+  datos_climaticos:     "pluviometrica"          # Estaciones SIATA / CSV pluviométricos
+  datos_sociales:       "ModeloDatos/ModeloDatos/data"  # ECV, IPM, IML (raw y processed)
+  procesados:           "data/processed"          # Artefactos CSV generados por los scripts
+  modelos:              "models"                  # Modelo .pkl, métricas, SHAP
+  logs:                 "logs"                    # Archivos de log de ejecución
+  geo:                  "data/geo"                # Archivos geoespaciales (.geojson, .shp)
+
+# ── Unidades territoriales con centroides (WGS84) ─────────────────────────────
+# Lista completa de unidades de la ciudad. El campo 'nombre' debe coincidir
+# exactamente con el valor de la columna 'unidad_territorial' en los CSV de salida.
+territorios:
+  - id: 1
+    nombre: "Popular"
+    lat: 6.2969
+    lon: -75.5584
+  - id: 2
+    nombre: "Santa Cruz"
+    lat: 6.2897
+    lon: -75.5566
+  - id: 3
+    nombre: "Manrique"
+    lat: 6.2752
+    lon: -75.5523
+  - id: 4
+    nombre: "Aranjuez"
+    lat: 6.2792
+    lon: -75.5648
+  - id: 5
+    nombre: "Castilla"
+    lat: 6.2853
+    lon: -75.5823
+  - id: 6
+    nombre: "Doce de Octubre"
+    lat: 6.2874
+    lon: -75.5877
+  - id: 7
+    nombre: "Robledo"
+    lat: 6.2773
+    lon: -75.5997
+  - id: 8
+    nombre: "Villa Hermosa"
+    lat: 6.2318
+    lon: -75.5513
+  - id: 9
+    nombre: "Buenos Aires"
+    lat: 6.2327
+    lon: -75.5633
+  - id: 10
+    nombre: "La Candelaria"
+    lat: 6.2501
+    lon: -75.5683
+  - id: 11
+    nombre: "Laureles"
+    lat: 6.2473
+    lon: -75.5936
+  - id: 12
+    nombre: "La América"
+    lat: 6.2411
+    lon: -75.5984
+  - id: 13
+    nombre: "San Javier"
+    lat: 6.2337
+    lon: -75.6107
+  - id: 14
+    nombre: "El Poblado"
+    lat: 6.2022
+    lon: -75.5694
+  - id: 15
+    nombre: "Guayabal"
+    lat: 6.2102
+    lon: -75.5885
+  - id: 16
+    nombre: "Belén"
+    lat: 6.2274
+    lon: -75.6023
+
+# ── Catálogo de estaciones climáticas (coordenadas aproximadas) ───────────────
+# Mapeo estacion_id → lat/lon. Usado para asignar cada estación a su
+# unidad territorial más cercana (distancia haversine).
+# Para una nueva ciudad, reemplaza esta sección con el catálogo local.
+catalogo_estaciones:
+  2:   {lat: 6.2501, lon: -75.5683}
+  3:   {lat: 6.2897, lon: -75.5566}
+  4:   {lat: 6.2853, lon: -75.5823}
+  5:   {lat: 6.2337, lon: -75.6107}
+  7:   {lat: 6.2473, lon: -75.5936}
+  8:   {lat: 6.2752, lon: -75.5523}
+  9:   {lat: 6.2318, lon: -75.5513}
+  10:  {lat: 6.2022, lon: -75.5694}
+  11:  {lat: 6.2969, lon: -75.5584}
+  12:  {lat: 6.2792, lon: -75.5648}
+  14:  {lat: 6.2411, lon: -75.5984}
+  15:  {lat: 6.2874, lon: -75.5877}
+  16:  {lat: 6.2773, lon: -75.5997}
+  17:  {lat: 6.2327, lon: -75.5633}
+  18:  {lat: 6.2102, lon: -75.5885}
+  19:  {lat: 6.2274, lon: -75.6023}
+  20:  {lat: 6.2501, lon: -75.5650}
+  21:  {lat: 6.2600, lon: -75.5700}
+  22:  {lat: 6.2400, lon: -75.5800}
+  23:  {lat: 6.2300, lon: -75.5600}
+  24:  {lat: 6.2650, lon: -75.5900}
+  25:  {lat: 6.2550, lon: -75.5550}
+  26:  {lat: 6.2200, lon: -75.5700}
+  28:  {lat: 6.2450, lon: -75.6000}
+  29:  {lat: 6.2750, lon: -75.5600}
+  30:  {lat: 6.2350, lon: -75.5900}
+  31:  {lat: 6.2800, lon: -75.5700}
+  32:  {lat: 6.2150, lon: -75.5800}
+  33:  {lat: 6.2600, lon: -75.5800}
+  34:  {lat: 6.2700, lon: -75.5500}
+  35:  {lat: 6.2250, lon: -75.5950}
+  36:  {lat: 6.2900, lon: -75.5800}
+  37:  {lat: 6.2050, lon: -75.5750}
+  39:  {lat: 6.2550, lon: -75.5450}
+  40:  {lat: 6.2450, lon: -75.5850}
+  41:  {lat: 6.2700, lon: -75.5850}
+  42:  {lat: 6.2150, lon: -75.6000}
+  43:  {lat: 6.2650, lon: -75.5600}
+  44:  {lat: 6.2350, lon: -75.5750}
+  45:  {lat: 6.2800, lon: -75.5900}
+  46:  {lat: 6.2200, lon: -75.5850}
+  47:  {lat: 6.2500, lon: -75.6050}
+  48:  {lat: 6.2750, lon: -75.5750}
+  49:  {lat: 6.2100, lon: -75.5900}
+  50:  {lat: 6.2600, lon: -75.5950}
+  51:  {lat: 6.2300, lon: -75.5500}
+  52:  {lat: 6.2450, lon: -75.5700}
+  53:  {lat: 6.2700, lon: -75.5650}
+  54:  {lat: 6.2250, lon: -75.5650}
+  55:  {lat: 6.2850, lon: -75.5650}
+  56:  {lat: 6.2100, lon: -75.5700}
+  57:  {lat: 6.2550, lon: -75.6100}
+  58:  {lat: 6.2400, lon: -75.6000}
+  60:  {lat: 6.2950, lon: -75.5700}
+  61:  {lat: 6.2050, lon: -75.5800}
+  62:  {lat: 6.2650, lon: -75.6000}
+  63:  {lat: 6.2150, lon: -75.5900}
+  64:  {lat: 6.2750, lon: -75.5500}
+  65:  {lat: 6.2350, lon: -75.5500}
+  66:  {lat: 6.2900, lon: -75.5600}
+  70:  {lat: 6.2200, lon: -75.5950}
+  71:  {lat: 6.2600, lon: -75.5700}
+  72:  {lat: 6.2300, lon: -75.5700}
+  74:  {lat: 6.2700, lon: -75.5800}
+  75:  {lat: 6.2250, lon: -75.5800}
+  76:  {lat: 6.2500, lon: -75.5750}
+  81:  {lat: 6.2850, lon: -75.5750}
+  88:  {lat: 6.2150, lon: -75.5850}
+  89:  {lat: 6.2700, lon: -75.5550}
