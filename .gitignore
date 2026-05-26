@@ -1,9 +1,28 @@
-pluviometrica/
-*.csv
+# ── Datos pesados (NUNCA subir a GitHub) ──────────────────────────────────────
+pluviometrica/          # 20 GB de telemetría IoT cruda — excluida siempre
+ModeloDatos/ModeloDatos/data/raw/   # Excel crudos ECV/IPM/IML
+
+# ── Formatos de datos pesados (regla general) ─────────────────────────────────
 *.xlsx
+
+# ── CSVs: excluir en general, pero PERMITIR los artefactos ligeros del modelo ─
+*.csv
+!models/vulnerability_ranking.csv
+!models/shap_values.csv
+!ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv
+!data/processed/siata_agregado.csv
+
+# ── Modelos serializados: excluir en general, PERMITIR el de producción ────────
 *.pkl
+!models/vulnerability_model.pkl
+
+# ── Entornos y caché ──────────────────────────────────────────────────────────
 venv/
 env/
 __pycache__/
 *.pyc
 .env
+tree.txt
+
+# ── Archivos temporales de evidencia (generados localmente) ───────────────────
+evidencia/

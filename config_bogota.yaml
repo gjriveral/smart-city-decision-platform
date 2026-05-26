@@ -1,0 +1,38 @@
+ciudad:
+  nombre: "Bogota"
+  departamento: "Cundinamarca"
+  codigo_dane: "11001"
+  unidad_territorial: "localidad"
+  crs: "EPSG:4326"
+  centro:
+    lat: 4.7110
+    lon: -74.0721
+rutas:
+  datos_climaticos: "pluviometrica"
+  datos_sociales: "ModeloDatos/ModeloDatos/data"
+  procesados: "data/processed"
+  modelos: "models"
+  logs: "logs"
+  geo: "data/geo"
+territorios:
+  - {id: 1,  nombre: "Usaquen",          lat: 4.7016, lon: -74.0317}
+  - {id: 2,  nombre: "Chapinero",        lat: 4.6464, lon: -74.0603}
+  - {id: 3,  nombre: "Santa Fe",         lat: 4.5980, lon: -74.0752}
+  - {id: 4,  nombre: "San Cristobal",    lat: 4.5643, lon: -74.0768}
+  - {id: 5,  nombre: "Usme",             lat: 4.4795, lon: -74.1278}
+  - {id: 6,  nombre: "Tunjuelito",       lat: 4.5680, lon: -74.1280}
+  - {id: 7,  nombre: "Bosa",             lat: 4.6197, lon: -74.1960}
+  - {id: 8,  nombre: "Kennedy",          lat: 4.6280, lon: -74.1536}
+  - {id: 9,  nombre: "Fontibon",         lat: 4.6747, lon: -74.1470}
+  - {id: 10, nombre: "Engativa",         lat: 4.7010, lon: -74.1140}
+  - {id: 11, nombre: "Suba",             lat: 4.7590, lon: -74.0840}
+  - {id: 12, nombre: "Barrios Unidos",   lat: 4.6696, lon: -74.0800}
+  - {id: 13, nombre: "Teusaquillo",      lat: 4.6513, lon: -74.0830}
+  - {id: 14, nombre: "Martires",         lat: 4.6080, lon: -74.0951}
+  - {id: 15, nombre: "Antonio Narino",   lat: 4.5958, lon: -74.1039}
+  - {id: 16, nombre: "Puente Aranda",    lat: 4.6272, lon: -74.1110}
+  - {id: 17, nombre: "Candelaria",       lat: 4.5966, lon: -74.0737}
+  - {id: 18, nombre: "Rafael Uribe",     lat: 4.5639, lon: -74.1091}
+  - {id: 19, nombre: "Ciudad Bolivar",   lat: 4.5200, lon: -74.1560}
+  - {id: 20, nombre: "Sumapaz",          lat: 4.1933, lon: -74.3594}
+catalogo_estaciones: {}

@@ -33,6 +33,11 @@ warnings.filterwarnings("ignore")
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
+# ── Detección de entorno cloud ─────────────────────────────────────────────────
+# En Streamlit Community Cloud la carpeta de telemetría cruda nunca existe.
+# Usamos esta flag para deshabilitar el botón de pipeline y evitar errores.
+_IS_CLOUD = not (ROOT / "pluviometrica").exists()
+
 # ── Perfiles de ciudad predefinidos ───────────────────────────────────────────
 CITY_PROFILES = {
     "Medellin": {
@@ -214,18 +219,30 @@ with st.sidebar:
 
     # ── BOTON PIPELINE ────────────────────────────────────────────────────────
     st.markdown("### Automatizacion")
-    run_pipeline = st.button(
-        "Ejecutar Pipeline Automatico",
-        type="primary",
-        use_container_width=True,
-        help=(
-            "Ejecuta en secuencia:\n"
-            "1. Procesador SIATA (bigdata)\n"
-            "2. Indices de vulnerabilidad (ML)\n"
-            "3. Reentrenamiento XGBoost\n\n"
-            "Al finalizar, el dashboard se recarga con los nuevos datos."
-        ),
-    )
+    if _IS_CLOUD:
+        # En Streamlit Community Cloud no hay datos de telemetría cruda.
+        # El modelo ya viene pre-entrenado en el repositorio.
+        run_pipeline = False
+        st.info(
+            "**Modo nube activo.**\n\n"
+            "El reentrenamiento requiere datos de telemetría local (20 GB) "
+            "no disponibles en este entorno. El modelo pre-entrenado "
+            "ya está cargado y listo para visualización.",
+            icon="☁️",
+        )
+    else:
+        run_pipeline = st.button(
+            "Ejecutar Pipeline Automatico",
+            type="primary",
+            use_container_width=True,
+            help=(
+                "Ejecuta en secuencia:\n"
+                "1. Procesador SIATA (bigdata)\n"
+                "2. Indices de vulnerabilidad (ML)\n"
+                "3. Reentrenamiento XGBoost\n\n"
+                "Al finalizar, el dashboard se recarga con los nuevos datos."
+            ),
+        )
 
     st.markdown("---")
     st.caption("Trabajo de Grado 2026 · UdeA")

@@ -1,0 +1,38 @@
+# ══════════════════════════════════════════════════════════════════
+# requirements.txt — Plataforma de Ciudades Inteligentes
+# Compatible con Streamlit Community Cloud (Python 3.9+, 1 GB RAM)
+# ══════════════════════════════════════════════════════════════════
+
+# ── Dashboard ─────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ── Manipulación de datos ─────────────────────────────────────────
+numpy>=1.24.0
+pandas>=2.0.0
+
+# ── Visualización ─────────────────────────────────────────────────
+plotly>=5.20.0
+folium>=0.16.0
+streamlit-folium>=0.20.0
+
+# ── Machine Learning ──────────────────────────────────────────────
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+shap>=0.44.0
+
+# ── Geoespacial (opcional — si no se instala el mapa usa burbujas) ─
+geopandas>=1.0.0
+pyproj>=3.6.0
+shapely>=2.0.0
+
+# ── Configuración ─────────────────────────────────────────────────
+pyyaml>=6.0.0
+
+# ── Procesamiento de datos sociales (pipeline local) ──────────────
+openpyxl>=3.1.0
+xlrd>=2.0.0
+unidecode>=1.3.0
+tqdm>=4.66.0
+
+# ── Modelado Basado en Agentes (pipeline local) ───────────────────
+mesa>=2.3.0
