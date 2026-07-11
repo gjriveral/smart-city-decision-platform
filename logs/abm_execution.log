@@ -71,3 +71,25 @@
 2026-05-25 18:31:39,595 [INFO]   C — Adaptativo        : Mean Wellbeing Year 10 = 0.9302
 2026-05-25 18:31:39,595 [INFO]   Best scenario: FOCALIZADO
 2026-05-25 18:31:39,595 [INFO]   Report: C:\Users\gjriv\OneDrive\Documentos\UdeA\Trabajo de grado 2026\model_strategic_investment_cities\reports\scenario_report.html
+2026-07-11 17:58:18,669 [INFO] Mesa version detected: 3.5.1
+2026-07-11 17:58:18,682 [INFO] IVC loaded from CSV: 33 comunas (years 2007–2024)
+2026-07-11 17:58:18,682 [INFO]   UrbanModel(focalizado): 33 comunas loaded from data
+2026-07-11 17:58:18,683 [INFO] Running scenario: 'focalizado' for 10 years (33 comunas) ...
+2026-07-11 17:58:18,689 [INFO] Scenario 'focalizado' complete. Records: 330
+2026-07-11 17:58:18,691 [INFO]   UrbanModel(distribuido): 33 comunas loaded from data
+2026-07-11 17:58:18,692 [INFO] Running scenario: 'distribuido' for 10 years (33 comunas) ...
+2026-07-11 17:58:18,698 [INFO] Scenario 'distribuido' complete. Records: 330
+2026-07-11 17:58:18,700 [INFO]   UrbanModel(adaptativo): 33 comunas loaded from data
+2026-07-11 17:58:18,700 [INFO] Running scenario: 'adaptativo' for 10 years (33 comunas) ...
+2026-07-11 17:58:18,705 [INFO] Scenario 'adaptativo' complete. Records: 330
+2026-07-11 17:58:30,422 [INFO] Mesa version detected: 3.5.1
+2026-07-11 17:58:30,434 [INFO] IVC loaded from CSV: 33 comunas (years 2007–2024)
+2026-07-11 17:58:30,434 [INFO]   UrbanModel(focalizado): 33 comunas loaded from data
+2026-07-11 17:58:30,435 [INFO] Running scenario: 'focalizado' for 10 years (33 comunas) ...
+2026-07-11 17:58:30,441 [INFO] Scenario 'focalizado' complete. Records: 330
+2026-07-11 17:58:30,444 [INFO]   UrbanModel(distribuido): 33 comunas loaded from data
+2026-07-11 17:58:30,444 [INFO] Running scenario: 'distribuido' for 10 years (33 comunas) ...
+2026-07-11 17:58:30,450 [INFO] Scenario 'distribuido' complete. Records: 330
+2026-07-11 17:58:30,452 [INFO]   UrbanModel(adaptativo): 33 comunas loaded from data
+2026-07-11 17:58:30,452 [INFO] Running scenario: 'adaptativo' for 10 years (33 comunas) ...
+2026-07-11 17:58:30,458 [INFO] Scenario 'adaptativo' complete. Records: 330

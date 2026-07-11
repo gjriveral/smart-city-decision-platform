@@ -43,25 +43,23 @@ CITY_PROFILES = {
     "Medellin": {
         "label":  "Medellin (predeterminado)",
         "config": str(ROOT / "config.yaml"),
-        "icon":   "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/"
-                  "Escudo_de_Medell%C3%ADn.svg/200px-Escudo_de_Medell%C3%ADn.svg.png",
+        "emoji":  "🏔️",
     },
     "Bogota": {
         "label":  "Bogota (demo)",
         "config": str(ROOT / "config_bogota.yaml"),   # creado si no existe
-        "icon":   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/"
-                  "Escudo_de_Bogot%C3%A1.svg/200px-Escudo_de_Bogot%C3%A1.svg.png",
+        "emoji":  "🏛️",
     },
     "Personalizado": {
         "label":  "Ciudad personalizada (subir config.yaml)",
         "config": None,
-        "icon":   None,
+        "emoji":  "🏙️",
     },
 }
 
 # ── Página ────────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Plataforma Ciudades Inteligentes",
+    page_title="Marco de Gestión de Datos — Vulnerabilidad Urbana",
     page_icon="🏙️",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -200,12 +198,13 @@ with st.sidebar:
         _abs       = None
         config_ok  = False
 
-    # ── Logo de ciudad ────────────────────────────────────────────────────────
-    icon_url = CITY_PROFILES[selected_profile].get("icon")
-    if icon_url:
-        st.image(icon_url, width=64)
-
-    st.markdown(f"**Ciudad activa:** {CIUDAD}")
+    # ── Indicador de ciudad ───────────────────────────────────────────────────
+    city_emoji = CITY_PROFILES[selected_profile].get("emoji", "🏙️")
+    st.markdown(
+        f'<span style="font-size:2.2rem;line-height:1">{city_emoji}</span>'
+        f'&nbsp;&nbsp;<strong style="font-size:1rem">{CIUDAD}</strong>',
+        unsafe_allow_html=True,
+    )
     st.markdown(f"**Unidad territorial:** `{UT}`")
     st.markdown("---")
 
@@ -234,12 +233,12 @@ with st.sidebar:
         run_pipeline = st.button(
             "Ejecutar Pipeline Automatico",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             help=(
                 "Ejecuta en secuencia:\n"
-                "1. Procesador SIATA (bigdata)\n"
-                "2. Indices de vulnerabilidad (ML)\n"
-                "3. Reentrenamiento XGBoost\n\n"
+                "1. Procesador SIATA (pipeline ETL / bigdata)\n"
+                "2. Indices de vulnerabilidad (ETL + agregacion estadistica)\n"
+                "3. Reentrenamiento XGBoost (motor predictivo)\n\n"
                 "Al finalizar, el dashboard se recarga con los nuevos datos."
             ),
         )
@@ -398,12 +397,28 @@ def load_model(path: str):
 
 
 @st.cache_data(show_spinner=False, ttl=300)
+def load_abm_results(path: str) -> pd.DataFrame:
+    """Carga y transforma el CSV de simulación ABM a años calendario."""
+    df = pd.read_csv(path)
+    df["calendar_year"] = ABM_BASE_YEAR + df["year"]
+    return df
+
+
+@st.cache_data(show_spinner=False, ttl=300)
 def load_geodata(candidates: list[str]) -> tuple:
     try:
         import geopandas as gpd
         for path in candidates:
             if Path(path).exists():
-                return gpd.read_file(path), "local"
+                gdf = gpd.read_file(path)
+                # Garantizar EPSG:4326 (WGS84) para Folium.
+                # Proyecciones planas (EPSG:3116, 9377, 32618…) desplazan los
+                # polígonos fuera del área visible del mapa base.
+                if gdf.crs is None:
+                    gdf = gdf.set_crs(epsg=4326)
+                elif gdf.crs.to_epsg() != 4326:
+                    gdf = gdf.to_crs(epsg=4326)
+                return gdf, "local"
     except ImportError:
         pass
     return None, "none"
@@ -440,6 +455,27 @@ except Exception as e:
     errors.append(f"vulnerability_model.pkl: {e}")
 
 gdf, geo_source = load_geodata([str(c) for c in GEO_CANDIDATES])
+
+# ── Constantes ABM ────────────────────────────────────────────────────────────
+ABM_BASE_YEAR  = 2024
+ABM_N_STEPS    = 10
+ABM_FINAL_YEAR = ABM_BASE_YEAR + ABM_N_STEPS          # 2034
+ABM_PATH       = ROOT / "evidencia" / "resultados_simulacion_escenarios.csv"
+SCENARIO_LABELS = {
+    "focalizado":  "Focalizado — Optimización Algorítmica",
+    "distribuido": "Distribuido — Igualitario",
+    "adaptativo":  "Adaptativo — Híbrido",
+}
+SCENARIO_COLORS = {
+    "focalizado":  "#1565c0",
+    "distribuido": "#c62828",
+    "adaptativo":  "#2e7d32",
+}
+SCENARIO_BAND = {
+    "focalizado":  "rgba(21,101,192,0.10)",
+    "distribuido": "rgba(198,40,40,0.10)",
+    "adaptativo":  "rgba(46,125,50,0.10)",
+}
 
 # ── Constantes de features ─────────────────────────────────────────────────────
 FEATURE_COLS = [
@@ -507,12 +543,12 @@ with _filter_placeholder.container():
 # ENCABEZADO PRINCIPAL (dinámico)
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown(
-    f'<p class="main-header">Plataforma de Ciudades Inteligentes — {CIUDAD}</p>',
+    f'<p class="main-header">Marco Integral de Gestión de Datos — {CIUDAD}</p>',
     unsafe_allow_html=True,
 )
 st.markdown(
-    f'<p class="sub-header">Modelo predictivo de vulnerabilidad y priorizacion estrategica '
-    f'de inversion por {UT_PLU.lower()} · XGBoost + SIATA · {CIUDAD}</p>',
+    f'<p class="sub-header">Sistema de inferencia predictiva de vulnerabilidad y priorizacion estrategica '
+    f'de inversion por {UT_PLU.lower()} · XGBoost + ABM + SIATA · {CIUDAD}</p>',
     unsafe_allow_html=True,
 )
 
@@ -525,10 +561,11 @@ if errors:
 # ══════════════════════════════════════════════════════════════════════════════
 # PESTAÑAS
 # ══════════════════════════════════════════════════════════════════════════════
-tab1, tab2, tab3 = st.tabs([
-    f"Vision General",
-    f"Mapa Predictivo",
-    f"Interpretabilidad del Modelo",
+tab1, tab2, tab3, tab4 = st.tabs([
+    "Vision General",
+    "Mapa Predictivo",
+    "Interpretabilidad del Modelo",
+    "Simulacion ABM  2024–2034",
 ])
 
 
@@ -597,7 +634,7 @@ with tab1:
                 plot_bgcolor="white", paper_bgcolor="white",
                 xaxis=dict(showgrid=True, gridcolor="#e0e0e0"),
             )
-            st.plotly_chart(fig_rank, use_container_width=True)
+            st.plotly_chart(fig_rank, width="stretch")
 
         with col_right:
             st.markdown(
@@ -620,7 +657,7 @@ with tab1:
                     height=220, margin=dict(l=0, r=0, t=30, b=0),
                     showlegend=True, legend=dict(orientation="h", y=-0.15),
                 )
-                st.plotly_chart(fig_pie, use_container_width=True)
+                st.plotly_chart(fig_pie, width="stretch")
 
             st.markdown(
                 '<p class="section-title">Evolucion Temporal del IVC</p>',
@@ -640,7 +677,7 @@ with tab1:
                     legend=dict(font=dict(size=9), y=1.0),
                     yaxis=dict(showgrid=True, gridcolor="#e0e0e0"),
                 )
-                st.plotly_chart(fig_evo, use_container_width=True)
+                st.plotly_chart(fig_evo, width="stretch")
 
         st.markdown(
             f'<p class="section-title">Detalle por Indice Social — {UT_COL} (ultimo año disponible)</p>',
@@ -670,7 +707,7 @@ with tab1:
                 df_show.style
                        .map(color_priority, subset=["Prioridad"])
                        .format({c: "{:.3f}" for c in df_show.select_dtypes("float").columns}),
-                use_container_width=True,
+                width="stretch",
                 height=300,
             )
     else:
@@ -698,51 +735,178 @@ with tab2:
         try:
             from streamlit_folium import st_folium
             import folium
+            import unicodedata
 
+            def _norm_name(s: str) -> str:
+                """Normaliza nombre: sin tildes, minúsculas, sin espacios extremos."""
+                return (
+                    unicodedata.normalize("NFD", str(s))
+                    .encode("ascii", "ignore")
+                    .decode()
+                    .lower()
+                    .strip()
+                )
+
+            # ── 1. Detectar columna de nombre en el GeoJSON ───────────────────
             name_col = next(
                 (c for c in ["NOMBRE", "nombre", "NOMBRE_COM", "NOMB_COM",
-                              UT_COL, UT_COL.upper(), "Comuna", "COMUNA",
-                              "Localidad", "LOCALIDAD"]
+                              UT_COL, UT_COL.upper(), "Comuna", "LOCALIDAD"]
                  if c in gdf.columns),
                 None,
             )
-            if name_col:
-                gdf_m = gdf.merge(
-                    df_latest[[UT_COL, "ivc_pred", "prioridad"]],
-                    left_on=name_col, right_on=UT_COL, how="left",
-                ).to_crs(epsg=4326)
 
-                center = [cfg.ciudad.centro.lat, cfg.ciudad.centro.lon] if config_ok else [6.2442, -75.5812]
-                m = folium.Map(location=center, zoom_start=12, tiles="CartoDB positron")
-
-                chor = folium.Choropleth(
-                    geo_data=gdf_m.__geo_interface__,
-                    data=df_latest,
-                    columns=[UT_COL, "ivc_pred"],
-                    key_on=f"feature.properties.{name_col}",
-                    fill_color="RdYlGn_r",
-                    fill_opacity=0.75,
-                    line_opacity=0.5,
-                    legend_name=f"IVC Predicho por {UT_COL} (XGBoost)",
-                    nan_fill_color="#cccccc",
-                ).add_to(m)
-
-                chor.geojson.add_child(folium.features.GeoJsonTooltip(
-                    fields=[name_col, "ivc_pred", "prioridad"],
-                    aliases=[f"{UT_COL}:", "IVC Predicho:", "Prioridad:"],
-                    localize=True,
-                    sticky=True,
-                ))
-                folium.LayerControl().add_to(m)
-                st_folium(m, width="100%", height=560)
-            else:
+            if name_col is None:
                 st.info(
-                    f"Archivo geoespacial encontrado pero no se identifico la columna "
-                    f"de {UT}. Columnas: {gdf.columns.tolist()}"
+                    f"GeoJSON sin columna de nombre reconocible. "
+                    f"Columnas disponibles: {gdf.columns.tolist()}"
                 )
                 gdf = None
+            else:
+                # ── 2. Merge robusto por clave normalizada ────────────────────
+                # Se toman SOLO las columnas necesarias del GeoJSON para evitar
+                # conflictos de nombres al unir con df_latest.
+                gdf_work = gdf[[name_col, "geometry"]].copy()
+                gdf_work["_key"] = gdf_work[name_col].astype(str).map(_norm_name)
+
+                df_merge = df_latest[[UT_COL, "ivc_pred", "prioridad"]].copy()
+                df_merge["_key"] = df_merge[UT_COL].astype(str).map(_norm_name)
+                # Cuando existen variantes del mismo nombre (ej. "Belén"/"Belen"),
+                # se conserva el promedio de IVC y la primera prioridad disponible.
+                df_merge = (
+                    df_merge.groupby("_key", as_index=False)
+                    .agg({"ivc_pred": "mean", "prioridad": "first", UT_COL: "first"})
+                )
+
+                gdf_m = (
+                    gdf_work
+                    .merge(df_merge, on="_key", how="left")
+                    .drop(columns=["_key"])
+                    .set_geometry("geometry")
+                    .set_crs(epsg=4326, allow_override=True)
+                    .reset_index(drop=True)
+                )
+
+                # ── 3. Limpiar tipos para serialización JSON segura ───────────
+                gdf_m["prioridad"] = (
+                    gdf_m["prioridad"]
+                    .astype(str)
+                    .replace({"nan": "N/D", "<NA>": "N/D", "None": "N/D"})
+                )
+                gdf_m["ivc_pred"] = pd.to_numeric(gdf_m["ivc_pred"], errors="coerce")
+                # Campo de IVC formateado para tooltip (no altera la columna numérica)
+                gdf_m["ivc_fmt"] = gdf_m["ivc_pred"].apply(
+                    lambda v: f"{v:.4f}" if pd.notna(v) else "N/D"
+                )
+
+                matched = int(gdf_m["ivc_pred"].notna().sum())
+                st.caption(
+                    f"Polígonos activos con IVC: **{matched}/{len(gdf_m)}** · "
+                    f"Columna de unión: `{name_col}` · Año: {latest_year}"
+                )
+
+                # ── 4. Serializar GeoJSON como string ─────────────────────────
+                # to_json() es más estable que __geo_interface__ para Choropleth.
+                geojson_str = gdf_m.to_json()
+
+                # ── 5. DataFrame de color: MISMA fuente que geo_data ──────────
+                # PUNTO CRÍTICO: key_on = "feature.properties.<name_col>"
+                # → columns[0] debe ser la columna <name_col> del mismo GDF.
+                # Usar df_latest separado rompe el join cuando los nombres difieren.
+                chor_data = (
+                    gdf_m[[name_col, "ivc_pred"]]
+                    .dropna(subset=["ivc_pred"])
+                    .reset_index(drop=True)
+                )
+
+                # ── 6. Mapa base ──────────────────────────────────────────────
+                # Centro geográfico oficial de Medellín (WGS84).
+                # Se usa el centroide de config si es válido, o las coords
+                # oficiales del Distrito como respaldo.
+                _cfg_lat = cfg.ciudad.centro.lat if config_ok else 6.2518
+                _cfg_lon = cfg.ciudad.centro.lon if config_ok else -75.5636
+                center = [_cfg_lat, _cfg_lon]
+
+                m = folium.Map(
+                    location=center,
+                    zoom_start=13,
+                    tiles="CartoDB positron",
+                    control_scale=True,
+                )
+
+                # ── 7. Coropleta ──────────────────────────────────────────────
+                chor = folium.Choropleth(
+                    geo_data=geojson_str,
+                    data=chor_data,
+                    columns=[name_col, "ivc_pred"],
+                    key_on=f"feature.properties.{name_col}",
+                    fill_color="YlOrRd",
+                    fill_opacity=0.65,     # 65% opacidad: polígonos visibles
+                                           # y calles del mapa base apreciables
+                    line_color="#333333",
+                    line_opacity=0.6,
+                    legend_name=(
+                        f"IVC Predicho por {UT_COL} — XGBoost  "
+                        f"(0 = sin vulnerabilidad · 1 = máxima)"
+                    ),
+                    nan_fill_color="#c8c8c8",
+                    nan_fill_opacity=0.30,
+                    highlight=True,
+                ).add_to(m)
+
+                # ── 8. Tooltip al pasar el cursor ─────────────────────────────
+                chor.geojson.add_child(
+                    folium.features.GeoJsonTooltip(
+                        fields=[name_col, "ivc_fmt", "prioridad"],
+                        aliases=[
+                            f"<b>{UT_COL}</b>",
+                            "<b>IVC Predicho (XGBoost)</b>",
+                            "<b>Prioridad de Inversión</b>",
+                        ],
+                        localize=True,
+                        sticky=True,
+                        style=(
+                            "background-color: white; color: #1a1a2e; "
+                            "font-family: 'Segoe UI', Arial, sans-serif; "
+                            "font-size: 13px; padding: 8px 14px; "
+                            "border-radius: 8px; border: 1px solid #c5c5c5; "
+                            "box-shadow: 3px 3px 8px rgba(0,0,0,0.18);"
+                        ),
+                    )
+                )
+
+                # ── 9. Popup al hacer clic (detalle expandido) ────────────────
+                folium.GeoJson(
+                    geojson_str,
+                    name=f"Popup — Detalle por {UT_COL}",
+                    style_function=lambda _: {
+                        "fillOpacity": 0,
+                        "color": "transparent",
+                        "weight": 0,
+                    },
+                    popup=folium.features.GeoJsonPopup(
+                        fields=[name_col, "ivc_fmt", "prioridad"],
+                        aliases=[
+                            f"{UT_COL}:",
+                            "IVC Predicho:",
+                            "Prioridad de Inversión:",
+                        ],
+                        localize=True,
+                        max_width=300,
+                        style=(
+                            "font-family: 'Segoe UI', Arial, sans-serif; "
+                            "font-size: 13px; border-radius: 8px; padding: 8px;"
+                        ),
+                    ),
+                ).add_to(m)
+
+                folium.LayerControl().add_to(m)
+                st_folium(m, width="100%", height=580, returned_objects=[])
+
         except Exception as e:
             st.error(f"Error al renderizar el mapa Folium: {e}")
+            import traceback
+            with st.expander("Detalle del error (para depuración)"):
+                st.code(traceback.format_exc(), language="python")
             gdf = None
 
     if gdf is None and not df_latest.empty and "ivc_pred" in df_latest.columns:
@@ -786,14 +950,14 @@ with tab2:
                 title=f"Priorizacion por {UT_COL} — {CIUDAD} (centroides del config)",
             )
             fig_map.update_layout(height=560, margin=dict(l=0, r=0, t=40, b=0))
-            st.plotly_chart(fig_map, use_container_width=True)
+            st.plotly_chart(fig_map, width="stretch")
 
             st.dataframe(
                 df_map[[UT_COL, "ivc_pred", "prioridad"]]
                 .sort_values("ivc_pred", ascending=False)
                 .rename(columns={"ivc_pred": "IVC Predicho", "prioridad": "Prioridad"})
                 .reset_index(drop=True),
-                use_container_width=True,
+                width="stretch",
                 height=260,
             )
 
@@ -852,7 +1016,7 @@ with tab3:
                     plot_bgcolor="white", paper_bgcolor="white",
                     xaxis=dict(showgrid=True, gridcolor="#e0e0e0"),
                 )
-                st.plotly_chart(fig_fi, use_container_width=True)
+                st.plotly_chart(fig_fi, width="stretch")
                 best_feat = fi_df.iloc[-1]["feature_label"]
                 st.success(f"**Variable mas influyente:** {best_feat} (Gain: {max_fi:.4f})")
             except Exception as e:
@@ -892,7 +1056,7 @@ with tab3:
                     plot_bgcolor="white", paper_bgcolor="white",
                     xaxis=dict(showgrid=True, gridcolor="#e0e0e0"),
                 )
-                st.plotly_chart(fig_shap, use_container_width=True)
+                st.plotly_chart(fig_shap, width="stretch")
                 best_shap = mean_shap.iloc[-1]["feature_label"]
                 st.success(
                     f"**Variable con mayor impacto SHAP:** {best_shap} "
@@ -947,11 +1111,11 @@ with tab3:
             yaxis=dict(range=[0.85, 1.0], showgrid=True, gridcolor="#e0e0e0"),
             xaxis=dict(tickmode="linear", dtick=1),
         )
-        st.plotly_chart(fig_cv, use_container_width=True)
+        st.plotly_chart(fig_cv, width="stretch")
 
         st.dataframe(
             cv_df.style.format({"RMSE": "{:.5f}", "MAE": "{:.5f}", "R²": "{:.4f}"}),
-            use_container_width=True,
+            width="stretch",
             hide_index=True,
         )
         with st.expander("Hiperparametros del modelo final"):
@@ -959,4 +1123,294 @@ with tab3:
     else:
         st.warning(
             "No se cargaron metricas. Ejecuta el Pipeline Automatico para entrenar el modelo."
+        )
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 4 — SIMULACIÓN BASADA EN AGENTES (ABM)  2024 → 2034
+# ══════════════════════════════════════════════════════════════════════════════
+with tab4:
+    st.markdown(
+        '<p class="section-title">'
+        "Simulación Basada en Agentes — Escenarios de Inversión Pública"
+        "</p>",
+        unsafe_allow_html=True,
+    )
+
+    st.info(
+        "📅 Las trayectorias muestran la proyección estocástica a **10 años** "
+        "partiendo de la línea base observada en **2024**. "
+        "El modelo ABM (Mesa) inicializa cada agente territorial con el IVC histórico "
+        "calculado a partir de los datos 2007–2024 y proyecta su evolución hasta **2034** "
+        "bajo tres estrategias de distribución presupuestaria con restricción fiscal constante. "
+        f"La banda sombreada representa la dispersión territorial (±1 DE) entre {UT_PLU.lower()}."
+    )
+
+    if ABM_PATH.exists():
+        df_abm = load_abm_results(str(ABM_PATH))
+
+        # ── Línea base 2024 ───────────────────────────────────────────────────
+        ivc_baseline = float(df_abm["ivc_initial"].mean())
+        ivc_base_std = float(df_abm["ivc_initial"].std())
+
+        # ── Agregado por escenario y año calendario ───────────────────────────
+        df_agg = (
+            df_abm.groupby(["scenario", "calendar_year"], as_index=False)
+            .agg(
+                ivc_mean=("ivc_current",  "mean"),
+                ivc_std=("ivc_current",   "std"),
+                wb_mean=("wellbeing",      "mean"),
+                wb_std=("wellbeing",       "std"),
+            )
+        )
+
+        # Insertar fila de arranque (año 2024, estado basal)
+        base_rows = pd.DataFrame([
+            {
+                "scenario":     sc,
+                "calendar_year": ABM_BASE_YEAR,
+                "ivc_mean":     ivc_baseline,
+                "ivc_std":      ivc_base_std,
+                "wb_mean":      0.5,
+                "wb_std":       0.0,
+            }
+            for sc in df_abm["scenario"].unique()
+        ])
+        df_agg = (
+            pd.concat([base_rows, df_agg], ignore_index=True)
+            .sort_values(["scenario", "calendar_year"])
+        )
+
+        # ── Slider de horizonte temporal ──────────────────────────────────────
+        sel_year = st.slider(
+            "Horizonte de análisis",
+            min_value=ABM_BASE_YEAR,
+            max_value=ABM_FINAL_YEAR,
+            value=ABM_FINAL_YEAR,
+            step=1,
+            format="Año %d",
+        )
+
+        # ── KPIs al año seleccionado ──────────────────────────────────────────
+        if sel_year == ABM_BASE_YEAR:
+            st.markdown("#### Línea base — **Año 2024** (estado inicial observado)")
+        else:
+            st.markdown(
+                f"#### Indicadores proyectados al **Año {sel_year}** "
+                f"({sel_year - ABM_BASE_YEAR} año{'s' if sel_year - ABM_BASE_YEAR > 1 else ''} "
+                f"desde la línea base)"
+            )
+
+        df_sel  = df_agg[df_agg["calendar_year"] == sel_year]
+        kpi_cols = st.columns(len(SCENARIO_LABELS))
+        for i, (sc, label) in enumerate(SCENARIO_LABELS.items()):
+            row = df_sel[df_sel["scenario"] == sc]
+            with kpi_cols[i]:
+                if not row.empty:
+                    ivc_val   = float(row["ivc_mean"].iloc[0])
+                    reduction = (ivc_baseline - ivc_val) / ivc_baseline * 100
+                    st.metric(
+                        label=label,
+                        value=f"IVC = {ivc_val:.4f}",
+                        delta=f"−{reduction:.1f} % vs. base 2024"
+                              if reduction >= 0
+                              else f"+{abs(reduction):.1f} % vs. base 2024",
+                        delta_color="normal" if reduction >= 0 else "inverse",
+                    )
+                else:
+                    st.metric(label=label, value="—", delta="—")
+
+        # ── Función constructora de gráfico de trayectoria ────────────────────
+        def _tray_chart(df_src, y_col, y_std_col, y_label, title):
+            fig = go.Figure()
+            for sc, label in SCENARIO_LABELS.items():
+                d     = df_src[df_src["scenario"] == sc].sort_values("calendar_year")
+                color = SCENARIO_COLORS[sc]
+                band  = SCENARIO_BAND[sc]
+                xs    = list(d["calendar_year"])
+                ys    = list(d[y_col])
+                ys_s  = list(d[y_std_col])
+
+                # Banda dispersión territorial
+                fig.add_trace(go.Scatter(
+                    x=xs + xs[::-1],
+                    y=[y + s for y, s in zip(ys, ys_s)] +
+                      [y - s for y, s in zip(ys, ys_s)][::-1],
+                    fill="toself",
+                    fillcolor=band,
+                    line=dict(color="rgba(0,0,0,0)"),
+                    showlegend=False,
+                    hoverinfo="skip",
+                ))
+                # Línea principal
+                fig.add_trace(go.Scatter(
+                    x=xs, y=ys,
+                    name=label,
+                    mode="lines+markers",
+                    line=dict(color=color, width=2.5),
+                    marker=dict(size=7),
+                    hovertemplate=(
+                        f"<b>{label}</b><br>"
+                        "Año: %{x}<br>"
+                        f"{y_label}: %{{y:.4f}}"
+                        "<extra></extra>"
+                    ),
+                ))
+
+            # Línea vertical al año del slider
+            if sel_year > ABM_BASE_YEAR:
+                fig.add_vline(
+                    x=sel_year,
+                    line_dash="dash",
+                    line_color="#9e9e9e",
+                    annotation_text=f"→ {sel_year}",
+                    annotation_position="top right",
+                    annotation_font_size=11,
+                )
+            # Referencia base 2024 solo en gráfico IVC
+            if y_col == "ivc_mean":
+                fig.add_hline(
+                    y=ivc_baseline,
+                    line_dash="dot",
+                    line_color="#b0bec5",
+                    annotation_text=f"Base 2024  ({ivc_baseline:.3f})",
+                    annotation_position="bottom right",
+                    annotation_font_size=10,
+                )
+
+            fig.update_layout(
+                title=dict(text=title, font=dict(size=13)),
+                xaxis=dict(
+                    title="Año calendario",
+                    tickmode="linear",
+                    dtick=1,
+                    tickformat="d",
+                    tickangle=-35,
+                    range=[ABM_BASE_YEAR - 0.3, ABM_FINAL_YEAR + 0.3],
+                    showgrid=True,
+                    gridcolor="#f0f0f0",
+                ),
+                yaxis=dict(
+                    title=y_label,
+                    showgrid=True,
+                    gridcolor="#e8e8e8",
+                ),
+                legend=dict(
+                    orientation="h", y=-0.32, x=0,
+                    font=dict(size=9),
+                ),
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                height=400,
+                margin=dict(l=10, r=10, t=48, b=80),
+            )
+            return fig
+
+        # ── Gráficas de trayectorias ──────────────────────────────────────────
+        df_plot = df_agg[df_agg["calendar_year"] <= sel_year]
+        col_ivc, col_wb = st.columns(2)
+
+        with col_ivc:
+            st.plotly_chart(
+                _tray_chart(
+                    df_plot, "ivc_mean", "ivc_std",
+                    "IVC medio",
+                    "Trayectoria del IVC — Proyección 2024–2034",
+                ),
+                width="stretch",
+            )
+
+        with col_wb:
+            st.plotly_chart(
+                _tray_chart(
+                    df_plot, "wb_mean", "wb_std",
+                    "Bienestar medio (WB)",
+                    "Trayectoria del Bienestar — Proyección 2024–2034",
+                ),
+                width="stretch",
+            )
+
+        # ── Tabla estadística al año seleccionado ─────────────────────────────
+        if sel_year > ABM_BASE_YEAR:
+            st.markdown(
+                f'<p class="section-title">'
+                f"Estadísticos descriptivos — Año {sel_year}"
+                f"</p>",
+                unsafe_allow_html=True,
+            )
+
+            df_det = df_abm[df_abm["calendar_year"] == sel_year].copy()
+            df_det["Escenario"] = df_det["scenario"].map(SCENARIO_LABELS)
+
+            def _cv(x):
+                m = x.mean()
+                return x.std() / m if m != 0 else 0.0
+
+            tbl = (
+                df_det.groupby("Escenario")
+                .agg(
+                    IVC_medio=("ivc_current",  "mean"),
+                    IVC_min=("ivc_current",    "min"),
+                    IVC_max=("ivc_current",    "max"),
+                    DE=("ivc_current",         "std"),
+                    CV=("ivc_current",         _cv),
+                    WB_medio=("wellbeing",     "mean"),
+                    Reduccion=("ivc_current",
+                               lambda x: (ivc_baseline - x.mean()) / ivc_baseline * 100),
+                )
+                .round(4)
+                .reset_index()
+            )
+            tbl.columns = [
+                "Escenario", "IVC̄", "IVC mín", "IVC máx",
+                "DE", "CV", "WB̄", "Reducción (%)",
+            ]
+            st.dataframe(tbl, width="stretch", hide_index=True)
+
+            # Detalle por unidad territorial
+            with st.expander(
+                f"Ver detalle por {UT_COL} al Año {sel_year}", expanded=False
+            ):
+                sc_sel = st.selectbox(
+                    "Escenario a detallar",
+                    options=list(SCENARIO_LABELS.keys()),
+                    format_func=lambda k: SCENARIO_LABELS[k],
+                    key="abm_detail_sc",
+                )
+                df_det_sc = (
+                    df_det[df_det["scenario"] == sc_sel]
+                    [["comuna", "ivc_current", "wellbeing",
+                      "investment_allocated", "infrastructure_capacity"]]
+                    .rename(columns={
+                        "comuna":                   UT_COL,
+                        "ivc_current":              "IVC",
+                        "wellbeing":                "Bienestar",
+                        "investment_allocated":     "Inversión asignada",
+                        "infrastructure_capacity":  "Cap. infraestructura",
+                    })
+                    .sort_values("IVC", ascending=False)
+                    .reset_index(drop=True)
+                )
+                st.dataframe(
+                    df_det_sc.style.format({
+                        "IVC":                 "{:.4f}",
+                        "Bienestar":           "{:.4f}",
+                        "Cap. infraestructura": "{:.4f}",
+                        "Inversión asignada":  "{:,.0f}",
+                    }),
+                    width="stretch",
+                    height=320,
+                )
+
+        st.caption(
+            f"Fuente: simulación ABM con framework Mesa (Python) · "
+            f"Horizonte 2024–{ABM_FINAL_YEAR} · {len(df_abm['comuna'].unique())} "
+            f"{UT_PLU.lower()} · presupuesto agregado constante"
+        )
+
+    else:
+        st.warning(
+            f"No se encontró el archivo de simulación ABM en "
+            f"`evidencia/resultados_simulacion_escenarios.csv`. "
+            "Ejecuta el Pipeline Automático para generarlo."
         )

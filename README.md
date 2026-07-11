@@ -1,6 +1,6 @@
-# Plataforma Integral de Toma de Decisiones para Ciudades Inteligentes
+# Marco Integral de Gestión de Datos para Ciudades Colombianas
 
-> **Prediccion de Vulnerabilidad Urbana e Inversion Estrategica mediante Big Data, Machine Learning y Modelado Basado en Agentes**
+> **Prediccion de Vulnerabilidad Urbana e Inversion Estrategica mediante Big Data, Modelado Estadístico Predictivo (XGBoost) y Simulacion Basada en Agentes**
 >
 > Universidad de Antioquia · Trabajo de Grado 2026 · Facultad de Ingenieria
 
@@ -8,16 +8,16 @@
 
 ## Descripcion General
 
-Esta plataforma integra tres paradigmas computacionales para apoyar la toma de decisiones de politica publica en ciudades colombianas:
+Este marco analítico integra tres paradigmas computacionales para apoyar la toma de decisiones de politica publica en ciudades colombianas:
 
 | Componente | Tecnologia | Funcion |
 |---|---|---|
 | **Big Data / IoT** | Dask + Pandas | Procesa la red de estaciones pluviometricas SIATA (telemetria ambiental en tiempo real) |
-| **Machine Learning** | XGBoost + SHAP | Predice el Indice de Vulnerabilidad Compuesto (IVC) por unidad territorial con validacion cruzada temporal (walk-forward) |
+| **Motor Predictivo** | XGBoost + SHAP | Predice el Indice de Vulnerabilidad Compuesto (IVC) por unidad territorial mediante regresion de gradiente (XGBoost) con validacion cruzada temporal walk-forward |
 | **Modelado Basado en Agentes** | Mesa (Python) | Simula tres escenarios de asignacion presupuestal durante 10 anos para comparar estrategias de inversion publica |
 | **Dashboard Interactivo** | Streamlit + Plotly + Folium | Visualiza predicciones, mapas corepleticos, importancia de variables y permite reentrenar el modelo con un solo clic |
 
-El sistema fue disenado desde su arquitectura para ser **completamente replicable en cualquier ciudad de Colombia**: basta con editar el archivo `config.yaml` para adaptar la plataforma a Bogota, Cali, Barranquilla u otra ciudad, sin modificar una sola linea de codigo fuente.
+El sistema fue disenado desde su arquitectura para ser **completamente replicable en cualquier ciudad de Colombia**: basta con editar el archivo `config.yaml` para adaptar el marco analítico a Bogota, Cali, Barranquilla u otra ciudad, sin modificar una sola linea de codigo fuente.
 
 ---
 
