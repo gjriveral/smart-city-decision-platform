@@ -11,6 +11,7 @@ ModeloDatos/ModeloDatos/data/raw/   # Excel crudos ECV/IPM/IML
 !models/shap_values.csv
 !ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv
 !data/processed/siata_agregado.csv
+!evidencia/resultados_simulacion_escenarios.csv
 
 # ── Modelos serializados: excluir en general, PERMITIR el de producción ────────
 *.pkl
@@ -24,5 +25,7 @@ __pycache__/
 .env
 tree.txt
 
-# ── Archivos temporales de evidencia (generados localmente) ───────────────────
-evidencia/
+# ── Evidencia: bloquear imágenes generadas localmente, conservar resultados ABM ─
+evidencia/*.png
+evidencia/*.jpg
+evidencia/*.html
