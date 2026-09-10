@@ -14,7 +14,7 @@ Este marco analítico integra tres paradigmas computacionales para apoyar la tom
 |---|---|---|
 | **Big Data / IoT** | Dask + Pandas | Procesa la red de estaciones pluviometricas SIATA (telemetria ambiental en tiempo real) |
 | **Motor Predictivo** | XGBoost + SHAP | Predice el Indice de Vulnerabilidad Compuesto (IVC) por unidad territorial mediante regresion de gradiente (XGBoost) con validacion cruzada temporal walk-forward |
-| **Modelado Basado en Agentes** | Mesa (Python) | Simula tres escenarios de asignacion presupuestal durante 10 anos para comparar estrategias de inversion publica |
+| **Modelado Basado en Agentes** | Python (NumPy / Pandas) | Simula tres escenarios de asignacion presupuestal durante 10 anos para comparar estrategias de inversion publica |
 | **Dashboard Interactivo** | Streamlit + Plotly + Folium | Visualiza predicciones, mapas corepleticos, importancia de variables y permite reentrenar el modelo con un solo clic |
 
 El sistema fue disenado desde su arquitectura para ser **completamente replicable en cualquier ciudad de Colombia**: basta con editar el archivo `config.yaml` para adaptar el marco analítico a Bogota, Cali, Barranquilla u otra ciudad, sin modificar una sola linea de codigo fuente.
@@ -78,9 +78,6 @@ scikit-learn>=1.4
 xgboost>=2.0
 shap>=0.44
 
-# Modelado basado en agentes
-mesa>=2.3
-
 # Visualizacion
 matplotlib>=3.8
 plotly>=5.20
@@ -129,7 +126,7 @@ model_strategic_investment_cities/
 |   |-- 02_vulnerability_indices.py # Construye los 7 indices de vulnerabilidad
 |   `-- 03_xgboost_model.py         # Entrena XGBoost con CV temporal y genera SHAP
 |
-|-- abm/                            # Modulo 3: Modelado Basado en Agentes (Mesa)
+|-- abm/                            # Modulo 3: Modelado Basado en Agentes (Python puro)
 |   |-- 04_urban_model.py           # Modelo ABM: 3 agentes x N territorios x 10 anos
 |   `-- 05_scenario_analysis.py     # Genera informe HTML comparativo de escenarios
 |
@@ -606,4 +603,4 @@ R: En modo muestra (10 estaciones): ~30 segundos. En modo completo con todas las
 
 ---
 
-*Generado automaticamente por el pipeline de documentacion — Universidad de Antioquia · 2026*
+*Universidad de Antioquia · Trabajo de Grado 2026*

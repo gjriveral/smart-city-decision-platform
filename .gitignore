@@ -17,6 +17,7 @@ Registro SMIC ante la DNDA/
 *.txt
 *.md
 !README.md
+!requirements.txt
 reports/
 artifacts/
 logs/
