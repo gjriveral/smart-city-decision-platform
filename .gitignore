@@ -1,0 +1,62 @@
+# ── Expediente y radicación (nunca versionar) ────────────────────────────────
+Registro_DNA/
+Paquete_Radicacion_DNDA_Final/
+Registro SMIC ante la DNDA/
+
+# ── Comprimidos e instaladores ───────────────────────────────────────────────
+*.zip
+*.rar
+*.7z
+*.exe
+*.msi
+
+# ── Documentos externos, reportes y manuales ─────────────────────────────────
+*.pdf
+*.docx
+*.doc
+*.txt
+*.md
+!README.md
+reports/
+artifacts/
+logs/
+
+# ── Entornos virtuales y cachés ──────────────────────────────────────────────
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+Thumbs.db
+.env
+tree.txt
+
+# ── Datos pesados (NUNCA subir a GitHub) ─────────────────────────────────────
+pluviometrica/
+ModeloDatos/ModeloDatos/data/raw/
+*.xlsx
+
+# ── CSVs: excluir en general; permitir artefactos ligeros del modelo ─────────
+*.csv
+!models/vulnerability_ranking.csv
+!models/shap_values.csv
+!models/shap_importance_cv_stability.csv
+!ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv
+!data/processed/siata_agregado.csv
+!evidencia/resultados_simulacion_escenarios.csv
+!Datos_*_Beta/**/*.csv
+!Datos_*_Beta/**/*.pkl
+
+# ── Modelos serializados: excluir en general; permitir el de producción ──────
+*.pkl
+!models/vulnerability_model.pkl
+
+# ── Evidencia local (imágenes HTML); conservar resultados ABM CSV ────────────
+evidencia/*.png
+evidencia/*.jpg
+evidencia/*.html

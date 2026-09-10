@@ -1,0 +1,49 @@
+# config_manizales.yaml — perfil de portabilidad
+# Datos de portabilidad / escalabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Manizales"
+  departamento: "Caldas"
+  codigo_dane: "17001"
+  unidad_territorial: "comuna"
+  crs: "EPSG:4326"
+  centro:
+    lat: 5.0703
+    lon: -75.5138
+
+rutas:
+  datos_climaticos: "Datos_Manizales_Beta"
+  datos_sociales: "Datos_Manizales_Beta"
+  procesados: "Datos_Manizales_Beta/processed"
+  modelos: "Datos_Manizales_Beta/models"
+  logs: "Datos_Manizales_Beta/logs"
+  geo: "Datos_Manizales_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Atardeceres", lat: 5.075163, lon: -75.528476}
+  - {id: 2, nombre: "San José", lat: 5.075810, lon: -75.514309}
+  - {id: 3, nombre: "Cumanday", lat: 5.067278, lon: -75.517026}
+  - {id: 4, nombre: "La Estación", lat: 5.070300, lon: -75.513800}
+  - {id: 5, nombre: "Ciudadela del Norte", lat: 5.086766, lon: -75.493194}
+  - {id: 6, nombre: "Ecoturístico Cerro de Oro", lat: 5.065077, lon: -75.473984}
+  - {id: 7, nombre: "Tesorito", lat: 5.038951, lon: -75.455533}
+  - {id: 8, nombre: "Palogrande", lat: 5.050215, lon: -75.487446}
+  - {id: 9, nombre: "Universitaria", lat: 5.048071, lon: -75.503947}
+  - {id: 10, nombre: "La Fuente", lat: 5.059089, lon: -75.509980}
+  - {id: 11, nombre: "La Macarena", lat: 5.051273, lon: -75.525037}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

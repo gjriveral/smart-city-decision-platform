@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SMIC Analytics</title>
+  <link rel="stylesheet" href="./splash.css" />
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="veil" aria-hidden="true"></div>
+  <main class="stage">
+    <img id="logo" class="logo" src="./smic_logo.png" alt="SMIC Analytics" />
+    <p class="lede">
+      SMIC es un marco de gestión de datos para priorizar la inversión pública
+      intraurbana. Convierte evidencia socioeconómica y territorial en un índice
+      comparable, un pronóstico auditado y escenarios de asignación a diez años.
+    </p>
+    <p class="byline">Gabriel Jaime Rivera León</p>
+    <p class="affiliation">
+      Universidad de Antioquia · Facultad de Ingeniería<br />
+      Doctorado en Ingeniería
+    </p>
+    <div class="progress-block">
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar">
+        <div class="progress-fill" id="fill"></div>
+      </div>
+      <p class="progress-label" id="pct" aria-live="polite">Carga 0&nbsp;%</p>
+    </div>
+    <p class="hint" id="hint"></p>
+  </main>
+  <div class="controls">
+    <button type="button" class="mute-btn" id="mute" aria-pressed="false">Silenciar</button>
+  </div>
+  <script src="./splash.js"></script>
+</body>
+</html>

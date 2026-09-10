@@ -1,0 +1,43 @@
+# config_barranquilla.yaml — perfil de portabilidad
+# Datos de portabilidad / escalabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Barranquilla"
+  departamento: "Atlántico"
+  codigo_dane: "08001"
+  unidad_territorial: "localidad"
+  crs: "EPSG:4326"
+  centro:
+    lat: 10.9685
+    lon: -74.7813
+
+rutas:
+  datos_climaticos: "Datos_Barranquilla_Beta"
+  datos_sociales: "Datos_Barranquilla_Beta"
+  procesados: "Datos_Barranquilla_Beta/processed"
+  modelos: "Datos_Barranquilla_Beta/models"
+  logs: "Datos_Barranquilla_Beta/logs"
+  geo: "Datos_Barranquilla_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Riomar", lat: 10.968500, lon: -74.781300}
+  - {id: 2, nombre: "Norte-Centro Histórico", lat: 10.968500, lon: -74.781300}
+  - {id: 3, nombre: "Suroccidente", lat: 10.957258, lon: -74.865349}
+  - {id: 4, nombre: "Metropolitana", lat: 10.938076, lon: -74.808341}
+  - {id: 5, nombre: "Suroriente", lat: 10.954414, lon: -74.776960}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

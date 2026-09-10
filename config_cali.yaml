@@ -1,0 +1,60 @@
+# config_cali.yaml — perfil de portabilidad
+# Datos de portabilidad / escalabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Cali"
+  departamento: "Valle del Cauca"
+  codigo_dane: "76001"
+  unidad_territorial: "comuna"
+  crs: "EPSG:4326"
+  centro:
+    lat: 3.4516
+    lon: -76.532
+
+rutas:
+  datos_climaticos: "Datos_Cali_Beta"
+  datos_sociales: "Datos_Cali_Beta"
+  procesados: "Datos_Cali_Beta/processed"
+  modelos: "Datos_Cali_Beta/models"
+  logs: "Datos_Cali_Beta/logs"
+  geo: "Datos_Cali_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Comuna 01", lat: 3.457353, lon: -76.566127}
+  - {id: 2, nombre: "Comuna 02", lat: 3.473686, lon: -76.532423}
+  - {id: 3, nombre: "Comuna 03", lat: 3.448744, lon: -76.535284}
+  - {id: 4, nombre: "Comuna 04", lat: 3.466072, lon: -76.512088}
+  - {id: 5, nombre: "Comuna 05", lat: 3.472147, lon: -76.497176}
+  - {id: 6, nombre: "Comuna 06", lat: 3.490841, lon: -76.485111}
+  - {id: 7, nombre: "Comuna 07", lat: 3.456660, lon: -76.483616}
+  - {id: 8, nombre: "Comuna 08", lat: 3.450373, lon: -76.507908}
+  - {id: 9, nombre: "Comuna 09", lat: 3.442043, lon: -76.527311}
+  - {id: 10, nombre: "Comuna 10", lat: 3.422542, lon: -76.528527}
+  - {id: 11, nombre: "Comuna 11", lat: 3.423804, lon: -76.512963}
+  - {id: 12, nombre: "Comuna 12", lat: 3.435583, lon: -76.502437}
+  - {id: 13, nombre: "Comuna 13", lat: 3.424905, lon: -76.493458}
+  - {id: 14, nombre: "Comuna 14", lat: 3.420501, lon: -76.479902}
+  - {id: 15, nombre: "Comuna 15", lat: 3.405718, lon: -76.496169}
+  - {id: 16, nombre: "Comuna 16", lat: 3.395355, lon: -76.516176}
+  - {id: 17, nombre: "Comuna 17", lat: 3.377397, lon: -76.521767}
+  - {id: 18, nombre: "Comuna 18", lat: 3.383791, lon: -76.559451}
+  - {id: 19, nombre: "Comuna 19", lat: 3.421921, lon: -76.555490}
+  - {id: 20, nombre: "Comuna 20", lat: 3.421924, lon: -76.558045}
+  - {id: 21, nombre: "Comuna 21", lat: 3.413337, lon: -76.472885}
+  - {id: 22, nombre: "Comuna 22", lat: 3.349228, lon: -76.543530}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

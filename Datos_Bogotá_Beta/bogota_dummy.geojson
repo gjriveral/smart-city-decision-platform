@@ -1,0 +1,3850 @@
+{
+  "type": "FeatureCollection",
+  "name": "bogota_localidades_y_barrios_dummy",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Usaquén",
+        "Unidad_Territorial": "Usaquén",
+        "tipo": "localidad",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Usaquén"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.22,
+              4.45
+            ],
+            [
+              -74.1648,
+              4.45
+            ],
+            [
+              -74.1648,
+              4.5052
+            ],
+            [
+              -74.22,
+              4.5052
+            ],
+            [
+              -74.22,
+              4.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Usaquén Centro",
+        "Unidad_Territorial": "Usaquén Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Usaquén Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.49
+            ],
+            [
+              -74.15599999999999,
+              4.49
+            ],
+            [
+              -74.15599999999999,
+              4.514
+            ],
+            [
+              -74.17999999999999,
+              4.514
+            ],
+            [
+              -74.17999999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cedritos",
+        "Unidad_Territorial": "Cedritos",
+        "tipo": "barrio",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Cedritos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.49
+            ],
+            [
+              -74.112,
+              4.49
+            ],
+            [
+              -74.112,
+              4.514
+            ],
+            [
+              -74.136,
+              4.514
+            ],
+            [
+              -74.136,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Santa Bárbara",
+        "Unidad_Territorial": "Santa Bárbara",
+        "tipo": "barrio",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Santa Bárbara"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.534
+            ],
+            [
+              -74.15599999999999,
+              4.534
+            ],
+            [
+              -74.15599999999999,
+              4.558
+            ],
+            [
+              -74.17999999999999,
+              4.558
+            ],
+            [
+              -74.17999999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Toberín",
+        "Unidad_Territorial": "Toberín",
+        "tipo": "barrio",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Toberín"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.534
+            ],
+            [
+              -74.112,
+              4.534
+            ],
+            [
+              -74.112,
+              4.558
+            ],
+            [
+              -74.136,
+              4.558
+            ],
+            [
+              -74.136,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Verbenal",
+        "Unidad_Territorial": "Verbenal",
+        "tipo": "barrio",
+        "localidad_padre": "Usaquén",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Verbenal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.578
+            ],
+            [
+              -74.15599999999999,
+              4.578
+            ],
+            [
+              -74.15599999999999,
+              4.602
+            ],
+            [
+              -74.17999999999999,
+              4.602
+            ],
+            [
+              -74.17999999999999,
+              4.578
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Chapinero",
+        "Unidad_Territorial": "Chapinero",
+        "tipo": "localidad",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Chapinero"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.16,
+              4.45
+            ],
+            [
+              -74.1048,
+              4.45
+            ],
+            [
+              -74.1048,
+              4.5052
+            ],
+            [
+              -74.16,
+              4.5052
+            ],
+            [
+              -74.16,
+              4.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Chapinero Central",
+        "Unidad_Territorial": "Chapinero Central",
+        "tipo": "barrio",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Chapinero Central"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.49
+            ],
+            [
+              -74.09599999999999,
+              4.49
+            ],
+            [
+              -74.09599999999999,
+              4.514
+            ],
+            [
+              -74.11999999999999,
+              4.514
+            ],
+            [
+              -74.11999999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "El Chicó",
+        "Unidad_Territorial": "El Chicó",
+        "tipo": "barrio",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "El Chicó"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.49
+            ],
+            [
+              -74.05199999999999,
+              4.49
+            ],
+            [
+              -74.05199999999999,
+              4.514
+            ],
+            [
+              -74.076,
+              4.514
+            ],
+            [
+              -74.076,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Rosales",
+        "Unidad_Territorial": "Rosales",
+        "tipo": "barrio",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Rosales"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.534
+            ],
+            [
+              -74.09599999999999,
+              4.534
+            ],
+            [
+              -74.09599999999999,
+              4.558
+            ],
+            [
+              -74.11999999999999,
+              4.558
+            ],
+            [
+              -74.11999999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Cabrera",
+        "Unidad_Territorial": "La Cabrera",
+        "tipo": "barrio",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Cabrera"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.534
+            ],
+            [
+              -74.05199999999999,
+              4.534
+            ],
+            [
+              -74.05199999999999,
+              4.558
+            ],
+            [
+              -74.076,
+              4.558
+            ],
+            [
+              -74.076,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Pardo Rubio",
+        "Unidad_Territorial": "Pardo Rubio",
+        "tipo": "barrio",
+        "localidad_padre": "Chapinero",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Pardo Rubio"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.578
+            ],
+            [
+              -74.09599999999999,
+              4.578
+            ],
+            [
+              -74.09599999999999,
+              4.602
+            ],
+            [
+              -74.11999999999999,
+              4.602
+            ],
+            [
+              -74.11999999999999,
+              4.578
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Santa Fe",
+        "Unidad_Territorial": "Santa Fe",
+        "tipo": "localidad",
+        "localidad_padre": "Santa Fe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Santa Fe"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.1,
+              4.45
+            ],
+            [
+              -74.0448,
+              4.45
+            ],
+            [
+              -74.0448,
+              4.5052
+            ],
+            [
+              -74.1,
+              4.5052
+            ],
+            [
+              -74.1,
+              4.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Las Cruces",
+        "Unidad_Territorial": "Las Cruces",
+        "tipo": "barrio",
+        "localidad_padre": "Santa Fe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Las Cruces"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.49
+            ],
+            [
+              -74.03599999999999,
+              4.49
+            ],
+            [
+              -74.03599999999999,
+              4.514
+            ],
+            [
+              -74.05999999999999,
+              4.514
+            ],
+            [
+              -74.05999999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Perseverancia",
+        "Unidad_Territorial": "La Perseverancia",
+        "tipo": "barrio",
+        "localidad_padre": "Santa Fe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Perseverancia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.49
+            ],
+            [
+              -73.99199999999999,
+              4.49
+            ],
+            [
+              -73.99199999999999,
+              4.514
+            ],
+            [
+              -74.01599999999999,
+              4.514
+            ],
+            [
+              -74.01599999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "San Diego",
+        "Unidad_Territorial": "San Diego",
+        "tipo": "barrio",
+        "localidad_padre": "Santa Fe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "San Diego"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.534
+            ],
+            [
+              -74.03599999999999,
+              4.534
+            ],
+            [
+              -74.03599999999999,
+              4.558
+            ],
+            [
+              -74.05999999999999,
+              4.558
+            ],
+            [
+              -74.05999999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Egipto",
+        "Unidad_Territorial": "Egipto",
+        "tipo": "barrio",
+        "localidad_padre": "Santa Fe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Egipto"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.534
+            ],
+            [
+              -73.99199999999999,
+              4.534
+            ],
+            [
+              -73.99199999999999,
+              4.558
+            ],
+            [
+              -74.01599999999999,
+              4.558
+            ],
+            [
+              -74.01599999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "San Cristóbal",
+        "Unidad_Territorial": "San Cristóbal",
+        "tipo": "localidad",
+        "localidad_padre": "San Cristóbal",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "San Cristóbal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.03999999999999,
+              4.45
+            ],
+            [
+              -73.98479999999999,
+              4.45
+            ],
+            [
+              -73.98479999999999,
+              4.5052
+            ],
+            [
+              -74.03999999999999,
+              4.5052
+            ],
+            [
+              -74.03999999999999,
+              4.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "San Blas",
+        "Unidad_Territorial": "San Blas",
+        "tipo": "barrio",
+        "localidad_padre": "San Cristóbal",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "San Blas"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.49
+            ],
+            [
+              -73.97599999999998,
+              4.49
+            ],
+            [
+              -73.97599999999998,
+              4.514
+            ],
+            [
+              -73.99999999999999,
+              4.514
+            ],
+            [
+              -73.99999999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Gloria",
+        "Unidad_Territorial": "La Gloria",
+        "tipo": "barrio",
+        "localidad_padre": "San Cristóbal",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Gloria"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.49
+            ],
+            [
+              -73.93199999999999,
+              4.49
+            ],
+            [
+              -73.93199999999999,
+              4.514
+            ],
+            [
+              -73.95599999999999,
+              4.514
+            ],
+            [
+              -73.95599999999999,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Sosiego",
+        "Unidad_Territorial": "Sosiego",
+        "tipo": "barrio",
+        "localidad_padre": "San Cristóbal",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Sosiego"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.534
+            ],
+            [
+              -73.97599999999998,
+              4.534
+            ],
+            [
+              -73.97599999999998,
+              4.558
+            ],
+            [
+              -73.99999999999999,
+              4.558
+            ],
+            [
+              -73.99999999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Quinta Mentira",
+        "Unidad_Territorial": "Quinta Mentira",
+        "tipo": "barrio",
+        "localidad_padre": "San Cristóbal",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Quinta Mentira"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.534
+            ],
+            [
+              -73.93199999999999,
+              4.534
+            ],
+            [
+              -73.93199999999999,
+              4.558
+            ],
+            [
+              -73.95599999999999,
+              4.558
+            ],
+            [
+              -73.95599999999999,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Usme",
+        "Unidad_Territorial": "Usme",
+        "tipo": "localidad",
+        "localidad_padre": "Usme",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Usme"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.98,
+              4.45
+            ],
+            [
+              -73.9248,
+              4.45
+            ],
+            [
+              -73.9248,
+              4.5052
+            ],
+            [
+              -73.98,
+              4.5052
+            ],
+            [
+              -73.98,
+              4.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Usme Centro",
+        "Unidad_Territorial": "Usme Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Usme",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Usme Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.49
+            ],
+            [
+              -73.916,
+              4.49
+            ],
+            [
+              -73.916,
+              4.514
+            ],
+            [
+              -73.94,
+              4.514
+            ],
+            [
+              -73.94,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Alfonso López",
+        "Unidad_Territorial": "Alfonso López",
+        "tipo": "barrio",
+        "localidad_padre": "Usme",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Alfonso López"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.49
+            ],
+            [
+              -73.872,
+              4.49
+            ],
+            [
+              -73.872,
+              4.514
+            ],
+            [
+              -73.896,
+              4.514
+            ],
+            [
+              -73.896,
+              4.49
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Yomasa",
+        "Unidad_Territorial": "Yomasa",
+        "tipo": "barrio",
+        "localidad_padre": "Usme",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Yomasa"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.534
+            ],
+            [
+              -73.916,
+              4.534
+            ],
+            [
+              -73.916,
+              4.558
+            ],
+            [
+              -73.94,
+              4.558
+            ],
+            [
+              -73.94,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Fiscala",
+        "Unidad_Territorial": "La Fiscala",
+        "tipo": "barrio",
+        "localidad_padre": "Usme",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Fiscala"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.534
+            ],
+            [
+              -73.872,
+              4.534
+            ],
+            [
+              -73.872,
+              4.558
+            ],
+            [
+              -73.896,
+              4.558
+            ],
+            [
+              -73.896,
+              4.534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tunjuelito",
+        "Unidad_Territorial": "Tunjuelito",
+        "tipo": "localidad",
+        "localidad_padre": "Tunjuelito",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Tunjuelito"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.22,
+              4.51
+            ],
+            [
+              -74.1648,
+              4.51
+            ],
+            [
+              -74.1648,
+              4.5652
+            ],
+            [
+              -74.22,
+              4.5652
+            ],
+            [
+              -74.22,
+              4.51
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Venecia",
+        "Unidad_Territorial": "Venecia",
+        "tipo": "barrio",
+        "localidad_padre": "Tunjuelito",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Venecia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.55
+            ],
+            [
+              -74.15599999999999,
+              4.55
+            ],
+            [
+              -74.15599999999999,
+              4.574
+            ],
+            [
+              -74.17999999999999,
+              4.574
+            ],
+            [
+              -74.17999999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tunjuelito Centro",
+        "Unidad_Territorial": "Tunjuelito Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Tunjuelito",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Tunjuelito Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.55
+            ],
+            [
+              -74.112,
+              4.55
+            ],
+            [
+              -74.112,
+              4.574
+            ],
+            [
+              -74.136,
+              4.574
+            ],
+            [
+              -74.136,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "San Vicente Ferrer",
+        "Unidad_Territorial": "San Vicente Ferrer",
+        "tipo": "barrio",
+        "localidad_padre": "Tunjuelito",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "San Vicente Ferrer"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.593999999999999
+            ],
+            [
+              -74.15599999999999,
+              4.593999999999999
+            ],
+            [
+              -74.15599999999999,
+              4.617999999999999
+            ],
+            [
+              -74.17999999999999,
+              4.617999999999999
+            ],
+            [
+              -74.17999999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Bosa",
+        "Unidad_Territorial": "Bosa",
+        "tipo": "localidad",
+        "localidad_padre": "Bosa",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Bosa"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.16,
+              4.51
+            ],
+            [
+              -74.1048,
+              4.51
+            ],
+            [
+              -74.1048,
+              4.5652
+            ],
+            [
+              -74.16,
+              4.5652
+            ],
+            [
+              -74.16,
+              4.51
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Bosa Centro",
+        "Unidad_Territorial": "Bosa Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Bosa",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Bosa Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.55
+            ],
+            [
+              -74.09599999999999,
+              4.55
+            ],
+            [
+              -74.09599999999999,
+              4.574
+            ],
+            [
+              -74.11999999999999,
+              4.574
+            ],
+            [
+              -74.11999999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "El Recreo",
+        "Unidad_Territorial": "El Recreo",
+        "tipo": "barrio",
+        "localidad_padre": "Bosa",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "El Recreo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.55
+            ],
+            [
+              -74.05199999999999,
+              4.55
+            ],
+            [
+              -74.05199999999999,
+              4.574
+            ],
+            [
+              -74.076,
+              4.574
+            ],
+            [
+              -74.076,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Estación",
+        "Unidad_Territorial": "La Estación",
+        "tipo": "barrio",
+        "localidad_padre": "Bosa",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Estación"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.593999999999999
+            ],
+            [
+              -74.09599999999999,
+              4.593999999999999
+            ],
+            [
+              -74.09599999999999,
+              4.617999999999999
+            ],
+            [
+              -74.11999999999999,
+              4.617999999999999
+            ],
+            [
+              -74.11999999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Apogeo",
+        "Unidad_Territorial": "Apogeo",
+        "tipo": "barrio",
+        "localidad_padre": "Bosa",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Apogeo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.593999999999999
+            ],
+            [
+              -74.05199999999999,
+              4.593999999999999
+            ],
+            [
+              -74.05199999999999,
+              4.617999999999999
+            ],
+            [
+              -74.076,
+              4.617999999999999
+            ],
+            [
+              -74.076,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Kennedy",
+        "Unidad_Territorial": "Kennedy",
+        "tipo": "localidad",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Kennedy"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.1,
+              4.51
+            ],
+            [
+              -74.0448,
+              4.51
+            ],
+            [
+              -74.0448,
+              4.5652
+            ],
+            [
+              -74.1,
+              4.5652
+            ],
+            [
+              -74.1,
+              4.51
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Kennedy Central",
+        "Unidad_Territorial": "Kennedy Central",
+        "tipo": "barrio",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Kennedy Central"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.55
+            ],
+            [
+              -74.03599999999999,
+              4.55
+            ],
+            [
+              -74.03599999999999,
+              4.574
+            ],
+            [
+              -74.05999999999999,
+              4.574
+            ],
+            [
+              -74.05999999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Castilla",
+        "Unidad_Territorial": "Castilla",
+        "tipo": "barrio",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Castilla"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.55
+            ],
+            [
+              -73.99199999999999,
+              4.55
+            ],
+            [
+              -73.99199999999999,
+              4.574
+            ],
+            [
+              -74.01599999999999,
+              4.574
+            ],
+            [
+              -74.01599999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Timiza",
+        "Unidad_Territorial": "Timiza",
+        "tipo": "barrio",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Timiza"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.593999999999999
+            ],
+            [
+              -74.03599999999999,
+              4.593999999999999
+            ],
+            [
+              -74.03599999999999,
+              4.617999999999999
+            ],
+            [
+              -74.05999999999999,
+              4.617999999999999
+            ],
+            [
+              -74.05999999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Patio Bonito",
+        "Unidad_Territorial": "Patio Bonito",
+        "tipo": "barrio",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Patio Bonito"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.593999999999999
+            ],
+            [
+              -73.99199999999999,
+              4.593999999999999
+            ],
+            [
+              -73.99199999999999,
+              4.617999999999999
+            ],
+            [
+              -74.01599999999999,
+              4.617999999999999
+            ],
+            [
+              -74.01599999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Carvajal",
+        "Unidad_Territorial": "Carvajal",
+        "tipo": "barrio",
+        "localidad_padre": "Kennedy",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Carvajal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.638
+            ],
+            [
+              -74.03599999999999,
+              4.638
+            ],
+            [
+              -74.03599999999999,
+              4.662
+            ],
+            [
+              -74.05999999999999,
+              4.662
+            ],
+            [
+              -74.05999999999999,
+              4.638
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Fontibón",
+        "Unidad_Territorial": "Fontibón",
+        "tipo": "localidad",
+        "localidad_padre": "Fontibón",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Fontibón"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.03999999999999,
+              4.51
+            ],
+            [
+              -73.98479999999999,
+              4.51
+            ],
+            [
+              -73.98479999999999,
+              4.5652
+            ],
+            [
+              -74.03999999999999,
+              4.5652
+            ],
+            [
+              -74.03999999999999,
+              4.51
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Fontibón Centro",
+        "Unidad_Territorial": "Fontibón Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Fontibón",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Fontibón Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.55
+            ],
+            [
+              -73.97599999999998,
+              4.55
+            ],
+            [
+              -73.97599999999998,
+              4.574
+            ],
+            [
+              -73.99999999999999,
+              4.574
+            ],
+            [
+              -73.99999999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Modelia",
+        "Unidad_Territorial": "Modelia",
+        "tipo": "barrio",
+        "localidad_padre": "Fontibón",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Modelia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.55
+            ],
+            [
+              -73.93199999999999,
+              4.55
+            ],
+            [
+              -73.93199999999999,
+              4.574
+            ],
+            [
+              -73.95599999999999,
+              4.574
+            ],
+            [
+              -73.95599999999999,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Zona Franca",
+        "Unidad_Territorial": "Zona Franca",
+        "tipo": "barrio",
+        "localidad_padre": "Fontibón",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Zona Franca"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.593999999999999
+            ],
+            [
+              -73.97599999999998,
+              4.593999999999999
+            ],
+            [
+              -73.97599999999998,
+              4.617999999999999
+            ],
+            [
+              -73.99999999999999,
+              4.617999999999999
+            ],
+            [
+              -73.99999999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Capellanía",
+        "Unidad_Territorial": "Capellanía",
+        "tipo": "barrio",
+        "localidad_padre": "Fontibón",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Capellanía"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.593999999999999
+            ],
+            [
+              -73.93199999999999,
+              4.593999999999999
+            ],
+            [
+              -73.93199999999999,
+              4.617999999999999
+            ],
+            [
+              -73.95599999999999,
+              4.617999999999999
+            ],
+            [
+              -73.95599999999999,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Engativá",
+        "Unidad_Territorial": "Engativá",
+        "tipo": "localidad",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Engativá"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.98,
+              4.51
+            ],
+            [
+              -73.9248,
+              4.51
+            ],
+            [
+              -73.9248,
+              4.5652
+            ],
+            [
+              -73.98,
+              4.5652
+            ],
+            [
+              -73.98,
+              4.51
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Engativá Centro",
+        "Unidad_Territorial": "Engativá Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Engativá Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.55
+            ],
+            [
+              -73.916,
+              4.55
+            ],
+            [
+              -73.916,
+              4.574
+            ],
+            [
+              -73.94,
+              4.574
+            ],
+            [
+              -73.94,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Bonanza",
+        "Unidad_Territorial": "Bonanza",
+        "tipo": "barrio",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Bonanza"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.55
+            ],
+            [
+              -73.872,
+              4.55
+            ],
+            [
+              -73.872,
+              4.574
+            ],
+            [
+              -73.896,
+              4.574
+            ],
+            [
+              -73.896,
+              4.55
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Las Ferias",
+        "Unidad_Territorial": "Las Ferias",
+        "tipo": "barrio",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Las Ferias"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.593999999999999
+            ],
+            [
+              -73.916,
+              4.593999999999999
+            ],
+            [
+              -73.916,
+              4.617999999999999
+            ],
+            [
+              -73.94,
+              4.617999999999999
+            ],
+            [
+              -73.94,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Normandía",
+        "Unidad_Territorial": "Normandía",
+        "tipo": "barrio",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Normandía"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.593999999999999
+            ],
+            [
+              -73.872,
+              4.593999999999999
+            ],
+            [
+              -73.872,
+              4.617999999999999
+            ],
+            [
+              -73.896,
+              4.617999999999999
+            ],
+            [
+              -73.896,
+              4.593999999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "El Minuto de Dios",
+        "Unidad_Territorial": "El Minuto de Dios",
+        "tipo": "barrio",
+        "localidad_padre": "Engativá",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "El Minuto de Dios"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.638
+            ],
+            [
+              -73.916,
+              4.638
+            ],
+            [
+              -73.916,
+              4.662
+            ],
+            [
+              -73.94,
+              4.662
+            ],
+            [
+              -73.94,
+              4.638
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Suba",
+        "Unidad_Territorial": "Suba",
+        "tipo": "localidad",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Suba"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.22,
+              4.57
+            ],
+            [
+              -74.1648,
+              4.57
+            ],
+            [
+              -74.1648,
+              4.6252
+            ],
+            [
+              -74.22,
+              4.6252
+            ],
+            [
+              -74.22,
+              4.57
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Suba Centro",
+        "Unidad_Territorial": "Suba Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Suba Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.61
+            ],
+            [
+              -74.15599999999999,
+              4.61
+            ],
+            [
+              -74.15599999999999,
+              4.634
+            ],
+            [
+              -74.17999999999999,
+              4.634
+            ],
+            [
+              -74.17999999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Niza",
+        "Unidad_Territorial": "Niza",
+        "tipo": "barrio",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Niza"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.61
+            ],
+            [
+              -74.112,
+              4.61
+            ],
+            [
+              -74.112,
+              4.634
+            ],
+            [
+              -74.136,
+              4.634
+            ],
+            [
+              -74.136,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Britalia",
+        "Unidad_Territorial": "Britalia",
+        "tipo": "barrio",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Britalia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.654
+            ],
+            [
+              -74.15599999999999,
+              4.654
+            ],
+            [
+              -74.15599999999999,
+              4.678
+            ],
+            [
+              -74.17999999999999,
+              4.678
+            ],
+            [
+              -74.17999999999999,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Gaitana",
+        "Unidad_Territorial": "La Gaitana",
+        "tipo": "barrio",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Gaitana"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.654
+            ],
+            [
+              -74.112,
+              4.654
+            ],
+            [
+              -74.112,
+              4.678
+            ],
+            [
+              -74.136,
+              4.678
+            ],
+            [
+              -74.136,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tibabuyes",
+        "Unidad_Territorial": "Tibabuyes",
+        "tipo": "barrio",
+        "localidad_padre": "Suba",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Tibabuyes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.698
+            ],
+            [
+              -74.15599999999999,
+              4.698
+            ],
+            [
+              -74.15599999999999,
+              4.722
+            ],
+            [
+              -74.17999999999999,
+              4.722
+            ],
+            [
+              -74.17999999999999,
+              4.698
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Barrios Unidos",
+        "Unidad_Territorial": "Barrios Unidos",
+        "tipo": "localidad",
+        "localidad_padre": "Barrios Unidos",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Barrios Unidos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.16,
+              4.57
+            ],
+            [
+              -74.1048,
+              4.57
+            ],
+            [
+              -74.1048,
+              4.6252
+            ],
+            [
+              -74.16,
+              4.6252
+            ],
+            [
+              -74.16,
+              4.57
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Doce de Octubre",
+        "Unidad_Territorial": "Doce de Octubre",
+        "tipo": "barrio",
+        "localidad_padre": "Barrios Unidos",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Doce de Octubre"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.61
+            ],
+            [
+              -74.09599999999999,
+              4.61
+            ],
+            [
+              -74.09599999999999,
+              4.634
+            ],
+            [
+              -74.11999999999999,
+              4.634
+            ],
+            [
+              -74.11999999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Los Andes",
+        "Unidad_Territorial": "Los Andes",
+        "tipo": "barrio",
+        "localidad_padre": "Barrios Unidos",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Los Andes"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.61
+            ],
+            [
+              -74.05199999999999,
+              4.61
+            ],
+            [
+              -74.05199999999999,
+              4.634
+            ],
+            [
+              -74.076,
+              4.634
+            ],
+            [
+              -74.076,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Entrerríos",
+        "Unidad_Territorial": "Entrerríos",
+        "tipo": "barrio",
+        "localidad_padre": "Barrios Unidos",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Entrerríos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.654
+            ],
+            [
+              -74.09599999999999,
+              4.654
+            ],
+            [
+              -74.09599999999999,
+              4.678
+            ],
+            [
+              -74.11999999999999,
+              4.678
+            ],
+            [
+              -74.11999999999999,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Castellana",
+        "Unidad_Territorial": "La Castellana",
+        "tipo": "barrio",
+        "localidad_padre": "Barrios Unidos",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Castellana"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.654
+            ],
+            [
+              -74.05199999999999,
+              4.654
+            ],
+            [
+              -74.05199999999999,
+              4.678
+            ],
+            [
+              -74.076,
+              4.678
+            ],
+            [
+              -74.076,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Teusaquillo",
+        "Unidad_Territorial": "Teusaquillo",
+        "tipo": "localidad",
+        "localidad_padre": "Teusaquillo",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Teusaquillo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.1,
+              4.57
+            ],
+            [
+              -74.0448,
+              4.57
+            ],
+            [
+              -74.0448,
+              4.6252
+            ],
+            [
+              -74.1,
+              4.6252
+            ],
+            [
+              -74.1,
+              4.57
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Teusaquillo Centro",
+        "Unidad_Territorial": "Teusaquillo Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Teusaquillo",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Teusaquillo Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.61
+            ],
+            [
+              -74.03599999999999,
+              4.61
+            ],
+            [
+              -74.03599999999999,
+              4.634
+            ],
+            [
+              -74.05999999999999,
+              4.634
+            ],
+            [
+              -74.05999999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Galarias",
+        "Unidad_Territorial": "Galarias",
+        "tipo": "barrio",
+        "localidad_padre": "Teusaquillo",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Galarias"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.61
+            ],
+            [
+              -73.99199999999999,
+              4.61
+            ],
+            [
+              -73.99199999999999,
+              4.634
+            ],
+            [
+              -74.01599999999999,
+              4.634
+            ],
+            [
+              -74.01599999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Soledad",
+        "Unidad_Territorial": "La Soledad",
+        "tipo": "barrio",
+        "localidad_padre": "Teusaquillo",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Soledad"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.654
+            ],
+            [
+              -74.03599999999999,
+              4.654
+            ],
+            [
+              -74.03599999999999,
+              4.678
+            ],
+            [
+              -74.05999999999999,
+              4.678
+            ],
+            [
+              -74.05999999999999,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Palermo",
+        "Unidad_Territorial": "Palermo",
+        "tipo": "barrio",
+        "localidad_padre": "Teusaquillo",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Palermo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.654
+            ],
+            [
+              -73.99199999999999,
+              4.654
+            ],
+            [
+              -73.99199999999999,
+              4.678
+            ],
+            [
+              -74.01599999999999,
+              4.678
+            ],
+            [
+              -74.01599999999999,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Los Mártires",
+        "Unidad_Territorial": "Los Mártires",
+        "tipo": "localidad",
+        "localidad_padre": "Los Mártires",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Los Mártires"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.03999999999999,
+              4.57
+            ],
+            [
+              -73.98479999999999,
+              4.57
+            ],
+            [
+              -73.98479999999999,
+              4.6252
+            ],
+            [
+              -74.03999999999999,
+              4.6252
+            ],
+            [
+              -74.03999999999999,
+              4.57
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Santa Isabel",
+        "Unidad_Territorial": "Santa Isabel",
+        "tipo": "barrio",
+        "localidad_padre": "Los Mártires",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Santa Isabel"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.61
+            ],
+            [
+              -73.97599999999998,
+              4.61
+            ],
+            [
+              -73.97599999999998,
+              4.634
+            ],
+            [
+              -73.99999999999999,
+              4.634
+            ],
+            [
+              -73.99999999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Sabana",
+        "Unidad_Territorial": "La Sabana",
+        "tipo": "barrio",
+        "localidad_padre": "Los Mártires",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Sabana"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.61
+            ],
+            [
+              -73.93199999999999,
+              4.61
+            ],
+            [
+              -73.93199999999999,
+              4.634
+            ],
+            [
+              -73.95599999999999,
+              4.634
+            ],
+            [
+              -73.95599999999999,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Eduardo Santos",
+        "Unidad_Territorial": "Eduardo Santos",
+        "tipo": "barrio",
+        "localidad_padre": "Los Mártires",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Eduardo Santos"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.654
+            ],
+            [
+              -73.97599999999998,
+              4.654
+            ],
+            [
+              -73.97599999999998,
+              4.678
+            ],
+            [
+              -73.99999999999999,
+              4.678
+            ],
+            [
+              -73.99999999999999,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Antonio Nariño",
+        "Unidad_Territorial": "Antonio Nariño",
+        "tipo": "localidad",
+        "localidad_padre": "Antonio Nariño",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Antonio Nariño"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.98,
+              4.57
+            ],
+            [
+              -73.9248,
+              4.57
+            ],
+            [
+              -73.9248,
+              4.6252
+            ],
+            [
+              -73.98,
+              4.6252
+            ],
+            [
+              -73.98,
+              4.57
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Restrepo",
+        "Unidad_Territorial": "Restrepo",
+        "tipo": "barrio",
+        "localidad_padre": "Antonio Nariño",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Restrepo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.61
+            ],
+            [
+              -73.916,
+              4.61
+            ],
+            [
+              -73.916,
+              4.634
+            ],
+            [
+              -73.94,
+              4.634
+            ],
+            [
+              -73.94,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Ciudad Jardín",
+        "Unidad_Territorial": "Ciudad Jardín",
+        "tipo": "barrio",
+        "localidad_padre": "Antonio Nariño",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Ciudad Jardín"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.61
+            ],
+            [
+              -73.872,
+              4.61
+            ],
+            [
+              -73.872,
+              4.634
+            ],
+            [
+              -73.896,
+              4.634
+            ],
+            [
+              -73.896,
+              4.61
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Villa Mayor",
+        "Unidad_Territorial": "Villa Mayor",
+        "tipo": "barrio",
+        "localidad_padre": "Antonio Nariño",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Villa Mayor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.654
+            ],
+            [
+              -73.916,
+              4.654
+            ],
+            [
+              -73.916,
+              4.678
+            ],
+            [
+              -73.94,
+              4.678
+            ],
+            [
+              -73.94,
+              4.654
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Puente Aranda",
+        "Unidad_Territorial": "Puente Aranda",
+        "tipo": "localidad",
+        "localidad_padre": "Puente Aranda",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Puente Aranda"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.22,
+              4.63
+            ],
+            [
+              -74.1648,
+              4.63
+            ],
+            [
+              -74.1648,
+              4.6852
+            ],
+            [
+              -74.22,
+              4.6852
+            ],
+            [
+              -74.22,
+              4.63
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Puente Aranda Centro",
+        "Unidad_Territorial": "Puente Aranda Centro",
+        "tipo": "barrio",
+        "localidad_padre": "Puente Aranda",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Puente Aranda Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.67
+            ],
+            [
+              -74.15599999999999,
+              4.67
+            ],
+            [
+              -74.15599999999999,
+              4.694
+            ],
+            [
+              -74.17999999999999,
+              4.694
+            ],
+            [
+              -74.17999999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mundo Aventura",
+        "Unidad_Territorial": "Mundo Aventura",
+        "tipo": "barrio",
+        "localidad_padre": "Puente Aranda",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Mundo Aventura"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.67
+            ],
+            [
+              -74.112,
+              4.67
+            ],
+            [
+              -74.112,
+              4.694
+            ],
+            [
+              -74.136,
+              4.694
+            ],
+            [
+              -74.136,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Trinidad",
+        "Unidad_Territorial": "La Trinidad",
+        "tipo": "barrio",
+        "localidad_padre": "Puente Aranda",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Trinidad"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.17999999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.15599999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.15599999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.17999999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.17999999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Santa Rita",
+        "Unidad_Territorial": "Santa Rita",
+        "tipo": "barrio",
+        "localidad_padre": "Puente Aranda",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Santa Rita"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.136,
+              4.7139999999999995
+            ],
+            [
+              -74.112,
+              4.7139999999999995
+            ],
+            [
+              -74.112,
+              4.7379999999999995
+            ],
+            [
+              -74.136,
+              4.7379999999999995
+            ],
+            [
+              -74.136,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Candelaria",
+        "Unidad_Territorial": "La Candelaria",
+        "tipo": "localidad",
+        "localidad_padre": "La Candelaria",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Candelaria"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.16,
+              4.63
+            ],
+            [
+              -74.1048,
+              4.63
+            ],
+            [
+              -74.1048,
+              4.6852
+            ],
+            [
+              -74.16,
+              4.6852
+            ],
+            [
+              -74.16,
+              4.63
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Catedral",
+        "Unidad_Territorial": "La Catedral",
+        "tipo": "barrio",
+        "localidad_padre": "La Candelaria",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "La Catedral"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.67
+            ],
+            [
+              -74.09599999999999,
+              4.67
+            ],
+            [
+              -74.09599999999999,
+              4.694
+            ],
+            [
+              -74.11999999999999,
+              4.694
+            ],
+            [
+              -74.11999999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Centro Histórico",
+        "Unidad_Territorial": "Centro Histórico",
+        "tipo": "barrio",
+        "localidad_padre": "La Candelaria",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Centro Histórico"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.076,
+              4.67
+            ],
+            [
+              -74.05199999999999,
+              4.67
+            ],
+            [
+              -74.05199999999999,
+              4.694
+            ],
+            [
+              -74.076,
+              4.694
+            ],
+            [
+              -74.076,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Egipto Alto",
+        "Unidad_Territorial": "Egipto Alto",
+        "tipo": "barrio",
+        "localidad_padre": "La Candelaria",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Egipto Alto"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.11999999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.09599999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.09599999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.11999999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.11999999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Rafael Uribe Uribe",
+        "Unidad_Territorial": "Rafael Uribe Uribe",
+        "tipo": "localidad",
+        "localidad_padre": "Rafael Uribe Uribe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Rafael Uribe Uribe"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.1,
+              4.63
+            ],
+            [
+              -74.0448,
+              4.63
+            ],
+            [
+              -74.0448,
+              4.6852
+            ],
+            [
+              -74.1,
+              4.6852
+            ],
+            [
+              -74.1,
+              4.63
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Quiroga",
+        "Unidad_Territorial": "Quiroga",
+        "tipo": "barrio",
+        "localidad_padre": "Rafael Uribe Uribe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Quiroga"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.67
+            ],
+            [
+              -74.03599999999999,
+              4.67
+            ],
+            [
+              -74.03599999999999,
+              4.694
+            ],
+            [
+              -74.05999999999999,
+              4.694
+            ],
+            [
+              -74.05999999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Diana Turbay",
+        "Unidad_Territorial": "Diana Turbay",
+        "tipo": "barrio",
+        "localidad_padre": "Rafael Uribe Uribe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Diana Turbay"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.67
+            ],
+            [
+              -73.99199999999999,
+              4.67
+            ],
+            [
+              -73.99199999999999,
+              4.694
+            ],
+            [
+              -74.01599999999999,
+              4.694
+            ],
+            [
+              -74.01599999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Marco Fidel Suárez",
+        "Unidad_Territorial": "Marco Fidel Suárez",
+        "tipo": "barrio",
+        "localidad_padre": "Rafael Uribe Uribe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Marco Fidel Suárez"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.05999999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.03599999999999,
+              4.7139999999999995
+            ],
+            [
+              -74.03599999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.05999999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.05999999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Inglés",
+        "Unidad_Territorial": "Inglés",
+        "tipo": "barrio",
+        "localidad_padre": "Rafael Uribe Uribe",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Inglés"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.01599999999999,
+              4.7139999999999995
+            ],
+            [
+              -73.99199999999999,
+              4.7139999999999995
+            ],
+            [
+              -73.99199999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.01599999999999,
+              4.7379999999999995
+            ],
+            [
+              -74.01599999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Ciudad Bolívar",
+        "Unidad_Territorial": "Ciudad Bolívar",
+        "tipo": "localidad",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Ciudad Bolívar"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -74.03999999999999,
+              4.63
+            ],
+            [
+              -73.98479999999999,
+              4.63
+            ],
+            [
+              -73.98479999999999,
+              4.6852
+            ],
+            [
+              -74.03999999999999,
+              4.6852
+            ],
+            [
+              -74.03999999999999,
+              4.63
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Lucero",
+        "Unidad_Territorial": "Lucero",
+        "tipo": "barrio",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Lucero"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.67
+            ],
+            [
+              -73.97599999999998,
+              4.67
+            ],
+            [
+              -73.97599999999998,
+              4.694
+            ],
+            [
+              -73.99999999999999,
+              4.694
+            ],
+            [
+              -73.99999999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Meissen",
+        "Unidad_Territorial": "Meissen",
+        "tipo": "barrio",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Meissen"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.67
+            ],
+            [
+              -73.93199999999999,
+              4.67
+            ],
+            [
+              -73.93199999999999,
+              4.694
+            ],
+            [
+              -73.95599999999999,
+              4.694
+            ],
+            [
+              -73.95599999999999,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Ismael Perdomo",
+        "Unidad_Territorial": "Ismael Perdomo",
+        "tipo": "barrio",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Ismael Perdomo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.7139999999999995
+            ],
+            [
+              -73.97599999999998,
+              4.7139999999999995
+            ],
+            [
+              -73.97599999999998,
+              4.7379999999999995
+            ],
+            [
+              -73.99999999999999,
+              4.7379999999999995
+            ],
+            [
+              -73.99999999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Arborizadora Alta",
+        "Unidad_Territorial": "Arborizadora Alta",
+        "tipo": "barrio",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Arborizadora Alta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.95599999999999,
+              4.7139999999999995
+            ],
+            [
+              -73.93199999999999,
+              4.7139999999999995
+            ],
+            [
+              -73.93199999999999,
+              4.7379999999999995
+            ],
+            [
+              -73.95599999999999,
+              4.7379999999999995
+            ],
+            [
+              -73.95599999999999,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Quiba",
+        "Unidad_Territorial": "Quiba",
+        "tipo": "barrio",
+        "localidad_padre": "Ciudad Bolívar",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Quiba"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.99999999999999,
+              4.758
+            ],
+            [
+              -73.97599999999998,
+              4.758
+            ],
+            [
+              -73.97599999999998,
+              4.782
+            ],
+            [
+              -73.99999999999999,
+              4.782
+            ],
+            [
+              -73.99999999999999,
+              4.758
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Sumapaz",
+        "Unidad_Territorial": "Sumapaz",
+        "tipo": "localidad",
+        "localidad_padre": "Sumapaz",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Sumapaz"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.98,
+              4.63
+            ],
+            [
+              -73.9248,
+              4.63
+            ],
+            [
+              -73.9248,
+              4.6852
+            ],
+            [
+              -73.98,
+              4.6852
+            ],
+            [
+              -73.98,
+              4.63
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Nazareth",
+        "Unidad_Territorial": "Nazareth",
+        "tipo": "barrio",
+        "localidad_padre": "Sumapaz",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Nazareth"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.67
+            ],
+            [
+              -73.916,
+              4.67
+            ],
+            [
+              -73.916,
+              4.694
+            ],
+            [
+              -73.94,
+              4.694
+            ],
+            [
+              -73.94,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "San Juan",
+        "Unidad_Territorial": "San Juan",
+        "tipo": "barrio",
+        "localidad_padre": "Sumapaz",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "San Juan"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.896,
+              4.67
+            ],
+            [
+              -73.872,
+              4.67
+            ],
+            [
+              -73.872,
+              4.694
+            ],
+            [
+              -73.896,
+              4.694
+            ],
+            [
+              -73.896,
+              4.67
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Betania",
+        "Unidad_Territorial": "Betania",
+        "tipo": "barrio",
+        "localidad_padre": "Sumapaz",
+        "nota": "geometría sintética — no es cartografía oficial",
+        "Localidad": "Betania"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.94,
+              4.7139999999999995
+            ],
+            [
+              -73.916,
+              4.7139999999999995
+            ],
+            [
+              -73.916,
+              4.7379999999999995
+            ],
+            [
+              -73.94,
+              4.7379999999999995
+            ],
+            [
+              -73.94,
+              4.7139999999999995
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

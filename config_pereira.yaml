@@ -1,0 +1,59 @@
+# config_pereira.yaml — perfil de portabilidad
+# Datos de portabilidad / escalabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Pereira"
+  departamento: "Risaralda"
+  codigo_dane: "66001"
+  unidad_territorial: "comuna"
+  crs: "EPSG:4326"
+  centro:
+    lat: 4.8143
+    lon: -75.6946
+
+rutas:
+  datos_climaticos: "Datos_Pereira_Beta"
+  datos_sociales: "Datos_Pereira_Beta"
+  procesados: "Datos_Pereira_Beta/processed"
+  modelos: "Datos_Pereira_Beta/models"
+  logs: "Datos_Pereira_Beta/logs"
+  geo: "Datos_Pereira_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Universidad", lat: 4.801703, lon: -75.689536}
+  - {id: 2, nombre: "Olímpica", lat: 4.806148, lon: -75.753116}
+  - {id: 3, nombre: "San Joaquín", lat: 4.793192, lon: -75.738300}
+  - {id: 4, nombre: "Cuba", lat: 4.805293, lon: -75.740006}
+  - {id: 5, nombre: "Del Café", lat: 4.821566, lon: -75.727534}
+  - {id: 6, nombre: "El Jardín", lat: 4.808367, lon: -75.714199}
+  - {id: 7, nombre: "Boston", lat: 4.797891, lon: -75.697348}
+  - {id: 8, nombre: "Consotá", lat: 4.800375, lon: -75.719513}
+  - {id: 9, nombre: "El Oso", lat: 4.790814, lon: -75.721696}
+  - {id: 10, nombre: "Perla del Otún", lat: 4.796761, lon: -75.731058}
+  - {id: 11, nombre: "El Poblado", lat: 4.797414, lon: -75.708597}
+  - {id: 12, nombre: "El Rocío", lat: 4.791187, lon: -75.705162}
+  - {id: 13, nombre: "Ferrocarril", lat: 4.814348, lon: -75.743478}
+  - {id: 14, nombre: "Centro", lat: 4.812523, lon: -75.701746}
+  - {id: 15, nombre: "Río Otún", lat: 4.818809, lon: -75.708844}
+  - {id: 16, nombre: "Oriente", lat: 4.808553, lon: -75.674043}
+  - {id: 17, nombre: "Villa Santana", lat: 4.797808, lon: -75.669377}
+  - {id: 18, nombre: "San Nicolás", lat: 4.808125, lon: -75.704798}
+  - {id: 19, nombre: "Villavicencio", lat: 4.811295, lon: -75.683354}
+  - {id: 20, nombre: "Sector Aeropuerto", lat: 4.813372, lon: -75.741136}
+  - {id: 21, nombre: "Sector Batallón", lat: 4.810720, lon: -75.725647}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

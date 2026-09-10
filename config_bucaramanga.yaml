@@ -1,0 +1,55 @@
+# config_bucaramanga.yaml — perfil de portabilidad
+# Datos de portabilidad / escalabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Bucaramanga"
+  departamento: "Santander"
+  codigo_dane: "68001"
+  unidad_territorial: "comuna"
+  crs: "EPSG:4326"
+  centro:
+    lat: 7.1193
+    lon: -73.1227
+
+rutas:
+  datos_climaticos: "Datos_Bucaramanga_Beta"
+  datos_sociales: "Datos_Bucaramanga_Beta"
+  procesados: "Datos_Bucaramanga_Beta/processed"
+  modelos: "Datos_Bucaramanga_Beta/models"
+  logs: "Datos_Bucaramanga_Beta/logs"
+  geo: "Datos_Bucaramanga_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Norte", lat: 7.165458, lon: -73.137052}
+  - {id: 2, nombre: "Nororiental", lat: 7.147807, lon: -73.127484}
+  - {id: 3, nombre: "San Francisco", lat: 7.140050, lon: -73.127391}
+  - {id: 4, nombre: "Occidental", lat: 7.119300, lon: -73.122700}
+  - {id: 5, nombre: "García Rovira", lat: 7.103242, lon: -73.147591}
+  - {id: 6, nombre: "La Concordia", lat: 7.106453, lon: -73.119570}
+  - {id: 7, nombre: "La Ciudadela", lat: 7.119300, lon: -73.122700}
+  - {id: 8, nombre: "Suroccidente", lat: 7.093881, lon: -73.126074}
+  - {id: 9, nombre: "La Pedregosa", lat: 7.098575, lon: -73.109134}
+  - {id: 10, nombre: "Provenza", lat: 7.080017, lon: -73.116187}
+  - {id: 11, nombre: "Sur", lat: 7.082164, lon: -73.137704}
+  - {id: 12, nombre: "Cabecera del Llano", lat: 7.117591, lon: -73.106506}
+  - {id: 13, nombre: "Oriental", lat: 7.130027, lon: -73.109957}
+  - {id: 14, nombre: "Occidente", lat: 7.119300, lon: -73.122700}
+  - {id: 15, nombre: "Centro", lat: 7.118381, lon: -73.128384}
+  - {id: 16, nombre: "Lagos del Cacique", lat: 7.105596, lon: -73.098114}
+  - {id: 17, nombre: "Mutis", lat: 7.091926, lon: -73.137840}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

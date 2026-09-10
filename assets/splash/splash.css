@@ -1,0 +1,225 @@
+/* Tokens SMIC — espejo del :root inyectado en 03_dashboard_visualizacion.py.
+   El iframe del componente solo sirve archivos de assets/splash/. */
+:root {
+  color-scheme: light;
+  --smic-emerald: #047857;
+  --smic-teal: #0F766E;
+  --smic-canvas: #F5F5F4;
+  --smic-sidebar: #E5E7EB;
+  --smic-paper: #ffffff;
+  --smic-charcoal: #1F2937;
+  --smic-ink: #111827;
+  --smic-stone: #57534E;
+  --smic-border: #E5E7EB;
+  --smic-font: "Segoe UI", "San Francisco", Roboto, Helvetica, Arial, sans-serif;
+  --smic-fs-lede: 1.05rem;
+  --smic-fs-body: 0.95rem;
+  --smic-fs-label: 0.92rem;
+  --smic-fs-caption: 0.78rem;
+  --smic-lh: 1.5;
+  --smic-space-2: 0.5rem;
+  --smic-space-3: 0.75rem;
+  --smic-space-4: 1rem;
+  --smic-space-5: 1.25rem;
+  --smic-radius: 12px;
+  --smic-focus-ring: 2px solid var(--smic-emerald);
+  --smic-focus-offset: 2px;
+  --smic-motion: 0.15s ease;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--smic-canvas);
+  color: var(--smic-charcoal);
+  font-family: var(--smic-font);
+  color-scheme: light;
+}
+
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 42%,
+      rgba(245, 245, 244, 0.55) 0%,
+      rgba(245, 245, 244, 0.92) 62%,
+      var(--smic-canvas) 100%
+    );
+  pointer-events: none;
+}
+
+.stage {
+  position: relative;
+  z-index: 2;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 5.5rem;
+  box-sizing: border-box;
+}
+
+.logo {
+  width: min(42vw, 280px);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.35rem;
+}
+
+.lede {
+  max-width: 36rem;
+  margin: 0 auto;
+  font-size: var(--smic-fs-lede);
+  font-weight: 400;
+  line-height: var(--smic-lh);
+  color: var(--smic-charcoal);
+}
+
+.byline {
+  margin: 1.15rem 0 0;
+  font-size: var(--smic-fs-label);
+  font-weight: 700;
+  color: var(--smic-ink);
+}
+
+.affiliation {
+  margin: 0.2rem 0 0;
+  font-size: var(--smic-fs-caption);
+  color: var(--smic-stone);
+  line-height: 1.45;
+}
+
+.progress-block {
+  width: min(22rem, 86vw);
+  margin: 1.75rem auto 0;
+}
+
+.progress-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--smic-border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--smic-emerald), var(--smic-teal));
+  transition: width 80ms linear;
+}
+
+.progress-label {
+  margin: var(--smic-space-2) 0 0;
+  font-size: var(--smic-fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--smic-emerald);
+}
+
+.hint {
+  margin: 0.85rem 0 0;
+  min-height: 1.2em;
+  font-size: var(--smic-fs-caption);
+  color: var(--smic-stone);
+}
+
+.controls {
+  position: fixed;
+  z-index: 3;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: var(--smic-space-2);
+}
+
+.mute-btn {
+  appearance: none;
+  border: 1px solid var(--smic-border);
+  background: var(--smic-paper);
+  color: var(--smic-charcoal);
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--smic-font);
+  font-size: var(--smic-fs-caption);
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 2.75rem;
+  transition: border-color var(--smic-motion), color var(--smic-motion);
+}
+
+.mute-btn:hover {
+  border-color: var(--smic-emerald);
+  color: var(--smic-emerald);
+}
+
+.mute-btn:focus-visible {
+  border-color: var(--smic-emerald);
+  color: var(--smic-emerald);
+  outline: var(--smic-focus-ring);
+  outline-offset: var(--smic-focus-offset);
+}
+
+.mute-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (max-width: 992px) {
+  .logo {
+    width: min(38vw, 220px);
+  }
+  .lede {
+    font-size: 1rem;
+  }
+  .stage {
+    padding: 1.5rem 1.25rem 5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .logo {
+    width: min(56vw, 180px);
+    margin-bottom: 1rem;
+  }
+  .lede {
+    font-size: 0.92rem;
+  }
+  .byline {
+    font-size: 0.88rem;
+  }
+  .progress-block {
+    width: min(22rem, 92vw);
+  }
+  .controls {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill,
+  .mute-btn {
+    transition: none;
+  }
+  #bg {
+    display: none;
+  }
+  .veil {
+    background: var(--smic-canvas);
+  }
+}

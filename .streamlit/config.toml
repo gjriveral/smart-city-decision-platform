@@ -1,0 +1,11 @@
+[theme]
+# Identidad "Resiliencia y Territorio" (SMIC Analytics). Tema claro fijo.
+base = "light"
+primaryColor = "#047857"
+backgroundColor = "#F5F5F4"
+secondaryBackgroundColor = "#E5E7EB"
+textColor = "#1F2937"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="SMIC Analytics">
+  <defs>
+    <linearGradient id="globe" x1="40" y1="110" x2="200" y2="230" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6EE7B7"/>
+      <stop offset="55%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#065F46"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A7F3D0"/>
+      <stop offset="28%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <clipPath id="hemi">
+      <path d="M28 132 A92 92 0 0 0 212 132 L212 230 L28 230 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="240" height="240" fill="#FFFFFF"/>
+  <!-- Globe hemisphere -->
+  <path d="M28 132 A92 92 0 0 0 212 132 L200 132 A80 80 0 0 1 40 132 Z" fill="url(#globe)"/>
+  <g clip-path="url(#hemi)" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity=".85">
+    <ellipse cx="120" cy="132" rx="54" ry="80"/>
+    <ellipse cx="120" cy="132" rx="28" ry="80"/>
+    <path d="M32 132 H208"/>
+    <path d="M40 158 H200"/>
+    <path d="M58 184 H182"/>
+  </g>
+  <!-- Skyline / bars -->
+  <rect x="52" y="104" width="18" height="30" rx="2.2" fill="url(#bar)"/>
+  <rect x="76" y="88" width="18" height="46" rx="2.2" fill="url(#bar)"/>
+  <rect x="100" y="70" width="18" height="64" rx="2.2" fill="url(#bar)"/>
+  <rect x="124" y="50" width="18" height="84" rx="2.2" fill="url(#bar)"/>
+  <rect x="148" y="32" width="18" height="102" rx="2.2" fill="url(#bar)"/>
+  <!-- Growth arrow -->
+  <polyline points="44,108 62,118 86,86 118,96 176,40" fill="none" stroke="#065F46" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="176,40 158,46 174,58" fill="#065F46"/>
+</svg>

@@ -1,0 +1,139 @@
+# config_bogota.yaml — Bogotá beta (localidades + barrios sintéticos)
+# Datos de portabilidad (índices sintéticos; cartografía según fuente).
+ciudad:
+  nombre: "Bogotá"
+  departamento: "Cundinamarca"
+  codigo_dane: "11001"
+  unidad_territorial: "localidad"
+  crs: "EPSG:4326"
+  centro:
+    lat: 4.7110
+    lon: -74.0721
+
+rutas:
+  datos_climaticos: "Datos_Bogotá_Beta"
+  datos_sociales: "Datos_Bogotá_Beta"
+  procesados: "Datos_Bogotá_Beta/processed"
+  modelos: "Datos_Bogotá_Beta/models"
+  logs: "Datos_Bogotá_Beta/logs"
+  geo: "Datos_Bogotá_Beta/geo"
+
+territorios:
+  - {id: 1, nombre: "Usaquén", lat: 4.477600, lon: -74.192400}
+  - {id: 2, nombre: "Usaquén Centro", lat: 4.502000, lon: -74.168000}
+  - {id: 3, nombre: "Cedritos", lat: 4.502000, lon: -74.124000}
+  - {id: 4, nombre: "Santa Bárbara", lat: 4.546000, lon: -74.168000}
+  - {id: 5, nombre: "Toberín", lat: 4.546000, lon: -74.124000}
+  - {id: 6, nombre: "Verbenal", lat: 4.590000, lon: -74.168000}
+  - {id: 7, nombre: "Chapinero", lat: 4.477600, lon: -74.132400}
+  - {id: 8, nombre: "Chapinero Central", lat: 4.502000, lon: -74.108000}
+  - {id: 9, nombre: "El Chicó", lat: 4.502000, lon: -74.064000}
+  - {id: 10, nombre: "Rosales", lat: 4.546000, lon: -74.108000}
+  - {id: 11, nombre: "La Cabrera", lat: 4.546000, lon: -74.064000}
+  - {id: 12, nombre: "Pardo Rubio", lat: 4.590000, lon: -74.108000}
+  - {id: 13, nombre: "Santa Fe", lat: 4.477600, lon: -74.072400}
+  - {id: 14, nombre: "Las Cruces", lat: 4.502000, lon: -74.048000}
+  - {id: 15, nombre: "La Perseverancia", lat: 4.502000, lon: -74.004000}
+  - {id: 16, nombre: "San Diego", lat: 4.546000, lon: -74.048000}
+  - {id: 17, nombre: "Egipto", lat: 4.546000, lon: -74.004000}
+  - {id: 18, nombre: "San Cristóbal", lat: 4.477600, lon: -74.012400}
+  - {id: 19, nombre: "San Blas", lat: 4.502000, lon: -73.988000}
+  - {id: 20, nombre: "La Gloria", lat: 4.502000, lon: -73.944000}
+  - {id: 21, nombre: "Sosiego", lat: 4.546000, lon: -73.988000}
+  - {id: 22, nombre: "Quinta Mentira", lat: 4.546000, lon: -73.944000}
+  - {id: 23, nombre: "Usme", lat: 4.477600, lon: -73.952400}
+  - {id: 24, nombre: "Usme Centro", lat: 4.502000, lon: -73.928000}
+  - {id: 25, nombre: "Alfonso López", lat: 4.502000, lon: -73.884000}
+  - {id: 26, nombre: "Yomasa", lat: 4.546000, lon: -73.928000}
+  - {id: 27, nombre: "La Fiscala", lat: 4.546000, lon: -73.884000}
+  - {id: 28, nombre: "Tunjuelito", lat: 4.537600, lon: -74.192400}
+  - {id: 29, nombre: "Venecia", lat: 4.562000, lon: -74.168000}
+  - {id: 30, nombre: "Tunjuelito Centro", lat: 4.562000, lon: -74.124000}
+  - {id: 31, nombre: "San Vicente Ferrer", lat: 4.606000, lon: -74.168000}
+  - {id: 32, nombre: "Bosa", lat: 4.537600, lon: -74.132400}
+  - {id: 33, nombre: "Bosa Centro", lat: 4.562000, lon: -74.108000}
+  - {id: 34, nombre: "El Recreo", lat: 4.562000, lon: -74.064000}
+  - {id: 35, nombre: "La Estación", lat: 4.606000, lon: -74.108000}
+  - {id: 36, nombre: "Apogeo", lat: 4.606000, lon: -74.064000}
+  - {id: 37, nombre: "Kennedy", lat: 4.537600, lon: -74.072400}
+  - {id: 38, nombre: "Kennedy Central", lat: 4.562000, lon: -74.048000}
+  - {id: 39, nombre: "Castilla", lat: 4.562000, lon: -74.004000}
+  - {id: 40, nombre: "Timiza", lat: 4.606000, lon: -74.048000}
+  - {id: 41, nombre: "Patio Bonito", lat: 4.606000, lon: -74.004000}
+  - {id: 42, nombre: "Carvajal", lat: 4.650000, lon: -74.048000}
+  - {id: 43, nombre: "Fontibón", lat: 4.537600, lon: -74.012400}
+  - {id: 44, nombre: "Fontibón Centro", lat: 4.562000, lon: -73.988000}
+  - {id: 45, nombre: "Modelia", lat: 4.562000, lon: -73.944000}
+  - {id: 46, nombre: "Zona Franca", lat: 4.606000, lon: -73.988000}
+  - {id: 47, nombre: "Capellanía", lat: 4.606000, lon: -73.944000}
+  - {id: 48, nombre: "Engativá", lat: 4.537600, lon: -73.952400}
+  - {id: 49, nombre: "Engativá Centro", lat: 4.562000, lon: -73.928000}
+  - {id: 50, nombre: "Bonanza", lat: 4.562000, lon: -73.884000}
+  - {id: 51, nombre: "Las Ferias", lat: 4.606000, lon: -73.928000}
+  - {id: 52, nombre: "Normandía", lat: 4.606000, lon: -73.884000}
+  - {id: 53, nombre: "El Minuto de Dios", lat: 4.650000, lon: -73.928000}
+  - {id: 54, nombre: "Suba", lat: 4.597600, lon: -74.192400}
+  - {id: 55, nombre: "Suba Centro", lat: 4.622000, lon: -74.168000}
+  - {id: 56, nombre: "Niza", lat: 4.622000, lon: -74.124000}
+  - {id: 57, nombre: "Britalia", lat: 4.666000, lon: -74.168000}
+  - {id: 58, nombre: "La Gaitana", lat: 4.666000, lon: -74.124000}
+  - {id: 59, nombre: "Tibabuyes", lat: 4.710000, lon: -74.168000}
+  - {id: 60, nombre: "Barrios Unidos", lat: 4.597600, lon: -74.132400}
+  - {id: 61, nombre: "Doce de Octubre", lat: 4.622000, lon: -74.108000}
+  - {id: 62, nombre: "Los Andes", lat: 4.622000, lon: -74.064000}
+  - {id: 63, nombre: "Entrerríos", lat: 4.666000, lon: -74.108000}
+  - {id: 64, nombre: "La Castellana", lat: 4.666000, lon: -74.064000}
+  - {id: 65, nombre: "Teusaquillo", lat: 4.597600, lon: -74.072400}
+  - {id: 66, nombre: "Teusaquillo Centro", lat: 4.622000, lon: -74.048000}
+  - {id: 67, nombre: "Galarias", lat: 4.622000, lon: -74.004000}
+  - {id: 68, nombre: "La Soledad", lat: 4.666000, lon: -74.048000}
+  - {id: 69, nombre: "Palermo", lat: 4.666000, lon: -74.004000}
+  - {id: 70, nombre: "Los Mártires", lat: 4.597600, lon: -74.012400}
+  - {id: 71, nombre: "Santa Isabel", lat: 4.622000, lon: -73.988000}
+  - {id: 72, nombre: "La Sabana", lat: 4.622000, lon: -73.944000}
+  - {id: 73, nombre: "Eduardo Santos", lat: 4.666000, lon: -73.988000}
+  - {id: 74, nombre: "Antonio Nariño", lat: 4.597600, lon: -73.952400}
+  - {id: 75, nombre: "Restrepo", lat: 4.622000, lon: -73.928000}
+  - {id: 76, nombre: "Ciudad Jardín", lat: 4.622000, lon: -73.884000}
+  - {id: 77, nombre: "Villa Mayor", lat: 4.666000, lon: -73.928000}
+  - {id: 78, nombre: "Puente Aranda", lat: 4.657600, lon: -74.192400}
+  - {id: 79, nombre: "Puente Aranda Centro", lat: 4.682000, lon: -74.168000}
+  - {id: 80, nombre: "Mundo Aventura", lat: 4.682000, lon: -74.124000}
+  - {id: 81, nombre: "La Trinidad", lat: 4.726000, lon: -74.168000}
+  - {id: 82, nombre: "Santa Rita", lat: 4.726000, lon: -74.124000}
+  - {id: 83, nombre: "La Candelaria", lat: 4.657600, lon: -74.132400}
+  - {id: 84, nombre: "La Catedral", lat: 4.682000, lon: -74.108000}
+  - {id: 85, nombre: "Centro Histórico", lat: 4.682000, lon: -74.064000}
+  - {id: 86, nombre: "Egipto Alto", lat: 4.726000, lon: -74.108000}
+  - {id: 87, nombre: "Rafael Uribe Uribe", lat: 4.657600, lon: -74.072400}
+  - {id: 88, nombre: "Quiroga", lat: 4.682000, lon: -74.048000}
+  - {id: 89, nombre: "Diana Turbay", lat: 4.682000, lon: -74.004000}
+  - {id: 90, nombre: "Marco Fidel Suárez", lat: 4.726000, lon: -74.048000}
+  - {id: 91, nombre: "Inglés", lat: 4.726000, lon: -74.004000}
+  - {id: 92, nombre: "Ciudad Bolívar", lat: 4.657600, lon: -74.012400}
+  - {id: 93, nombre: "Lucero", lat: 4.682000, lon: -73.988000}
+  - {id: 94, nombre: "Meissen", lat: 4.682000, lon: -73.944000}
+  - {id: 95, nombre: "Ismael Perdomo", lat: 4.726000, lon: -73.988000}
+  - {id: 96, nombre: "Arborizadora Alta", lat: 4.726000, lon: -73.944000}
+  - {id: 97, nombre: "Quiba", lat: 4.770000, lon: -73.988000}
+  - {id: 98, nombre: "Sumapaz", lat: 4.657600, lon: -73.952400}
+  - {id: 99, nombre: "Nazareth", lat: 4.682000, lon: -73.928000}
+  - {id: 100, nombre: "San Juan", lat: 4.682000, lon: -73.884000}
+  - {id: 101, nombre: "Betania", lat: 4.726000, lon: -73.928000}
+
+simulacion:
+  horizonte_anios: 10
+  presupuesto_anual: 1000000
+  n_replicas_montecarlo: 1
+  escenarios:
+    - id: focalizado
+      nombre: "Focalizado — Optimización Algorítmica"
+      peso: 0.80
+    - id: distribuido
+      nombre: "Distribuido — Igualitario"
+      peso: 0.0
+    - id: adaptativo
+      nombre: "Adaptativo — Híbrido"
+      peso: 0.0
+
+catalogo_estaciones: {}

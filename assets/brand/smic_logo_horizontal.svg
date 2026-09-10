@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 200" role="img" aria-label="SMIC Analytics">
+  <defs>
+    <linearGradient id="globeH" x1="24" y1="90" x2="176" y2="188" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6EE7B7"/>
+      <stop offset="55%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#065F46"/>
+    </linearGradient>
+    <linearGradient id="barH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A7F3D0"/>
+      <stop offset="28%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <clipPath id="hemiH">
+      <path d="M22 118 A78 78 0 0 0 178 118 L178 196 L22 196 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="760" height="200" fill="#FFFFFF"/>
+  <g transform="translate(8,4)">
+    <path d="M22 118 A78 78 0 0 0 178 118 L168 118 A68 68 0 0 1 32 118 Z" fill="url(#globeH)"/>
+    <g clip-path="url(#hemiH)" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".85">
+      <ellipse cx="100" cy="118" rx="46" ry="68"/>
+      <ellipse cx="100" cy="118" rx="24" ry="68"/>
+      <path d="M26 118 H174"/>
+      <path d="M34 140 H166"/>
+      <path d="M50 162 H150"/>
+    </g>
+    <rect x="42" y="96" width="16" height="26" rx="2" fill="url(#barH)"/>
+    <rect x="62" y="82" width="16" height="40" rx="2" fill="url(#barH)"/>
+    <rect x="82" y="66" width="16" height="56" rx="2" fill="url(#barH)"/>
+    <rect x="102" y="48" width="16" height="74" rx="2" fill="url(#barH)"/>
+    <rect x="122" y="32" width="16" height="90" rx="2" fill="url(#barH)"/>
+    <polyline points="36,100 52,108 74,80 102,90 152,40" fill="none" stroke="#065F46" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polygon points="152,40 136,45 150,56" fill="#065F46"/>
+  </g>
+  <text x="214" y="102" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="800" fill="#111827" letter-spacing="-1.5">SMIC</text>
+  <text x="216" y="148" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="22" font-weight="500" fill="#111827" letter-spacing="11.2">ANALYTICS</text>
+</svg>
