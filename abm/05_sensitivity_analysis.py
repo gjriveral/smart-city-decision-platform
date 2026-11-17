@@ -363,5 +363,134 @@ def main():
     return results
 
 
+def _unpack_sobol_row(values, n_territories: int) -> dict:
+    names = ["beta", "gamma", "delta", "theta", "rho", "n_prioritarios", "noise_sd"]
+    raw = dict(zip(names, values))
+    n_priority = int(np.clip(np.rint(raw["n_prioritarios"]), 1, max(1, n_territories - 1)))
+    return {
+        "beta": float(raw["beta"]),
+        "gamma": float(raw["gamma"]),
+        "delta": float(raw["delta"]),
+        "theta": float(raw["theta"]),
+        "rho": float(raw["rho"]),
+        "n_priority": n_priority,
+        "noise_sd": float(raw["noise_sd"]),
+    }
+
+
+def run_sobol_scenarios(
+    ivc_data: dict,
+    shap_priority: dict,
+    n_sobol: int = 16,
+    seed: int = 42,
+    saturation_active: bool | None = None,
+    ranking_rule: str | None = None,
+    reparto_top: str | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Saltelli sample over structural coefficients, rho, the number of
+    prioritized territories, and the noise standard deviation.
+
+    Evaluated on all three allocation rules. Outputs are mean IVC, the
+    coefficient of variation, and the Gini coefficient at the horizon.
+    """
+    from SALib.analyze import sobol as sobol_analyze
+    from SALib.sample import sobol as sobol_sample
+
+    from abm.dispersion import coefficient_of_variation, gini
+
+    if saturation_active is None:
+        saturation_active = bool(abm.SATURACION_ACTIVA_DEFAULT)
+    if ranking_rule is None:
+        ranking_rule = abm.RANKING_REGLA_DEFAULT
+    if reparto_top is None:
+        reparto_top = abm.REPARTO_TOP_DEFAULT
+
+    problem = {
+        "num_vars": 7,
+        "names": ["beta", "gamma", "delta", "theta", "rho", "n_prioritarios", "noise_sd"],
+        "bounds": [
+            [BASE["beta"] * (1 - PCT), BASE["beta"] * (1 + PCT)],
+            [BASE["gamma"] * (1 - PCT), BASE["gamma"] * (1 + PCT)],
+            [BASE["delta"] * (1 - PCT), BASE["delta"] * (1 + PCT)],
+            [BASE["theta"] * (1 - PCT), BASE["theta"] * (1 + PCT)],
+            [0.50, 0.95],
+            [1.0, 10.0],
+            [0.0, 0.10],
+        ],
+    }
+    sample = sobol_sample.sample(problem, n_sobol, calc_second_order=False)
+    scenarios = ["focalizado", "distribuido", "adaptativo"]
+    outputs = ("mean_ivc", "cv", "gini")
+    store = {
+        sc: {out: np.empty(len(sample)) for out in outputs} for sc in scenarios
+    }
+    detail_rows = []
+    prev = abm.logger.level
+    abm.logger.setLevel(40)
+    try:
+        for i, values in enumerate(sample):
+            params = _unpack_sobol_row(values, len(ivc_data))
+            for scenario in scenarios:
+                model = abm.UrbanModel(
+                    strategy=scenario,
+                    ivc_data=ivc_data,
+                    seed=seed,
+                    rho=params["rho"],
+                    shap_priority=shap_priority,
+                    beta=params["beta"],
+                    gamma=params["gamma"],
+                    delta=params["delta"],
+                    theta=params["theta"],
+                    ranking_rule=ranking_rule,
+                    n_priority=params["n_priority"],
+                    reparto_top=reparto_top,
+                    saturation_active=saturation_active,
+                    noise_sd=params["noise_sd"],
+                )
+                df = model.run_simulation()
+                terminal = df[df["year"] == abm.N_YEARS]["ivc_current"].to_numpy(dtype=float)
+                metrics = {
+                    "mean_ivc": float(np.mean(terminal)),
+                    "cv": float(coefficient_of_variation(terminal)),
+                    "gini": float(gini(terminal)),
+                }
+                for out, value in metrics.items():
+                    store[scenario][out][i] = value
+                detail_rows.append({
+                    "sample": i,
+                    "scenario": scenario,
+                    **params,
+                    **metrics,
+                })
+            if (i + 1) % 50 == 0 or i + 1 == len(sample):
+                print(f"  Sobol sample {i + 1}/{len(sample)}", flush=True)
+    finally:
+        abm.logger.setLevel(prev)
+
+    index_rows = []
+    for scenario in scenarios:
+        for out in outputs:
+            analyzed = sobol_analyze.analyze(
+                problem, store[scenario][out], calc_second_order=False, print_to_console=False
+            )
+            for j, name in enumerate(problem["names"]):
+                index_rows.append({
+                    "scenario": scenario,
+                    "output": out,
+                    "parameter": name,
+                    "S1": float(analyzed["S1"][j]),
+                    "S1_conf": float(analyzed["S1_conf"][j]),
+                    "ST": float(analyzed["ST"][j]),
+                    "ST_conf": float(analyzed["ST_conf"][j]),
+                    "n_sobol": int(n_sobol),
+                    "n_evaluations": int(len(sample)),
+                    "ranking_rule": ranking_rule,
+                    "reparto_top": reparto_top,
+                    "saturation_active": bool(saturation_active),
+                })
+    return pd.DataFrame(index_rows), pd.DataFrame(detail_rows)
+
+
 if __name__ == "__main__":
     main()

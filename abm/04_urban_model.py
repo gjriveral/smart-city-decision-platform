@@ -15,10 +15,13 @@ Urban Agent-Based Model for Strategic Investment (Python puro; sin paquete mesa)
 Three scenarios x N_YEARS simulation years → simulation_results.csv
 
 Integración XGBoost → ABM (acoplamiento predictivo–simulación):
-  El escenario «focalizado» ya NO prioriza solo el IVC histórico. Carga
-  `models/shap_values.csv` (salida de `ml/03_xgboost_model.py`) y asigna
-  presupuesto según el peso de atribución SHAP por unidad territorial:
-  la interpretabilidad del motor predictivo dirige la heurística de inversión.
+  El escenario «focalizado» tiene una regla de ranking explícita
+  (`simulacion.focalizado_ranking.regla`):
+    - dynamic_ivc: cada año reordena por el IVC corriente.
+    - fixed_shap: fija el ranking una sola vez con `models/shap_values.csv`.
+  La saturación η(C) y la desviación del ruido ε_t salen de config.yaml.
+  El escenario «historico» lee un CSV de inversión ejecutada; si el archivo
+  no existe, el escenario se omite (los datos aún no están disponibles).
 
 Configuración de ciudad:
   La lista de unidades territoriales y sus IVC iniciales se cargan
@@ -69,6 +72,12 @@ SCENARIO_META = {e.id: e for e in cfg.simulacion.escenarios}
 RHO_FOCALIZADO_DEFAULT = float(
     cfg.simulacion.peso_escenario("focalizado", default=0.80)
 )
+RANKING_REGLA_DEFAULT = cfg.simulacion.ranking_regla
+N_PRIORITARIOS_DEFAULT = int(cfg.simulacion.n_prioritarios)
+REPARTO_TOP_DEFAULT = cfg.simulacion.reparto_top
+SATURACION_ACTIVA_DEFAULT = bool(cfg.simulacion.saturacion_activa)
+SATURACION_ETA_DEFAULT = float(cfg.simulacion.saturacion_eta_intercepto)
+RUIDO_SD_DEFAULT = float(cfg.simulacion.ruido_sd)
 # Fuente de IVC inicial para el ABM:
 #   "predicho"  → ivc_predicho OOS del XGBoost (models/ivc_predictions_oos.csv)
 #   "historico" → ivc observado de indices_comunas.csv
@@ -326,16 +335,20 @@ class PoblacionAgent:
         # ya absorbe buena parte de las necesidades básicas. La forma lineal
         # acotada es cóncava en el tramo operativo (C↑ ⇒ η↓) y evita
         # sobre-corregir territorios con déficit de infraestructura.
-        cap = self.model.infraestructura_agents[self.territory_id].capacity
-        eff = min(1.0, 1.5 - cap)
-        inv_ratio = inv_ratio * eff
-        # Perturbación estocástica (ε_t ~ N(1, 0.05²), truncada a [0.85, 1.15]).
-        # ANTES: noise solo multiplicaba el delta de wellbeing; la actualización
-        # del IVC era determinista en inv_ratio. Como focalizado/distribuido no
-        # leen wellbeing, sus réplicas Monte Carlo tenían IC95 de ancho cero.
-        # AHORA: el mismo término ε_t escala la tasa de reducción del IVC, de
-        # modo que la vulnerabilidad hereda varianza en CADA escenario.
-        noise     = max(0.85, min(1.15, 1.0 + random.gauss(0, 0.05)))
+        # Saturación η(C). Desactivada si simulacion.saturacion.activa es false
+        # (el texto del artículo la daba por apagada; el código anterior no).
+        if getattr(self.model, "saturation_active", True):
+            cap = self.model.infraestructura_agents[self.territory_id].capacity
+            eta = float(getattr(self.model, "saturation_eta", 1.5))
+            eff = min(1.0, eta - cap)
+            inv_ratio = inv_ratio * eff
+        # Perturbación ε_t ~ N(1, sd²), truncada a [0.85, 1.15].
+        # sd=0 deja la trayectoria del IVC determinista.
+        noise_sd = float(getattr(self.model, "noise_sd", 0.05))
+        if noise_sd <= 0:
+            noise = 1.0
+        else:
+            noise = max(0.85, min(1.15, 1.0 + random.gauss(0, noise_sd)))
         d_wb      = self.beta * inv_ratio * (1.0 - self.wellbeing) * noise
         self.wellbeing = max(0.0, min(1.0, self.wellbeing + d_wb))
         # Transición estocástica del IVC:
@@ -417,64 +430,102 @@ class GobiernoAgent:
 
     def allocate_focalizado(self) -> dict[str, float]:
         """
-        Escenario Focalizado — Optimización Algorítmica (integrado con XGBoost).
+        Escenario focalizado.
 
-        Antes: ordenaba por IVC histórico corriente y repartía rho en partes
-        iguales entre las top-5 unidades más vulnerables.
+        La regla de ranking es explícita (`model.ranking_rule`):
+          - dynamic_ivc: cada año ordena por el IVC corriente. El conjunto
+            prioritario puede cambiar de un año a otro.
+          - fixed_shap: ordena una sola vez por la suma SHAP firmada cargada
+            al inicio. El conjunto prioritario no cambia aunque el IVC sí.
 
-        Ahora (acoplamiento XGBoost→ABM):
-          1. Obtiene el peso SHAP por unidad (suma de |contribuciones SHAP|
-             del modelo predictivo sobre el IVC predicho).
-          2. Ordena las unidades por ese peso (la interpretabilidad del
-             XGBoost define quién es prioritario).
-          3. Destina `rho` del presupuesto a las top-5, repartido de forma
-             PROPORCIONAL al peso SHAP (no en partes iguales): mayor
-             atribución SHAP ⇒ mayor inversión.
-          4. El remanente (1-rho) se reparte por igual entre el resto.
+        `model.n_priority` es el tamaño de ese conjunto (antes fijo en 5).
+        `model.reparto_top` es `igual` (partes iguales) o `proporcional`
+        (al score, con piso 0). El remanente (1−ρ) se reparte por igual
+        fuera del conjunto. Si no hay remanente de territorios, todo el
+        presupuesto queda en el conjunto prioritario.
 
-        Si shap_values.csv no está disponible, cae al ranking por IVC
-        (comportamiento legacy) y lo registra en el log una sola vez.
+        fixed_shap sin archivo SHAP cae a dynamic_ivc y lo registra una vez.
         """
+        rule = getattr(self.model, "ranking_rule", "fixed_shap")
+        if rule not in ("dynamic_ivc", "fixed_shap"):
+            raise ValueError(f"Regla de ranking desconocida: {rule!r}")
+
         shap_scores = self._get_shap_scores()
-        # Hay señal SHAP usable si al menos una unidad tiene score distinto
-        # de cero (la suma firmada puede ser negativa en unidades de baja
-        # vulnerabilidad; eso es informativo, no un fallo de carga).
         using_shap = bool(getattr(self.model, "shap_priority", None)) and any(
             t in (self.model.shap_priority or {}) for t in self.model.territorios
         )
 
-        if using_shap:
+        if rule == "dynamic_ivc":
+            scores = self._get_ivc_scores()
+        elif using_shap:
             scores = shap_scores
         else:
             if not getattr(self, "_warned_no_shap", False):
                 logger.warning(
-                    "Focalizado: sin pesos SHAP válidos — fallback a ranking "
-                    "por IVC histórico (integración XGBoost desactivada)."
+                    "Focalizado/fixed_shap: sin pesos SHAP — se usa el IVC "
+                    "corriente de este año (equivale a dynamic_ivc)."
                 )
                 self._warned_no_shap = True
             scores = self._get_ivc_scores()
 
         sorted_t = sorted(scores, key=scores.get, reverse=True)
-        n_top = min(5, len(sorted_t))
-        top_n = sorted_t[:n_top]
-        rest = sorted_t[n_top:]
+        k = int(getattr(self.model, "n_priority", 5))
+        k = max(1, min(k, len(sorted_t)))
+        top_n = sorted_t[:k]
+        rest = sorted_t[k:]
         pool_top = self.rho * self.budget_total
         pool_rest = (1.0 - self.rho) * self.budget_total
+        if not rest:
+            pool_top = self.budget_total
+            pool_rest = 0.0
 
-        # Dentro del pool focalizado: reparto PROPORCIONAL al peso SHAP.
-        # Solo se usan scores positivos (contribución neta al alza del IVC);
-        # si por redondeo algún top quedara en 0, se asigna epsilon para no
-        # excluirlo del pool concentrado.
-        top_weights = {t: max(float(scores[t]), 0.0) + 1e-9 for t in top_n}
-        weight_sum = sum(top_weights.values())
-
+        reparto = getattr(self.model, "reparto_top", "proporcional")
         allocation: dict[str, float] = {}
+        if reparto == "igual":
+            share = pool_top / len(top_n)
+            top_share = {t: share for t in top_n}
+        elif reparto == "proporcional":
+            top_weights = {t: max(float(scores[t]), 0.0) + 1e-9 for t in top_n}
+            weight_sum = sum(top_weights.values())
+            top_share = {
+                t: pool_top * (top_weights[t] / weight_sum) for t in top_n
+            }
+        else:
+            raise ValueError(f"Reparto desconocido: {reparto!r}")
+
+        rest_share = pool_rest / len(rest) if rest else 0.0
         for t in self.model.territorios:
-            if t in top_n:
-                allocation[t] = pool_top * (top_weights[t] / weight_sum)
-            else:
-                allocation[t] = pool_rest / max(len(rest), 1)
+            allocation[t] = top_share[t] if t in top_share else rest_share
         return allocation
+
+    def allocate_historico(self) -> dict[str, float]:
+        """
+        Asigna la inversión observada en el CSV histórico.
+
+        El año de simulación 1 corresponde a `historical_year_start` cuando
+        el modo es calendario, o al entero 1 cuando el modo es simulacion.
+        Un territorio ausente en ese año recibe 0 y queda registrado.
+        """
+        table = getattr(self.model, "historical_allocation", None) or {}
+        if getattr(self.model, "historical_year_mode", "calendario") == "simulacion":
+            key = int(self._year)
+        else:
+            start = int(getattr(self.model, "historical_year_start", 2013))
+            key = start + int(self._year) - 1
+        row = table.get(int(key), {})
+        missing = [t for t in self.model.territorios if t not in row]
+        if missing and not getattr(self, "_warned_hist_years", None):
+            self._warned_hist_years = set()
+        if missing:
+            warned = getattr(self, "_warned_hist_years", set())
+            if key not in warned:
+                logger.warning(
+                    f"Inversión histórica {key}: sin cifra para {len(missing)} "
+                    f"territorios (se asigna 0). Ejemplo: {missing[:3]}"
+                )
+                warned.add(key)
+                self._warned_hist_years = warned
+        return {t: float(row.get(t, 0.0)) for t in self.model.territorios}
 
     def allocate_distribuido(self) -> dict[str, float]:
         """Equal allocation to all territorial units."""
@@ -519,8 +570,10 @@ class GobiernoAgent:
             allocation = self.allocate_distribuido()
         elif self.strategy == "adaptativo":
             allocation = self.allocate_adaptativo()
+        elif self.strategy == "historico":
+            allocation = self.allocate_historico()
         else:
-            allocation = self.allocate_distribuido()
+            raise ValueError(f"Escenario desconocido: {self.strategy!r}")
 
         for t in self.model.territorios:
             self.model.poblacion_agents[t].receive_investment(allocation[t])
@@ -555,6 +608,15 @@ class UrbanModel:
         gamma: float = 0.05,
         delta: float = 0.03,
         theta: float = 0.10,
+        ranking_rule: str | None = None,
+        n_priority: int | None = None,
+        reparto_top: str | None = None,
+        saturation_active: bool | None = None,
+        saturation_eta: float | None = None,
+        noise_sd: float | None = None,
+        historical_allocation: dict | None = None,
+        historical_year_mode: str | None = None,
+        historical_year_start: int | None = None,
     ):
         random.seed(seed)
         np.random.seed(seed)
@@ -568,6 +630,26 @@ class UrbanModel:
         self.gamma = gamma   # γ_u — reducción de IVC
         self.delta = delta   # δ_u — depreciación de infraestructura
         self.theta = theta   # θ_u — recuperación de infraestructura
+        self.ranking_rule = ranking_rule or RANKING_REGLA_DEFAULT
+        self.n_priority = int(N_PRIORITARIOS_DEFAULT if n_priority is None else n_priority)
+        self.reparto_top = reparto_top or REPARTO_TOP_DEFAULT
+        self.saturation_active = (
+            SATURACION_ACTIVA_DEFAULT if saturation_active is None else bool(saturation_active)
+        )
+        self.saturation_eta = float(
+            SATURACION_ETA_DEFAULT if saturation_eta is None else saturation_eta
+        )
+        self.noise_sd = float(RUIDO_SD_DEFAULT if noise_sd is None else noise_sd)
+        self.historical_allocation = {
+            int(y): {str(t): float(v) for t, v in row.items()}
+            for y, row in (historical_allocation or {}).items()
+        }
+        self.historical_year_mode = historical_year_mode or cfg.simulacion.inversion_historica_tipo_anio
+        self.historical_year_start = int(
+            cfg.simulacion.inversion_historica_anio_inicio
+            if historical_year_start is None
+            else historical_year_start
+        )
 
         # Territory list and count — 100% data-driven, never hardcoded
         self.territorios   = sorted(ivc_data.keys())
@@ -582,6 +664,8 @@ class UrbanModel:
         logger.info(
             f"  UrbanModel({strategy}): {self.n_territorios} {UT}s loaded from data"
             f" | SHAP priorities matched: {n_shap}/{self.n_territorios}"
+            f" | ranking={self.ranking_rule} top={self.n_priority} reparto={self.reparto_top}"
+            f" | saturacion={self.saturation_active} ruido_sd={self.noise_sd}"
         )
 
         # Instantiate agents
@@ -706,6 +790,15 @@ def main(fuente: str | None = None):
     logger.info(f"  Presupuesto anual  : {ANNUAL_BUDGET:,.0f}  [config.simulacion]")
     logger.info(f"  Escenarios         : {SCENARIOS}")
     logger.info(f"  Réplicas MC (cfg)  : {N_REPLICAS_MC}")
+    logger.info(
+        f"  Ranking focalizado : {RANKING_REGLA_DEFAULT} "
+        f"top={N_PRIORITARIOS_DEFAULT} reparto={REPARTO_TOP_DEFAULT}"
+    )
+    logger.info(
+        f"  Saturación η(C)    : {SATURACION_ACTIVA_DEFAULT} "
+        f"(intercepto {SATURACION_ETA_DEFAULT})"
+    )
+    logger.info(f"  Ruido sd           : {RUIDO_SD_DEFAULT}")
     logger.info(f"  SHAP (XGBoost→ABM) : {SHAP_PATH}")
     logger.info(f"  FUENTE_IVC default : {fuente_default}")
     logger.info(f"  Predicciones OOS   : {PRED_PATH}")
@@ -771,6 +864,27 @@ def main(fuente: str | None = None):
                 f"  [{fuente_name:<10}] {scenario:<15}: "
                 f"wellbeing={mw:.4f}  ivc_medio={mi:.4f}"
             )
+
+    # Escenario de inversión observada. No forma parte de los tres escenarios
+    # de diseño: solo corre si el CSV documentado está presente.
+    from historical_allocation import load_historical_allocation
+    hist_path = Path(cfg.config_path).parent / cfg.simulacion.inversion_historica_ruta
+    hist_map, hist_status = load_historical_allocation(str(hist_path))
+    logger.info(f"  Inversión histórica: {hist_status['state']} ({hist_path})")
+    if hist_status["state"] == "loaded":
+        hist_model = UrbanModel(
+            strategy="historico",
+            ivc_data=ivc_data,
+            seed=42,
+            shap_priority=shap_priority,
+            historical_allocation=hist_map,
+        )
+        hist_df = hist_model.run_simulation()
+        hist_out = os.path.join(OUT_DIR, "simulation_results_historico.csv")
+        hist_df.to_csv(hist_out, index=False)
+        logger.info(f"Historical allocation results: {hist_out}")
+    else:
+        logger.info(f"  Escenario historico omitido: {hist_status['message']}")
 
     return results
 

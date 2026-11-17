@@ -1,0 +1,21 @@
+{
+  "file": "data/external/inversion_historica_por_territorio.csv",
+  "columns": [
+    {
+      "name": "unidad_territorial",
+      "type": "string",
+      "description": "Exact territory name from config.yaml territorios.nombre."
+    },
+    {
+      "name": "anio",
+      "type": "integer",
+      "description": "Calendar year if simulacion.inversion_historica.tipo_anio is calendario (simulation year 1 maps to anio_inicio). Simulation year 1..horizonte if tipo_anio is simulacion."
+    },
+    {
+      "name": "inversion",
+      "type": "number",
+      "description": "Allocation in the same units as simulacion.presupuesto_anual. Values are not rescaled to the simulated budget."
+    }
+  ],
+  "status": "Data not yet available. The historical allocation scenario is skipped until this CSV is provided."
+}

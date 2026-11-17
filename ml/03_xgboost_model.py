@@ -6,7 +6,13 @@
 
 """
 03_xgboost_model.py
-Train XGBoost regression model on vulnerability indices.
+Legacy same-year reconstruction: the six subindices at t (which define IVC_t)
+are used to predict IVC_t. A high R² here is mostly algebraic, not a forecast.
+
+The leak-free lagged protocol (features at t → IVC at t+1, scaler fit on
+training years only, temporal inner tuning) lives in ml/lagged_forecast.py
+and is what scripts/regenerate_article.py reports.
+
 Temporal cross-validation (TimeSeriesSplit / leave-one-year-out).
 Outputs:
   - models/vulnerability_model.pkl

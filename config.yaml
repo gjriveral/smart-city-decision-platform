@@ -150,6 +150,27 @@ simulacion:
       nombre: "Adaptativo — Híbrido"
       # peso no aplica (heurística IVC × eficiencia); 0 por trazabilidad
       peso: 0.0
+  # Tope de eficacia η(C)=min(1, eta_intercepto−C). El código anterior lo
+  # aplicaba siempre; el texto del artículo lo daba por desactivado.
+  saturacion:
+    activa: false
+    eta_intercepto: 1.5
+  # ε_t = clip(1+N(0, desviacion²), 0.85, 1.15). 0 deja el IVC determinista.
+  ruido:
+    desviacion: 0.05
+  # Quién entra al top prioritario del escenario focalizado.
+  #   dynamic_ivc : reordena cada año por el IVC corriente (texto del artículo).
+  #   fixed_shap  : fija el top una sola vez con la suma SHAP (código anterior).
+  # reparto: igual (partes iguales dentro del top) | proporcional (al score).
+  focalizado_ranking:
+    regla: dynamic_ivc
+    n_prioritarios: 5
+    reparto: igual
+  # Escenario stub. El CSV no está en el repositorio; si falta, se omite.
+  inversion_historica:
+    ruta: "data/external/inversion_historica_por_territorio.csv"
+    tipo_anio: calendario
+    anio_inicio: 2013
 
 # ── Catálogo de estaciones climáticas (coordenadas aproximadas) ───────────────
 # Mapeo estacion_id → lat/lon. Usado para asignar cada estación a su
@@ -225,3 +246,23 @@ catalogo_estaciones:
   81:  {lat: 6.2850, lon: -75.5750}
   88:  {lat: 6.2150, lon: -75.5850}
   89:  {lat: 6.2700, lon: -75.5550}
+
+# ── IVC: pesos explícitos (no son uniformes) ─────────────────────────────────
+# El índice publicado es el promedio ponderado de los seis subíndices.
+# idx_riesgo_clima pesa la mitad que los demás y, sin pluviometría, vale 0.5
+# constante. No describir estos pesos como uniformes.
+ivc:
+  pesos:
+    idx_desempleo: 1.0
+    idx_habitat: 1.0
+    idx_educacion: 1.0
+    idx_riesgo_clima: 0.5
+    idx_pobreza: 1.0
+    idx_tejido_social: 1.0
+
+# ── Lluvia SIATA: dentro del índice O como predictor, nunca ambos ────────────
+# ninguno    : no entra lluvia (subíndice climático queda en el valor del CSV).
+# subindice  : la lluvia define idx_riesgo_clima y por tanto el IVC; no es feature.
+# predictor  : la lluvia es feature de t→t+1; idx_riesgo_clima sale de los features.
+clima:
+  uso: ninguno

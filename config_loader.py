@@ -104,6 +104,17 @@ class SimulacionConfig:
     presupuesto_anual: float
     n_replicas_montecarlo: int
     escenarios: List[EscenarioConfig]
+    # Parámetros que antes estaban fijos en el código del ABM.
+    # Los defaults reproducen el comportamiento previo cuando el YAML no los trae.
+    saturacion_activa: bool = True
+    saturacion_eta_intercepto: float = 1.5
+    ruido_sd: float = 0.05
+    ranking_regla: str = "fixed_shap"       # fixed_shap | dynamic_ivc
+    n_prioritarios: int = 5
+    reparto_top: str = "proporcional"       # proporcional | igual
+    inversion_historica_ruta: str = "data/external/inversion_historica_por_territorio.csv"
+    inversion_historica_tipo_anio: str = "calendario"  # calendario | simulacion
+    inversion_historica_anio_inicio: int = 2013
 
     @property
     def escenario_ids(self) -> List[str]:
@@ -124,6 +135,10 @@ class CityConfig:
     territorios: List[TerritorioConfig]
     catalogo_estaciones: Dict[int, Dict[str, float]]
     simulacion: SimulacionConfig
+    # Pesos del IVC (vacío → el constructor de índices usa sus pesos históricos).
+    ivc_pesos: Dict[str, float] = field(default_factory=dict)
+    # ninguno | subindice | predictor. Nunca los dos últimos a la vez.
+    clima_uso: str = "ninguno"
     # Ruta absoluta al archivo config.yaml cargado
     config_path: Path = field(default_factory=Path)
 
@@ -291,12 +306,56 @@ def _parse(raw: dict, path: Path) -> CityConfig:
         ))
     if not escenarios:
         raise ValueError("simulacion.escenarios no puede estar vacío.")
+    sat = s_raw.get("saturacion") or {}
+    ruido = s_raw.get("ruido") or {}
+    rank = s_raw.get("focalizado_ranking") or {}
+    hist = s_raw.get("inversion_historica") or {}
+    ranking_regla = str(rank.get("regla", "fixed_shap"))
+    if ranking_regla not in ("fixed_shap", "dynamic_ivc"):
+        raise ValueError(
+            "simulacion.focalizado_ranking.regla debe ser 'fixed_shap' o 'dynamic_ivc' "
+            f"(recibido: {ranking_regla!r})."
+        )
+    reparto_top = str(rank.get("reparto", "proporcional"))
+    if reparto_top not in ("proporcional", "igual"):
+        raise ValueError(
+            "simulacion.focalizado_ranking.reparto debe ser 'proporcional' o 'igual' "
+            f"(recibido: {reparto_top!r})."
+        )
+    tipo_anio = str(hist.get("tipo_anio", "calendario"))
+    if tipo_anio not in ("calendario", "simulacion"):
+        raise ValueError(
+            "simulacion.inversion_historica.tipo_anio debe ser 'calendario' o 'simulacion'."
+        )
     simulacion = SimulacionConfig(
         horizonte_anios=int(s_raw["horizonte_anios"]),
         presupuesto_anual=float(s_raw["presupuesto_anual"]),
         n_replicas_montecarlo=int(s_raw["n_replicas_montecarlo"]),
         escenarios=escenarios,
+        saturacion_activa=bool(sat.get("activa", True)),
+        saturacion_eta_intercepto=float(sat.get("eta_intercepto", 1.5)),
+        ruido_sd=float(ruido.get("desviacion", 0.05)),
+        ranking_regla=ranking_regla,
+        n_prioritarios=int(rank.get("n_prioritarios", 5)),
+        reparto_top=reparto_top,
+        inversion_historica_ruta=str(
+            hist.get("ruta", "data/external/inversion_historica_por_territorio.csv")
+        ),
+        inversion_historica_tipo_anio=tipo_anio,
+        inversion_historica_anio_inicio=int(hist.get("anio_inicio", 2013)),
     )
+
+    ivc_raw = raw.get("ivc") or {}
+    ivc_pesos = {
+        str(k): float(v) for k, v in (ivc_raw.get("pesos") or {}).items()
+    }
+    clima_raw = raw.get("clima") or {}
+    clima_uso = str(clima_raw.get("uso", "ninguno")).strip().lower()
+    if clima_uso not in ("ninguno", "subindice", "predictor"):
+        raise ValueError(
+            "clima.uso debe ser 'ninguno', 'subindice' o 'predictor' "
+            f"(recibido: {clima_uso!r})."
+        )
 
     # Catálogo de estaciones (opcional — dict int → {lat, lon})
     raw_catalogo = raw.get("catalogo_estaciones", {}) or {}
@@ -311,6 +370,8 @@ def _parse(raw: dict, path: Path) -> CityConfig:
         territorios=territorios,
         catalogo_estaciones=catalogo,
         simulacion=simulacion,
+        ivc_pesos=ivc_pesos,
+        clima_uso=clima_uso,
         config_path=path,
     )
 
