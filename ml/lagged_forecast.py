@@ -46,6 +46,7 @@ from ml.clima_hook import (
     CLIMATE_SUBINDEX,
     SUBINDEX_COLS,
     assert_climate_use,
+    composite_ivc,
     fit_minmax_train_only,
     predictor_columns,
 )
@@ -244,14 +245,27 @@ def _predict_split(
     return np.asarray(model.predict(x_te), dtype=float)
 
 
+def _with_change_target(frame: pd.DataFrame) -> pd.DataFrame:
+    """Target becomes IVC_{t+1} − IVC_t. Persistence of the level predicts a change of 0."""
+    out = frame.copy()
+    if "ivc_level_next" not in out.columns:
+        out["ivc_level_next"] = out[TARGET]
+    out[TARGET] = out["ivc_level_next"] - out[PERSISTENCE_COL]
+    return out
+
+
 def walk_forward(
     frame: pd.DataFrame,
     columns: list[str],
     ut_col: str,
     model_name: str,
     min_train_years: int = 3,
+    target_mode: str = "level",
+    prepare_fold=None,
 ) -> tuple[pd.DataFrame, list[FoldSpec]]:
     """Expanding-window predictions for one model. Persistence ignores `columns`."""
+    if target_mode not in ("level", "change"):
+        raise ValueError("target_mode must be 'level' or 'change'")
     years = sorted(int(y) for y in frame[TARGET_YEAR].unique())
     rows: list[pd.DataFrame] = []
     specs: list[FoldSpec] = []
@@ -259,17 +273,30 @@ def walk_forward(
         train_years = [y for y in years if y < test_year]
         if len(train_years) < min_train_years:
             continue
-        train = frame[frame[TARGET_YEAR].isin(train_years)]
-        test = frame[frame[TARGET_YEAR] == test_year]
+        train = frame[frame[TARGET_YEAR].isin(train_years)].copy()
+        test = frame[frame[TARGET_YEAR] == test_year].copy()
+        if prepare_fold is not None:
+            train, test = prepare_fold(train, test)
+        if target_mode == "change":
+            train = _with_change_target(train)
+            test = _with_change_target(test)
         if model_name == "persistence":
-            pred = test[PERSISTENCE_COL].to_numpy(dtype=float)
+            # On levels, persistence predicts IVC_t. On the change, that is a prediction of 0.
+            if target_mode == "change":
+                pred = np.zeros(len(test), dtype=float)
+            else:
+                pred = test[PERSISTENCE_COL].to_numpy(dtype=float)
             params: dict = {}
         else:
             params = _tune(train, columns, ut_col, model_name)
             pred = _predict_split(train, test, columns, ut_col, model_name, params)
-        piece = test[[ut_col, FEATURE_YEAR, TARGET_YEAR, PERSISTENCE_COL, TARGET]].copy()
+        keep = [ut_col, FEATURE_YEAR, TARGET_YEAR, PERSISTENCE_COL, TARGET]
+        if "ivc_level_next" in test.columns:
+            keep.append("ivc_level_next")
+        piece = test[keep].copy()
         piece["model"] = model_name
         piece["y_pred"] = pred
+        piece["target_mode"] = target_mode
         piece["params"] = json.dumps(params, default=str)
         rows.append(piece)
         specs.append(FoldSpec(
@@ -490,4 +517,150 @@ def run_lagged_suite(
         "loto_by_territory": loto_by_territory,
         "selected_params_by_fold": fold_params,
         "contemporaneous_linear": contemporaneous_linear_r2(df, year_min, year_max),
+    }
+
+
+SOCIAL_COLS = [c for c in SUBINDEX_COLS if c != CLIMATE_SUBINDEX]
+PREDICTOR_RAIN_COLS = (
+    "precip_anual_ajustada_mm",
+    "dias_ge_50mm_ajustada",
+    "max_24h_mm",
+    "max_horario_mm",
+)
+SUBINDEX_RAIN_COL = "precip_anual_ajustada_mm"
+
+
+def build_climate_frame(
+    df: pd.DataFrame,
+    rain: pd.DataFrame,
+    ut_col: str = "Comuna",
+    year_min: int = 2013,
+    year_max: int = 2024,
+    rain_feature_cols: tuple[str, ...] = PREDICTOR_RAIN_COLS,
+) -> pd.DataFrame:
+    """
+    Lagged pairs with rainfall at t and at t+1.
+
+    Rainfall at t+1 is used only to rebuild IVC at t+1 when clima.uso is
+    subindice. It is not a predictor.
+    """
+    cols = list(rain_feature_cols)
+    frame = build_lagged_frame(
+        df, ut_col=ut_col, year_min=year_min, year_max=year_max,
+        rain=rain, rain_feature_cols=cols,
+    )
+    social_next = (
+        df.loc[(df["Año"] >= year_min) & (df["Año"] <= year_max), [ut_col, "Año", *SOCIAL_COLS]]
+        .rename(columns={"Año": TARGET_YEAR, **{c: f"{c}_next" for c in SOCIAL_COLS}})
+    )
+    frame = frame.merge(social_next, on=[ut_col, TARGET_YEAR], how="inner")
+    rain_ut = "unidad_territorial" if "unidad_territorial" in rain.columns else ut_col
+    rain_next = rain[[rain_ut, "anio", *cols]].rename(
+        columns={rain_ut: ut_col, "anio": TARGET_YEAR, **{c: f"{c}_next" for c in cols}}
+    )
+    frame = frame.merge(rain_next, on=[ut_col, TARGET_YEAR], how="inner")
+    frame["ivc_level_next"] = frame[TARGET]
+    return frame.reset_index(drop=True)
+
+
+def _rebuild_ivc_with_rain(frame: pd.DataFrame, rain_col: str, next_col: str, fit: np.ndarray) -> pd.DataFrame:
+    """Replace the constant climate subindex using a scaler fit on training rows only."""
+    out = frame.copy()
+    _, clim_t, _ = fit_minmax_train_only(fit, out[rain_col].to_numpy(dtype=float).reshape(-1, 1))
+    _, clim_next, _ = fit_minmax_train_only(fit, out[next_col].to_numpy(dtype=float).reshape(-1, 1))
+    out[CLIMATE_SUBINDEX] = clim_t.ravel()
+    next_view = pd.DataFrame({c: out[f"{c}_next"].to_numpy(dtype=float) for c in SOCIAL_COLS})
+    next_view[CLIMATE_SUBINDEX] = clim_next.ravel()
+    out[PERSISTENCE_COL] = composite_ivc(out).to_numpy(dtype=float)
+    out[TARGET] = composite_ivc(next_view).to_numpy(dtype=float)
+    out["ivc_level_next"] = out[TARGET]
+    return out
+
+
+def _subindex_prepare(rain_col: str):
+    next_col = f"{rain_col}_next"
+
+    def prepare(train: pd.DataFrame, test: pd.DataFrame):
+        fit = np.concatenate([
+            train[rain_col].to_numpy(dtype=float),
+            train[next_col].to_numpy(dtype=float),
+        ]).reshape(-1, 1)
+        return (
+            _rebuild_ivc_with_rain(train, rain_col, next_col, fit),
+            _rebuild_ivc_with_rain(test, rain_col, next_col, fit),
+        )
+
+    return prepare
+
+
+def _implied_level_metrics(pred: pd.DataFrame) -> dict[str, float]:
+    """Level skill of a change model: IVC_t + predicted change versus IVC_{t+1}."""
+    if pred.empty or "ivc_level_next" not in pred.columns:
+        return {}
+    return regression_metrics(
+        pred["ivc_level_next"],
+        pred[PERSISTENCE_COL].to_numpy(dtype=float) + pred["y_pred"].to_numpy(dtype=float),
+    )
+
+
+def run_climate_comparison(
+    df: pd.DataFrame,
+    rain: pd.DataFrame,
+    ut_col: str = "Comuna",
+    year_min: int = 2013,
+    year_max: int = 2024,
+    models: tuple[str, ...] = ("persistence", "linear", "random_forest", "xgboost"),
+) -> dict:
+    """
+    Same walk-forward rows for three climate treatments and two targets.
+
+    ninguno    original IVC; predictors are the five non-constant subindices
+    predictor  same IVC; rainfall at t is added and the climate subindex is not
+    subindice  IVC is rebuilt with a train-only rainfall subindex in place of
+               the constant 0.5; raw rainfall is not a predictor
+    change     the target is IVC_{t+1} − IVC_t. Persistence predicts 0.
+    """
+    frame = build_climate_frame(
+        df, rain, ut_col=ut_col, year_min=year_min, year_max=year_max,
+    )
+    sub_prepare = _subindex_prepare(SUBINDEX_RAIN_COL)
+    designs = (
+        ("ninguno", "level", list(SOCIAL_COLS), None),
+        ("predictor", "level", list(SOCIAL_COLS) + list(PREDICTOR_RAIN_COLS), None),
+        ("subindice", "level", list(SUBINDEX_COLS), sub_prepare),
+        ("ninguno", "change", list(SOCIAL_COLS), None),
+        ("predictor", "change", list(SOCIAL_COLS) + list(PREDICTOR_RAIN_COLS), None),
+        ("subindice", "change", list(SUBINDEX_COLS), sub_prepare),
+    )
+    rows = []
+    by_year_parts = []
+    for uso, mode, columns, prepare in designs:
+        for name in models:
+            pred, _specs = walk_forward(
+                frame, columns, ut_col, name,
+                target_mode=mode, prepare_fold=prepare,
+            )
+            metrics = regression_metrics(pred[TARGET], pred["y_pred"]) if len(pred) else {}
+            record = {
+                "clima_uso": uso,
+                "target": mode,
+                "model": name,
+                **metrics,
+            }
+            if mode == "change":
+                level = _implied_level_metrics(pred)
+                record["level_R2"] = level.get("R2", float("nan"))
+                record["level_RMSE"] = level.get("RMSE", float("nan"))
+            rows.append(record)
+            if len(pred):
+                yearly = summarize_predictions(pred, ut_col, by=TARGET_YEAR)
+                yearly.insert(0, "target", mode)
+                yearly.insert(0, "clima_uso", uso)
+                by_year_parts.append(yearly)
+    return {
+        "n_pairs": int(len(frame)),
+        "territories": int(frame[ut_col].nunique()),
+        "target_years": [int(y) for y in sorted(frame[TARGET_YEAR].unique())],
+        "metrics": pd.DataFrame(rows),
+        "by_year": pd.concat(by_year_parts, ignore_index=True) if by_year_parts else pd.DataFrame(),
     }

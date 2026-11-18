@@ -16,7 +16,12 @@ sys.path.insert(0, str(ROOT))
 
 from abm.dispersion import coefficient_of_variation, gini
 from abm.historical_allocation import load_historical_allocation
-from bigdata.siata_territory_annual import main as siata_main
+from bigdata.siata_territory_annual import (
+    MIN_COVERAGE,
+    annotate_observed_table,
+    hours_in_year,
+    main as siata_main,
+)
 from ml.clima_hook import (
     assert_climate_use,
     composite_ivc,
@@ -228,6 +233,59 @@ class RainfallProcessorTests(unittest.TestCase):
         self.assertEqual(y2020.loc["La América", "metodo_agregacion"], "idw")
         self.assertEqual(y2020.loc["Corregimiento de San Cristóbal", "metodo_agregacion"], "estaciones_interior")
         self.assertTrue((df["fuente"] == "fixture").all())
+        # A few hours of fixture data are not an annual total.
+        self.assertFalse(bool(df["elegible"].any()))
+        self.assertTrue(df["precip_anual_ajustada_mm"].isna().all())
+
+
+class RainQualityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        raw = pd.read_csv(ROOT / "data/processed/siata_territorio_anual.csv")
+        cls.raw = raw
+        cls.adj = raw if "elegible" in raw.columns else annotate_observed_table(raw)
+
+    def test_leap_year_hours(self):
+        self.assertEqual(hours_in_year(2024), 8784)
+        self.assertEqual(hours_in_year(2023), 8760)
+        self.assertEqual(hours_in_year(1900), 8760)
+
+    def test_popular_2012_is_idw_because_its_gauge_is_not_yet_in_the_file(self):
+        row = self.raw[(self.raw["unidad_territorial"] == "Popular") & (self.raw["anio"] == 2012)].iloc[0]
+        self.assertEqual(row["metodo_agregacion"], "idw")
+        self.assertNotIn("274", str(row["estaciones_ids"]).split(","))
+        later = self.raw[(self.raw["unidad_territorial"] == "Popular") & (self.raw["anio"] == 2019)].iloc[0]
+        self.assertEqual(later["metodo_agregacion"], "estaciones_interior")
+        self.assertEqual(str(later["estaciones_ids"]), "274")
+
+    def test_high_coverage_totals_match_medellin_climatology(self):
+        interior = self.raw[
+            (self.raw["metodo_agregacion"] == "estaciones_interior")
+            & (self.raw["cobertura_horaria_media"] >= 0.8)
+        ]
+        median = float(interior["precip_anual_mm"].median())
+        self.assertGreater(median, 1400)
+        self.assertLess(median, 2200)
+        y2012 = self.raw[self.raw["anio"] == 2012]
+        y2026 = self.raw[self.raw["anio"] == 2026]
+        self.assertLess(float(y2012["cobertura_horaria_media"].median()), 0.5)
+        self.assertLess(float(y2026["cobertura_horaria_media"].median()), 0.25)
+
+    def test_coverage_adjustment_is_exact_for_a_single_station(self):
+        adj = annotate_observed_table(self.raw.drop(
+            columns=[c for c in ("precip_anual_ajustada_mm", "dias_ge_50mm_ajustada", "elegible", "ajuste", "cobertura_minima") if c in self.raw.columns]
+        ))
+        row = adj[(adj["unidad_territorial"] == "Popular") & (adj["anio"] == 2019)].iloc[0]
+        self.assertTrue(bool(row["elegible"]))
+        self.assertAlmostEqual(
+            float(row["precip_anual_ajustada_mm"]),
+            float(row["precip_anual_mm"]) / min(1.0, float(row["cobertura_horaria_media"])),
+            places=6,
+        )
+        partial = adj[(adj["unidad_territorial"] == "Popular") & (adj["anio"] == 2012)].iloc[0]
+        self.assertFalse(bool(partial["elegible"]))
+        self.assertTrue(pd.isna(partial["precip_anual_ajustada_mm"]))
+        self.assertGreaterEqual(MIN_COVERAGE, 0.7)
 
 
 if __name__ == "__main__":

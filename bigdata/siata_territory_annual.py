@@ -26,13 +26,28 @@ Aggregation
     according to clima.uso, and never both.
 
 Station metrics, from calidad==1 and p1>=0 minute rows:
-    precip_anual_mm   sum of valid minutes in the calendar year
+    precip_anual_mm   sum of valid minutes in the calendar year. This is an
+                      observed sum, not a gap-filled annual total. A station
+                      that recorded 30% of the year will show about 30% of
+                      the annual rainfall. Medellín's climatology is about
+                      1,500–2,500 mm/yr; totals near 300 mm are partial years.
+    precip_anual_ajustada_mm
+                      sum / coverage for station-years with coverage >= 0.70,
+                      then averaged inside the territory or IDW'd. NaN when
+                      no station clears that bar. Maxima are not scaled.
     dias_ge_50mm      calendar days whose valid minutes sum to at least 50 mm
-    max_horario_mm    maximum clock-hour sum
+    max_horario_mm    maximum clock-hour sum (observed; low coverage misses storms)
     max_24h_mm        maximum sum of 24 consecutive clock hours, with hours
                       that have no valid row treated as 0 mm inside the
                       station-year span (an outage is indistinguishable from
                       a dry hour in these files; see cobertura_horaria)
+
+A station with neither an official territory nor catalog coordinates is
+printed and left out of both the interior mean and IDW. Re-run the 20 GB
+files after a processor change with the command above; the adjusted columns
+are then built at station level (`ajuste=estacion`). A table that was
+already aggregated can be scaled with `annotate_observed_table`
+(`ajuste=territorio`).
 
 Fixture mode runs the same code on data/fixtures/siata and labels fuente=fixture.
 Those rows are a schema check. They are refused as model input.
@@ -55,8 +70,19 @@ if str(ROOT) not in sys.path:
 
 from config_loader import get_config
 
-HOURS_IN_YEAR = 8760.0
+HOURS_IN_NONLEAP_YEAR = 8760.0
+# Station-years below this share of the year are kept in the observed sum
+# and left out of the coverage-adjusted annual total. A two-month file
+# summed as if it were a year is what made 2012 look like ~300 mm.
+MIN_COVERAGE = 0.70
 RAIN_FEATURE_COLS = ("precip_anual_mm", "dias_ge_50mm", "max_24h_mm", "max_horario_mm")
+
+
+def hours_in_year(year: int) -> int:
+    """Hours in a calendar year. 2024 is a leap year (8784); 8760 under-counts it."""
+    year = int(year)
+    leap = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    return 8784 if leap else 8760
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -112,15 +138,20 @@ def metrics_from_hourly(hourly: pd.DataFrame) -> pd.DataFrame:
         daily = series.groupby(series.index.floor("D")).sum()
         window = series.rolling(24, min_periods=1).sum()
         # Observed clock hours only. Gap-filled zeros are not counted as measurements.
+        # The annual sum is the sum of those hours. It is not gap-filled to a
+        # full year: a file that starts in November does not become an annual total.
         n_hours = int(g["hora"].nunique())
+        denom = float(hours_in_year(int(year)))
+        observed = float(series.sum())
+        coverage = float(n_hours / denom)
         rows.append({
             "anio": int(year),
-            "precip_anual_mm": float(series.sum()),
+            "precip_anual_mm": observed,
             "dias_ge_50mm": float((daily >= 50.0).sum()),
             "max_24h_mm": float(window.max()) if len(window) else float("nan"),
             "max_horario_mm": float(series.max()) if len(series) else float("nan"),
             "n_horas_validas": n_hours,
-            "cobertura_horaria": float(n_hours / HOURS_IN_YEAR),
+            "cobertura_horaria": coverage,
         })
     return pd.DataFrame(rows)
 
@@ -173,6 +204,91 @@ def idw_value(lat: float, lon: float, donors: list[tuple[float, float, float]], 
     return float(np.sum(w * v) / np.sum(w))
 
 
+def _coverage_divisor(coverage: pd.Series) -> pd.Series:
+    """Cap at 1 so a leap-year file scored against 8760 does not shrink the total."""
+    return coverage.astype(float).clip(upper=1.0).replace(0, np.nan)
+
+
+def annotate_observed_table(df: pd.DataFrame, min_coverage: float = MIN_COVERAGE) -> pd.DataFrame:
+    """
+    Coverage adjustment for a table that is already aggregated.
+
+    `precip_anual_mm` stays the observed sum (what a local full run writes).
+    `precip_anual_ajustada_mm` divides that sum by mean coverage when coverage
+    is at least `min_coverage`. For a one-station territory this is the
+    station-level annualization. For a multi-station mean or an IDW field it
+    scales the aggregate by the mean coverage, which matches the mean of the
+    station ratios only when those coverages are similar. The column `ajuste`
+    is `territorio` here and `estacion` when `aggregate_territories` built the
+    adjusted value from eligible stations before averaging.
+    """
+    out = df.copy()
+    coverage = out["cobertura_horaria_media"].astype(float)
+    divisor = _coverage_divisor(coverage)
+    eligible = coverage >= min_coverage
+    out["precip_anual_ajustada_mm"] = np.where(
+        eligible, out["precip_anual_mm"].astype(float) / divisor, np.nan
+    )
+    out["dias_ge_50mm_ajustada"] = np.where(
+        eligible, out["dias_ge_50mm"].astype(float) / divisor, np.nan
+    )
+    out["elegible"] = eligible.to_numpy()
+    out["ajuste"] = "territorio"
+    out["cobertura_minima"] = float(min_coverage)
+    return out
+
+
+def _adjusted_block(frame: pd.DataFrame) -> dict:
+    """Mean of station-level annualizations. Empty frame → NaN and not eligible."""
+    if frame.empty:
+        return {
+            "precip_anual_ajustada_mm": float("nan"),
+            "dias_ge_50mm_ajustada": float("nan"),
+            "elegible": False,
+            "n_estaciones_elegibles": 0,
+            "metodo_ajustado": "cobertura_insuficiente",
+        }
+    divisor = _coverage_divisor(frame["cobertura_horaria"])
+    return {
+        "precip_anual_ajustada_mm": float((frame["precip_anual_mm"] / divisor).mean()),
+        "dias_ge_50mm_ajustada": float((frame["dias_ge_50mm"] / divisor).mean()),
+        "elegible": True,
+        "n_estaciones_elegibles": int(len(frame)),
+        "metodo_ajustado": "estaciones_interior",
+    }
+
+
+def _idw_adjusted(donors, lat: float, lon: float, power: float) -> dict:
+    eligible = [d for d in donors if float(d[3].cobertura_horaria) >= MIN_COVERAGE]
+    if not eligible:
+        return {
+            "precip_anual_ajustada_mm": float("nan"),
+            "dias_ge_50mm_ajustada": float("nan"),
+            "elegible": False,
+            "n_estaciones_elegibles": 0,
+            "metodo_ajustado": "cobertura_insuficiente",
+            "ajuste": "estacion",
+            "cobertura_minima": float(MIN_COVERAGE),
+        }
+
+    def _pack(column: str):
+        packed = []
+        for _sid, dlat, dlon, rec in eligible:
+            divisor = min(1.0, float(rec.cobertura_horaria))
+            packed.append((dlat, dlon, float(getattr(rec, column)) / divisor))
+        return packed
+
+    return {
+        "precip_anual_ajustada_mm": idw_value(lat, lon, _pack("precip_anual_mm"), power),
+        "dias_ge_50mm_ajustada": idw_value(lat, lon, _pack("dias_ge_50mm"), power),
+        "elegible": True,
+        "n_estaciones_elegibles": int(len(eligible)),
+        "metodo_ajustado": "idw",
+        "ajuste": "estacion",
+        "cobertura_minima": float(MIN_COVERAGE),
+    }
+
+
 def aggregate_territories(
     station_year: pd.DataFrame,
     assignment: dict[int, str],
@@ -203,6 +319,16 @@ def aggregate_territories(
             inside = year_df[year_df["unidad_oficial"] == name]
             if len(inside):
                 ids = sorted(int(v) for v in inside["estacion_id"].tolist())
+                eligible = inside[inside["cobertura_horaria"] >= MIN_COVERAGE]
+                if len(eligible):
+                    adjusted = _adjusted_block(eligible)
+                    adjusted["ajuste"] = "estacion"
+                    adjusted["cobertura_minima"] = float(MIN_COVERAGE)
+                else:
+                    # The assigned gauges exist but none cover enough of the year.
+                    # The adjusted total then uses eligible neighbours, and the
+                    # observed sum below stays the partial interior sum.
+                    adjusted = _idw_adjusted(donors, territory["lat"], territory["lon"], idw_power)
                 rows.append({
                     "unidad_territorial": name,
                     "anio": year,
@@ -216,6 +342,7 @@ def aggregate_territories(
                     "cobertura_horaria_media": float(inside["cobertura_horaria"].mean()),
                     "idw_power": np.nan,
                     "fuente": fuente,
+                    **adjusted,
                 })
                 continue
             donor_pack = {
@@ -239,6 +366,7 @@ def aggregate_territories(
                 n_est = len(donors)
                 cover = float(np.mean([rec.cobertura_horaria for *_, rec in donors]))
                 power_out = idw_power
+            adjusted = _idw_adjusted(donors, territory["lat"], territory["lon"], idw_power)
             rows.append({
                 "unidad_territorial": name,
                 "anio": year,
@@ -249,6 +377,7 @@ def aggregate_territories(
                 "cobertura_horaria_media": cover,
                 "idw_power": power_out,
                 "fuente": fuente,
+                **adjusted,
             })
     return pd.DataFrame(rows)
 
@@ -281,8 +410,15 @@ def process(rain_dir: Path, assignment_path: Path, catalog_path: Path, fuente: s
             "Full mode expects the SIATA minute files (about 20 GB) in that directory."
         )
     station_rows = []
+    skipped_unplaced = []
     for path in files:
         sid = station_id_from_name(path)
+        in_catalog = sid in catalog
+        in_assignment = sid in assignment
+        if not in_catalog and not in_assignment:
+            # No coordinates and no official territory: the file cannot be
+            # placed inside a territory or used as an IDW donor.
+            skipped_unplaced.append(sid)
         metrics = read_station_file(path)
         if metrics.empty:
             continue
@@ -294,6 +430,12 @@ def process(rain_dir: Path, assignment_path: Path, catalog_path: Path, fuente: s
         station_rows.append(metrics)
     if not station_rows:
         raise RuntimeError(f"No valid rainfall rows were read from {rain_dir}")
+    if skipped_unplaced:
+        print(
+            "Stations with neither catalog coordinates nor an official territory "
+            f"({len(skipped_unplaced)}): {sorted(skipped_unplaced)}. "
+            "They are omitted from interior means and from IDW."
+        )
     station_year = pd.concat(station_rows, ignore_index=True)
     territory_year = aggregate_territories(
         station_year, assignment, catalog, territories, idw_power, fuente

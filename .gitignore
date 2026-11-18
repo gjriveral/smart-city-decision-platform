@@ -49,6 +49,7 @@ ModeloDatos/ModeloDatos/data/raw/
 !models/shap_importance_cv_stability.csv
 !ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv
 !data/processed/siata_agregado.csv
+!data/processed/siata_territorio_anual.csv
 !evidencia/resultados_simulacion_escenarios.csv
 !Datos_*_Beta/**/*.csv
 !Datos_*_Beta/**/*.pkl

@@ -9,7 +9,7 @@ pip install -r requirements.txt
 python scripts/regenerate_article.py
 ```
 
-That command rewrites `article_outputs/` (CSV tables, 300 dpi PNG, vector PDF). On this machine it finished in about one minute. Unit checks: `python -m unittest tests.test_methodology`.
+That command rewrites `article_outputs/` (CSV tables, 300 dpi PNG, vector PDF), including the rainfall comparison. On this machine it finished in about two minutes. Unit checks: `python -m unittest tests.test_methodology`. The rainfall section below uses Gabriel’s full SIATA run.
 
 Pins that produced the numbers below: Python 3.12.3, xgboost 2.1.3, scikit-learn 1.5.2, numpy 2.1.3, pandas 2.2.3, SALib 1.5.1. The full freeze is `requirements.lock`.
 
@@ -114,13 +114,25 @@ The new sample uses Saltelli’s design with second-order terms off, N = 128, wh
 
 Confidence intervals on the focused priority-set index are still wide (ST confidence about 0.45). The zeros are structural: with saturation off, capacity does not enter the IVC update, so depreciation and infrastructure recovery cannot move IVC, CV, or Gini. Rho and the priority-set size affect only the focused rule. Under equal allocation the deterministic CV is invariant, so the CV’s sample variance is the noise term. For mean IVC, gamma dominates in every scenario (focused ST 0.69, with priority-set size ST 0.25). Gini tracks the CV ranking. Full indices are in `article_outputs/table_sobol_indices.csv`.
 
-## Rainfall hook
+## Rainfall from the local full run
 
-`clima.uso` remains `ninguno` in the article run, so the forecast above does not contain a rainfall feature and the stored IVC still includes the constant 0.5 climate weight.
+Gabriel’s full run is `data/processed/siata_territorio_anual.csv` (21 territories, 2012–2026, 315 rows). The 48 station files he excluded (42, 61, 72, 171, 311, 393, 433, 539, 540, 543, 551, 558, 578, 601, 607, 612, 619, 636, 641, 704, 707, 717, 719, 727, 730, 744, 757, 759, 762, 763, 765, 766, 767, 769, 775, 780, 781, 787, 798, 816, 820, 826, 833, 842, 862, 863, 867, 870) are in neither the official assignment nor the catalog with coordinates. The processor cannot place them inside a territory or use them as IDW donors, and it now prints that list.
 
-Official assignment (`data/external/asignacion_estacion_UT_oficial.json`): 49 stations, all present in the SIATA catalog, covering 18 territories. Santa Cruz, Aranjuez, and Robledo have no assigned station; the processor fills those territory-years by inverse-distance weighting (power 2) from stations that have both data and catalog coordinates. Stations inside a territory are averaged. The old processor’s nearest-centroid step used approximate coordinates in `config.yaml` and is not the assignment used here.
+### Interior stations versus IDW
 
-Full mode, on the machine that holds the minute files:
+The rule was applied as written. A territory-year is `estaciones_interior` when at least one officially assigned gauge has rows that year, and `idw` otherwise. No row uses IDW while one of its assigned gauges is active that year.
+
+Popular’s only official gauge is station 274. It has no rows in 2012–2017, so Popular 2012 is IDW from the 21 gauges that were already recording (coverage 0.31, observed sum 318 mm). From 2018 onward Popular is the mean of station 274 alone. Santa Cruz, Aranjuez, and Robledo have no assigned gauge in any year, so they stay on IDW. The other IDW rows are years before a territory’s own gauges start.
+
+2012 is a partial network (median coverage 0.31, maximum 0.54). 2026 stops in February (median coverage 0.16), which matches files ending on 2026-02-28.
+
+### Why some annual totals are near 300 mm
+
+`precip_anual_mm` is the sum of valid minutes (`calidad == 1`, `p1 >= 0`), not a gap-filled year. It correlates 0.83 with coverage. Dividing by coverage removes that correlation (0.04 on interior rows). Interior rows with coverage at least 0.80 have a median of **1,549 mm** (range 780–2,940), which sits in Medellín’s roughly 1,500–2,500 mm/yr climatology. The units are millimetres. Days with at least 50 mm are uncommon even in wet years: several full-coverage station-years have a maximum 24-hour total just under 50 mm, so a count of zero is consistent with the maxima rather than a unit error.
+
+The forecast uses a coverage-adjusted total, `precip_anual_ajustada_mm = precip_anual_mm / min(coverage, 1)`, and only territory-years with coverage at least 0.70 (220 of the 252 rows in 2013–2024; median adjusted total about 1,640 mm). This scaling is exact for a one-station territory. For a multi-station mean or an IDW field it scales the aggregate by the mean coverage, which equals the mean of the station ratios only when those coverages are similar. The column `ajuste` is `territorio` on this file. The processor now annualizes each eligible station before averaging or interpolating (`ajuste=estacion`), and it uses 8,784 hours in a leap year (the 2024 coverages slightly above 1 came from dividing by 8,760).
+
+A re-run is not required for the numbers below. It is the way to replace the territory-level scaling with the station-level one:
 
 ```bash
 python -m bigdata.siata_territory_annual --mode full \
@@ -130,13 +142,31 @@ python -m bigdata.siata_territory_annual --mode full \
   --out data/processed/siata_territorio_anual.csv
 ```
 
-The territory-year table columns are:
+### Does rainfall forecast IVC?
 
-`unidad_territorial`, `anio`, `precip_anual_mm`, `dias_ge_50mm`, `max_24h_mm`, `max_horario_mm`, `n_estaciones`, `metodo_agregacion`, `estaciones_ids`, `cobertura_horaria_media`, `idw_power`, `fuente`
+Same 154 walk-forward rows (eligible rainfall at t and at t+1; target years 2016–2024). Three treatments, two targets. Persistence on the change predicts 0, which is what persistence of the level implies.
 
-`metodo_agregacion` is `estaciones_interior`, `idw`, or `sin_datos`. `fuente` is `full`. A station-year file is written beside it (`*_estaciones.csv`). Metrics use rows with `calidad == 1` and `p1 >= 0`. The annual total is the sum of those minutes. Days ≥ 50 mm count calendar days whose valid minutes sum to at least 50. The hourly maximum is the largest clock-hour sum. The 24-hour maximum is the largest sum of 24 consecutive clock hours, with hours that have no valid row treated as 0 mm inside the station-year span; `cobertura_horaria` records how much of the year was actually observed.
+Walk-forward R² for the level of IVC at t+1:
 
-After a full run, set `clima.uso` to `predictor` to merge those four metrics at year t into the lagged model, or to `subindice` to rebuild `idx_riesgo_clima` from them with a train-only min-max and to keep the raw metrics out of the feature list. The fixture under `data/fixtures/siata/` only checks that split (San Cristóbal and La América are interior stations; Popular is IDW). It is labelled `fuente=fixture` and the forecast loader rejects it.
+| Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
+|---|---:|---:|---:|
+| Persistence | 0.810 | 0.810 | 0.814 |
+| Random forest | 0.670 | 0.690 | 0.696 |
+| XGBoost | 0.613 | 0.629 | 0.666 |
+| Linear regression | 0.454 | 0.355 | 0.495 |
+
+The subindex column rebuilds IVC, so its persistence (0.814) is the baseline for that column only. Rainfall as a predictor lifts random forest by 0.020 and XGBoost by 0.016 and lowers linear regression by 0.099. None of those models passes persistence.
+
+Walk-forward R² for the change IVC at t+1 minus IVC at t (negative means worse than predicting the mean change):
+
+| Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
+|---|---:|---:|---:|
+| Persistence (predict 0) | −0.003 | −0.003 | −0.002 |
+| Random forest | −0.812 | −0.719 | −0.561 |
+| XGBoost | −1.163 | −0.680 | −0.772 |
+| Linear regression | −1.890 | −2.413 | −1.716 |
+
+Every fitted change model is worse than predicting no change. Adding the predicted change back onto IVC at t, the best rainfall model (random forest, rainfall inside IVC) reaches a level R² of 0.710, against 0.814 for persistence of that same index. Rainfall does not add predictive value beyond persistence. The small tree-model gains on the level are real on this sample and too small to change that conclusion.
 
 ## Historical allocation
 
@@ -156,3 +186,4 @@ Place the filled file at `data/external/inversion_historica_por_territorio.csv`.
 - `article_outputs/fig_forecast_by_year.pdf` — R² by target year
 - `article_outputs/fig_abm_cv_paths.pdf` — CV paths for yearly IVC rank, fixed SHAP rank, equal allocation, and adaptive allocation
 - `article_outputs/fig_sobol_cv.pdf` — total-order indices for the CV of IVC
+- `article_outputs/fig_rain_forecast_r2.pdf` — walk-forward R² with and without rainfall, for the level and for the change
