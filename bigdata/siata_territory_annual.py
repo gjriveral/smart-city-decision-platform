@@ -471,7 +471,13 @@ def aggregate_territories(
         raise ValueError(f"Assignment names that are not in config.yaml: {unknown}")
 
     station_year = station_year.copy()
-    station_year["unidad_oficial"] = station_year["estacion_id"].map(assignment)
+    # unidad_territorial_oficial already applies the official list, then the
+    # polygon, then the catalog comuna text. Mapping the official file again
+    # would drop gauges such as station 352 in Popular.
+    if "unidad_territorial_oficial" in station_year.columns:
+        station_year["unidad_oficial"] = station_year["unidad_territorial_oficial"].fillna("").astype(str)
+    else:
+        station_year["unidad_oficial"] = station_year["estacion_id"].map(assignment)
     years = sorted(int(y) for y in station_year["anio"].unique())
     rows = []
     for year in years:

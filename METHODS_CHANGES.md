@@ -137,43 +137,37 @@ Placement is now, in order:
 
 Station 352 falls in the Popular polygon, so step 2 assigns it to Popular. A listed station keeps its official territory. Of the catalogued gauges, 49 stay on the official list, 55 more receive a polygon territory, and 124 have no coordinates and no matching comuna text. The 48 files Gabriel excluded are in that last group.
 
-### Re-run on the machine that holds the minute files
+### Definitive station-year table
 
-The numbers below do **not** yet include station 352, and they screen coverage on the territory-year mean rather than on each gauge. Both of those change only when the processor is run again on the minute files:
+Gabriel reprocessed the minute files. `data/processed/siata_territorio_anual_estaciones.csv` has 1,740 station-years and `fuente_asignacion`. Popular’s rows for 2019–2025 contain station 274 (`oficial`) and station 352 (`punto_en_poligono`).
 
-```bash
-python -m bigdata.siata_territory_annual --mode full \
-  --rain-dir pluviometrica \
-  --assignment data/external/asignacion_estacion_UT_oficial.json \
-  --catalog data/external/pluvio_siata_catalogo.json \
-  --out data/processed/siata_territorio_anual.csv
-```
+`aggregate_territories` on `main` grouped by the official JSON only, so a gauge placed by polygon was dropped again at aggregation. The function now keeps `unidad_territorial_oficial` when that column is present. Rebuilding the territory table from the station file gives 21 territories and 315 rows. The 80% rule is applied per station (`ajuste=estacion`). 2012 and 2026 are `anio_parcial` (42 rows) and are not eligible. Popular’s coverage-adjusted annual totals for 2019–2025 run from **1,387 mm to 2,408 mm**, with both gauges in every one of those years.
 
-The command reads `data/geo/comunas.geojson` for the polygon step. It writes the territory-year table and `siata_territorio_anual_estaciones.csv`, with `fuente_asignacion` (`oficial`, `punto_en_poligono`, `comuna_catalogo`, or `sin_ubicacion`) on the station file. After that file replaces the one in `data/processed/`, `python scripts/regenerate_article.py` rebuilds the forecast.
+Territories with no eligible gauge in a year are filled by inverse-distance weighting. Santa Cruz, Aranjuez, and Robledo have no official gauge; their later years are IDW from the polygon-placed network.
 
-### Provisional forecast on the current table
+### Does rainfall forecast IVC?
 
-Walk-forward on the 126 pairs that have eligible rainfall at both t and t+1 inside 2013–2024 (2012 and 2026 already removed; most of 2013 and part of 2014 fall under 80% coverage). Same three treatments and the change target. Persistence on the change predicts 0.
+Walk-forward on the 168 pairs that have eligible rainfall at t and at t+1 and an IVC in both years (target years 2017–2024). The IVC panel has no 2025, so the eligible 2025 rainfall is stored and is not a forecast target. Same three treatments. Persistence on the change predicts 0.
 
-R² for the level of IVC at t+1:
+Level of IVC at t+1:
 
 | Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
 |---|---:|---:|---:|
-| Persistence | 0.811 | 0.811 | 0.814 |
-| Linear regression | 0.545 | 0.518 | 0.722 |
-| Random forest | 0.668 | 0.688 | 0.717 |
-| XGBoost | 0.671 | 0.656 | 0.671 |
+| Persistence | 0.821 (RMSE 0.031, MAE 0.024) | 0.821 (0.031, 0.024) | 0.802 (0.035, 0.029) |
+| Linear regression | 0.489 (0.053, 0.039) | 0.465 (0.054, 0.043) | 0.384 (0.063, 0.049) |
+| Random forest | 0.704 (0.040, 0.031) | 0.712 (0.040, 0.031) | 0.706 (0.043, 0.034) |
+| XGBoost | 0.670 (0.042, 0.032) | 0.732 (0.038, 0.030) | 0.691 (0.044, 0.034) |
 
-R² for the change (negative means worse than predicting the mean change):
+Change, IVC at t+1 minus IVC at t (R²; RMSE and MAE in mm of IVC):
 
 | Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
 |---|---:|---:|---:|
-| Persistence (predict 0) | −0.002 | −0.002 | 0.000 |
-| Linear regression | −1.409 | −1.551 | −0.494 |
-| Random forest | −0.654 | −0.593 | −0.398 |
-| XGBoost | −0.838 | −1.037 | −0.704 |
+| Persistence (predict 0) | −0.000 (0.031, 0.024) | −0.000 (0.031, 0.024) | −0.006 (0.035, 0.029) |
+| Linear regression | −1.865 (0.053, 0.039) | −1.999 (0.054, 0.043) | −2.139 (0.063, 0.049) |
+| Random forest | −0.619 (0.040, 0.031) | −0.519 (0.038, 0.029) | −0.488 (0.043, 0.034) |
+| XGBoost | −0.781 (0.042, 0.032) | −0.646 (0.040, 0.032) | −0.809 (0.048, 0.038) |
 
-Persistence still leads the level forecast. Putting rainfall inside IVC raises the linear model to 0.722, which is the largest rainfall gain on this sample and still short of persistence (0.814). No change model beats predicting no change. The best change model, put back onto the level (random forest with rainfall inside IVC), reaches 0.739 against 0.814 for persistence. These figures are provisional until the re-run brings station 352 into Popular and applies the 80% rule gauge by gauge.
+No model beats persistence on the level. The closest is XGBoost with rainfall as a predictor (R² 0.732 against 0.821). Putting the best change forecast back onto the level (random forest, rainfall as predictor) reaches 0.729, still short of persistence. No change model beats predicting no change. With station 352 included and the 80% rule applied gauge by gauge, rainfall still does not add forecast value beyond persistence.
 
 ## Historical allocation
 

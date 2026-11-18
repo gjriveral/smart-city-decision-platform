@@ -445,12 +445,17 @@ def main() -> None:
 
     print(
         "Rainfall quality check and climate comparison "
-        "(coverage ≥ 80%, 2012 and 2026 excluded; station 352 awaits a re-run)...",
+        "(station-level 80% coverage, 2012 and 2026 excluded, station 352 in Popular)...",
         flush=True,
     )
     rain_raw = pd.read_csv(ROOT / "data/processed/siata_territorio_anual.csv")
-    rain = siata.annotate_observed_table(rain_raw)
-    rain.to_csv(ROOT / "data/processed/siata_territorio_anual.csv", index=False)
+    # Station-level aggregation already applied the 80% rule. Re-annotating
+    # would replace those values with a territory-mean scaling.
+    if "ajuste" in rain_raw.columns and (rain_raw["ajuste"] == "estacion").all():
+        rain = rain_raw
+    else:
+        rain = siata.annotate_observed_table(rain_raw)
+        rain.to_csv(ROOT / "data/processed/siata_territorio_anual.csv", index=False)
     qc = rain_qc_table(rain_raw, rain)
     qc.to_csv(OUT / "table_rain_qc_by_year.csv", index=False)
     usable = rain[rain["elegible"]].copy()
