@@ -20,13 +20,16 @@ from abm.historical_allocation import load_historical_allocation
 from bigdata.siata_territory_annual import (
     EXCLUDED_MODEL_YEARS,
     MIN_COVERAGE,
+    aggregate_territories,
     annotate_observed_table,
     hours_in_year,
+    load_catalog,
     load_catalog_records,
     load_territory_polygons,
     main as siata_main,
     resolve_station_territory,
 )
+from config_loader import get_config
 from ml.clima_hook import (
     assert_climate_use,
     composite_ivc,
@@ -264,7 +267,7 @@ class RainQualityTests(unittest.TestCase):
         self.assertNotIn("274", str(row["estaciones_ids"]).split(","))
         later = self.raw[(self.raw["unidad_territorial"] == "Popular") & (self.raw["anio"] == 2019)].iloc[0]
         self.assertEqual(later["metodo_agregacion"], "estaciones_interior")
-        self.assertEqual(str(later["estaciones_ids"]), "274")
+        self.assertEqual(set(str(later["estaciones_ids"]).split(",")), {"274", "352"})
 
     def test_high_coverage_totals_match_medellin_climatology(self):
         interior = self.raw[
@@ -324,6 +327,39 @@ class RainQualityTests(unittest.TestCase):
         forced[352] = "Santa Cruz"
         territory, source = resolve_station_territory(352, forced, catalog, polygons, names)
         self.assertEqual((territory, source), ("Santa Cruz", "oficial"))
+
+    def test_aggregate_groups_station_352_into_popular(self):
+        """Polygon placement survives aggregation; the official JSON must not overwrite it."""
+        cfg = get_config()
+        territories = [{"nombre": t.nombre, "lat": t.lat, "lon": t.lon} for t in cfg.territorios]
+        catalog = load_catalog(ROOT / "data/external/pluvio_siata_catalogo.json")
+        official = {
+            int(k): v
+            for k, v in json.loads(
+                (ROOT / "data/external/asignacion_estacion_UT_oficial.json").read_text()
+            ).items()
+        }
+        self.assertNotIn(352, official)
+        station = pd.DataFrame({
+            "estacion_id": [274, 352],
+            "anio": [2019, 2019],
+            "precip_anual_mm": [1556.512, 1800.0],
+            "dias_ge_50mm": [1.0, 2.0],
+            "max_24h_mm": [50.292, 60.0],
+            "max_horario_mm": [49.53, 30.0],
+            "cobertura_horaria": [0.970434, 0.95],
+            "unidad_territorial_oficial": ["Popular", "Popular"],
+            "fuente_asignacion": ["oficial", "punto_en_poligono"],
+        })
+        out = aggregate_territories(station, official, catalog, territories, 2.0, "full")
+        row = out[(out["unidad_territorial"] == "Popular") & (out["anio"] == 2019)].iloc[0]
+        ids = set(str(row["estaciones_ids"]).split(","))
+        self.assertEqual(ids, {"274", "352"})
+        self.assertEqual(row["metodo_agregacion"], "estaciones_interior")
+        self.assertEqual(int(row["n_estaciones_elegibles"]), 2)
+        self.assertTrue(bool(row["elegible"]))
+        expected = ((1556.512 / 0.970434) + (1800.0 / 0.95)) / 2
+        self.assertAlmostEqual(float(row["precip_anual_ajustada_mm"]), expected, places=3)
 
 
 if __name__ == "__main__":

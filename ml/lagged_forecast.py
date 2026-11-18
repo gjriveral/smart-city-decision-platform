@@ -620,6 +620,8 @@ def run_climate_comparison(
                the constant 0.5; raw rainfall is not a predictor
     change     the target is IVC_{t+1} − IVC_t. Persistence predicts 0.
     """
+    needed = [c for c in PREDICTOR_RAIN_COLS if c in rain.columns]
+    rain = rain.dropna(subset=needed).copy()
     frame = build_climate_frame(
         df, rain, ut_col=ut_col, year_min=year_min, year_max=year_max,
     )
