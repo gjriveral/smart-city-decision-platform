@@ -39,7 +39,7 @@ from abm.dispersion import coefficient_of_variation, gini
 from abm.historical_allocation import load_historical_allocation
 from bigdata import siata_territory_annual as siata
 from ml.clima_hook import DEFAULT_WEIGHTS, SUBINDEX_COLS, composite_ivc
-from ml.lagged_forecast import legacy_contemporaneous_cv, run_lagged_suite
+from ml.lagged_forecast import legacy_contemporaneous_cv, run_climate_comparison, run_lagged_suite
 
 OUT = ROOT / "article_outputs"
 PANEL = ROOT / "ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv"
@@ -346,6 +346,61 @@ SOBOL_LABELS = {
 }
 
 
+def plot_rain(metrics: pd.DataFrame) -> None:
+    order = ["persistence", "linear", "random_forest", "xgboost"]
+    usos = ["ninguno", "predictor", "subindice"]
+    uso_labels = {
+        "ninguno": "No rainfall",
+        "predictor": "Rainfall as predictor",
+        "subindice": "Rainfall inside IVC",
+    }
+    colors = {"ninguno": "#4d4d4d", "predictor": "#1f4e79", "subindice": "#e07a3d"}
+    fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.4), sharey=False)
+    for ax, target, title, column in (
+        (axes[0], "level", "IVC level at t+1", "R2"),
+        (axes[1], "change", "Change in IVC (t+1 minus t)", "R2"),
+    ):
+        sub = metrics[metrics["target"] == target]
+        x = np.arange(len(order))
+        width = 0.25
+        for i, uso in enumerate(usos):
+            vals = [
+                float(sub[(sub["clima_uso"] == uso) & (sub["model"] == m)][column].iloc[0])
+                for m in order
+            ]
+            ax.bar(x + (i - 1) * width, vals, width, label=uso_labels[uso], color=colors[uso])
+        ax.axhline(0, color="#444444", linewidth=0.6)
+        ax.set_xticks(x)
+        ax.set_xticklabels([MODEL_LABELS[m] for m in order], rotation=15, ha="right")
+        ax.set_ylabel("Walk-forward R²")
+        ax.set_title(title)
+    axes[1].legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.32), ncol=1)
+    fig.suptitle("Does rainfall improve the IVC forecast?", y=1.02)
+    fig.tight_layout()
+    save_figure(fig, "fig_rain_forecast_r2")
+
+
+def rain_qc_table(raw: pd.DataFrame, adjusted: pd.DataFrame) -> pd.DataFrame:
+    """One row per year: coverage, method mix, and observed versus adjusted totals."""
+    rows = []
+    for year, g in raw.groupby("anio"):
+        interior = g[g["metodo_agregacion"] == "estaciones_interior"]
+        adj = adjusted[adjusted["anio"] == year]
+        eligible = adj[adj["elegible"]]
+        rows.append({
+            "year": int(year),
+            "n": int(len(g)),
+            "n_interior": int(len(interior)),
+            "n_idw": int((g["metodo_agregacion"] == "idw").sum()),
+            "coverage_median": float(g["cobertura_horaria_media"].median()),
+            "observed_mm_median": float(g["precip_anual_mm"].median()),
+            "interior_observed_mm_median": float(interior["precip_anual_mm"].median()) if len(interior) else float("nan"),
+            "eligible_n": int(len(eligible)),
+            "adjusted_mm_median": float(eligible["precip_anual_ajustada_mm"].median()) if len(eligible) else float("nan"),
+        })
+    return pd.DataFrame(rows)
+
+
 def plot_sobol(indices: pd.DataFrame) -> None:
     fig, axes = plt.subplots(1, 3, figsize=(9.6, 4.6), sharey=True)
     sub = indices[indices["output"] == "cv"].copy()
@@ -387,6 +442,22 @@ def main() -> None:
     plot_forecast(suite["temporal_pooled"], suite["temporal_by_year"], suite["loto_pooled"])
     circ = suite["contemporaneous_linear"]
     pd.DataFrame([circ]).to_csv(OUT / "table_circularity_linear.csv", index=False)
+
+    print(
+        "Rainfall quality check and climate comparison "
+        "(coverage ≥ 80%, 2012 and 2026 excluded; station 352 awaits a re-run)...",
+        flush=True,
+    )
+    rain_raw = pd.read_csv(ROOT / "data/processed/siata_territorio_anual.csv")
+    rain = siata.annotate_observed_table(rain_raw)
+    rain.to_csv(ROOT / "data/processed/siata_territorio_anual.csv", index=False)
+    qc = rain_qc_table(rain_raw, rain)
+    qc.to_csv(OUT / "table_rain_qc_by_year.csv", index=False)
+    usable = rain[rain["elegible"]].copy()
+    climate = run_climate_comparison(panel, usable)
+    climate["metrics"].to_csv(OUT / "table_rain_forecast.csv", index=False)
+    climate["by_year"].to_csv(OUT / "table_rain_forecast_by_year.csv", index=False)
+    plot_rain(climate["metrics"])
 
     print("SIATA fixture (schema only; not used as a predictor)...", flush=True)
     fixture_out = OUT / "siata_territorio_anual_fixture.csv"
@@ -453,6 +524,10 @@ def main() -> None:
         "sobol_n": args.sobol_n,
         "predictor_columns": suite["predictor_columns"],
         "clima_uso": "ninguno",
+        "rain_n_pairs": climate["n_pairs"],
+        "rain_target_years": climate["target_years"],
+        "rain_forecast": climate["metrics"].to_dict(orient="records"),
+        "rain_qc_by_year": qc.to_dict(orient="records"),
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
     print(f"Done in {summary['elapsed_s']}s. Outputs in {OUT}")
