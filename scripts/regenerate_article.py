@@ -443,7 +443,11 @@ def main() -> None:
     circ = suite["contemporaneous_linear"]
     pd.DataFrame([circ]).to_csv(OUT / "table_circularity_linear.csv", index=False)
 
-    print("Rainfall quality check and climate comparison...", flush=True)
+    print(
+        "Rainfall quality check and climate comparison "
+        "(coverage ≥ 80%, 2012 and 2026 excluded; station 352 awaits a re-run)...",
+        flush=True,
+    )
     rain_raw = pd.read_csv(ROOT / "data/processed/siata_territorio_anual.csv")
     rain = siata.annotate_observed_table(rain_raw)
     rain.to_csv(ROOT / "data/processed/siata_territorio_anual.csv", index=False)

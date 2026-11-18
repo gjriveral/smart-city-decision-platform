@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import tempfile
 import unittest
@@ -17,10 +18,14 @@ sys.path.insert(0, str(ROOT))
 from abm.dispersion import coefficient_of_variation, gini
 from abm.historical_allocation import load_historical_allocation
 from bigdata.siata_territory_annual import (
+    EXCLUDED_MODEL_YEARS,
     MIN_COVERAGE,
     annotate_observed_table,
     hours_in_year,
+    load_catalog_records,
+    load_territory_polygons,
     main as siata_main,
+    resolve_station_territory,
 )
 from ml.clima_hook import (
     assert_climate_use,
@@ -222,9 +227,12 @@ class RainfallProcessorTests(unittest.TestCase):
         popular = y2019.loc["Popular"]
         self.assertEqual(cristobal["metodo_agregacion"], "estaciones_interior")
         self.assertAlmostEqual(float(cristobal["precip_anual_mm"]), 65.0, places=6)
-        self.assertAlmostEqual(float(cristobal["dias_ge_50mm"]), 1.0, places=6)
+        # Two observed hours do not make a complete day. The missing hours
+        # are not counted as dry, so the day is not a day ≥ 50 mm and there
+        # is no valid 24-hour window.
+        self.assertEqual(float(cristobal["dias_ge_50mm"]), 0.0)
+        self.assertTrue(pd.isna(cristobal["max_24h_mm"]))
         self.assertAlmostEqual(float(cristobal["max_horario_mm"]), 60.0, places=6)
-        self.assertAlmostEqual(float(cristobal["max_24h_mm"]), 65.0, places=6)
         self.assertEqual(america["metodo_agregacion"], "estaciones_interior")
         self.assertAlmostEqual(float(america["precip_anual_mm"]), 6.0, places=6)
         self.assertEqual(float(america["dias_ge_50mm"]), 0.0)
@@ -285,7 +293,37 @@ class RainQualityTests(unittest.TestCase):
         partial = adj[(adj["unidad_territorial"] == "Popular") & (adj["anio"] == 2012)].iloc[0]
         self.assertFalse(bool(partial["elegible"]))
         self.assertTrue(pd.isna(partial["precip_anual_ajustada_mm"]))
-        self.assertGreaterEqual(MIN_COVERAGE, 0.7)
+        self.assertEqual(MIN_COVERAGE, 0.80)
+        self.assertEqual(EXCLUDED_MODEL_YEARS, frozenset({2012, 2026}))
+
+    def test_partial_years_are_flagged_even_when_coverage_is_high(self):
+        frame = pd.DataFrame({
+            "unidad_territorial": ["Popular", "Popular"],
+            "anio": [2012, 2026],
+            "precip_anual_mm": [1800.0, 400.0],
+            "dias_ge_50mm": [2.0, 0.0],
+            "cobertura_horaria_media": [0.95, 0.95],
+        })
+        adj = annotate_observed_table(frame)
+        self.assertFalse(bool(adj["elegible"].any()))
+        self.assertTrue(adj["precip_anual_ajustada_mm"].isna().all())
+        self.assertEqual(set(adj["motivo_exclusion"]), {"anio_parcial"})
+
+    def test_station_352_enters_popular_by_polygon_not_by_the_official_list(self):
+        official = json.loads((ROOT / "data/external/asignacion_estacion_UT_oficial.json").read_text())
+        official = {int(k): v for k, v in official.items()}
+        self.assertNotIn(352, official)
+        catalog = load_catalog_records(ROOT / "data/external/pluvio_siata_catalogo.json")
+        polygons = load_territory_polygons(ROOT / "data/geo/comunas.geojson")
+        names = [p["nombre"] for p in polygons]
+        territory, source = resolve_station_territory(352, official, catalog, polygons, names)
+        self.assertEqual(territory, "Popular")
+        self.assertEqual(source, "punto_en_poligono")
+        # A listed station keeps the official territory even if a polygon would differ.
+        forced = dict(official)
+        forced[352] = "Santa Cruz"
+        territory, source = resolve_station_territory(352, forced, catalog, polygons, names)
+        self.assertEqual((territory, source), ("Santa Cruz", "oficial"))
 
 
 if __name__ == "__main__":

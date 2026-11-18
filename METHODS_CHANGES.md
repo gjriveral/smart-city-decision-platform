@@ -116,23 +116,30 @@ Confidence intervals on the focused priority-set index are still wide (ST confid
 
 ## Rainfall from the local full run
 
-Gabriel’s full run is `data/processed/siata_territorio_anual.csv` (21 territories, 2012–2026, 315 rows). The 48 station files he excluded (42, 61, 72, 171, 311, 393, 433, 539, 540, 543, 551, 558, 578, 601, 607, 612, 619, 636, 641, 704, 707, 717, 719, 727, 730, 744, 757, 759, 762, 763, 765, 766, 767, 769, 775, 780, 781, 787, 798, 816, 820, 826, 833, 842, 862, 863, 867, 870) are in neither the official assignment nor the catalog with coordinates. The processor cannot place them inside a territory or use them as IDW donors, and it now prints that list.
+Gabriel’s full run is kept as `data/processed/siata_territorio_anual.csv` (21 territories, 2012–2026, 315 rows). Totals are millimetres. Well-covered years (2015–2025) have territory medians from about 980 mm to 2,200 mm. The values near 300 mm are incomplete years: 2012 is the network starting (median coverage 0.31, one territory above 70%), and 2026 ends in February (median coverage 0.16). In that file, hours with no row contributed nothing to the sum, which is the same as treating the gap as dry.
 
-### Interior stations versus IDW
+### Coverage rule
 
-The rule was applied as written. A territory-year is `estaciones_interior` when at least one officially assigned gauge has rows that year, and `idw` otherwise. No row uses IDW while one of its assigned gauges is active that year.
+Modelling now requires hourly coverage of at least **80%**. Below that, the station-year is excluded. It is not scaled, and the gap is not filled with 0 mm. A day counts as ≥ 50 mm only when at least 18 clock hours were observed. A 24-hour maximum is the largest sum over windows with at least 20 observed hours; missing hours in the window are omitted rather than inserted as zeros. Eligible years are then scaled by `1 / coverage` so the remaining gaps are not treated as dry. **2012 and 2026 are flagged `anio_parcial` and dropped from every model**, whatever their coverage. On the attached table this leaves 207 eligible territory-years. 2025 has 20 eligible territories (adjusted median 2,105 mm). The IVC panel ends in 2024, so 2025 rainfall is stored and unused until an IVC for 2025 exists.
 
-Popular’s only official gauge is station 274. It has no rows in 2012–2017, so Popular 2012 is IDW from the 21 gauges that were already recording (coverage 0.31, observed sum 318 mm). From 2018 onward Popular is the mean of station 274 alone. Santa Cruz, Aranjuez, and Robledo have no assigned gauge in any year, so they stay on IDW. The other IDW rows are years before a territory’s own gauges start.
+On this file the 80% screen is the territory-year mean coverage (`ajuste=territorio`), because the station-year file was not in the bundle. The processor now applies the same 80% rule to each station before averaging or interpolating (`ajuste=estacion`).
 
-2012 is a partial network (median coverage 0.31, maximum 0.54). 2026 stops in February (median coverage 0.16), which matches files ending on 2026-02-28.
+### Where station 352 goes
 
-### Why some annual totals are near 300 mm
+The official file lists only station 274 for Popular (Carpinelo, from 2018). Station 352 (Santo Domingo Savio; catalog comuna `01 Popular`; 6.2937°N, 75.5426°W; data 2019–2026) is in the SIATA catalog and not in `asignacion_estacion_UT_oficial.json`. The previous processor never read the catalog’s comuna field, so 352 was dropped and Popular’s 2019–2025 total is station 274 alone.
 
-`precip_anual_mm` is the sum of valid minutes (`calidad == 1`, `p1 >= 0`), not a gap-filled year. It correlates 0.83 with coverage. Dividing by coverage removes that correlation (0.04 on interior rows). Interior rows with coverage at least 0.80 have a median of **1,549 mm** (range 780–2,940), which sits in Medellín’s roughly 1,500–2,500 mm/yr climatology. The units are millimetres. Days with at least 50 mm are uncommon even in wet years: several full-coverage station-years have a maximum 24-hour total just under 50 mm, so a count of zero is consistent with the maxima rather than a unit error.
+Placement is now, in order:
 
-The forecast uses a coverage-adjusted total, `precip_anual_ajustada_mm = precip_anual_mm / min(coverage, 1)`, and only territory-years with coverage at least 0.70 (220 of the 252 rows in 2013–2024; median adjusted total about 1,640 mm). This scaling is exact for a one-station territory. For a multi-station mean or an IDW field it scales the aggregate by the mean coverage, which equals the mean of the station ratios only when those coverages are similar. The column `ajuste` is `territorio` on this file. The processor now annualizes each eligible station before averaging or interpolating (`ajuste=estacion`), and it uses 8,784 hours in a leap year (the 2024 coverages slightly above 1 came from dividing by 8,760).
+1. The official assignment, when the station is listed.
+2. Otherwise, point-in-polygon of the catalog coordinate against `data/geo/comunas.geojson`.
+3. Otherwise, the catalog comuna text (`01 Popular` → Popular).
+4. Otherwise the station is printed and used neither as an interior gauge nor as an IDW donor.
 
-A re-run is not required for the numbers below. It is the way to replace the territory-level scaling with the station-level one:
+Station 352 falls in the Popular polygon, so step 2 assigns it to Popular. A listed station keeps its official territory. Of the catalogued gauges, 49 stay on the official list, 55 more receive a polygon territory, and 124 have no coordinates and no matching comuna text. The 48 files Gabriel excluded are in that last group.
+
+### Re-run on the machine that holds the minute files
+
+The numbers below do **not** yet include station 352, and they screen coverage on the territory-year mean rather than on each gauge. Both of those change only when the processor is run again on the minute files:
 
 ```bash
 python -m bigdata.siata_territory_annual --mode full \
@@ -142,31 +149,31 @@ python -m bigdata.siata_territory_annual --mode full \
   --out data/processed/siata_territorio_anual.csv
 ```
 
-### Does rainfall forecast IVC?
+The command reads `data/geo/comunas.geojson` for the polygon step. It writes the territory-year table and `siata_territorio_anual_estaciones.csv`, with `fuente_asignacion` (`oficial`, `punto_en_poligono`, `comuna_catalogo`, or `sin_ubicacion`) on the station file. After that file replaces the one in `data/processed/`, `python scripts/regenerate_article.py` rebuilds the forecast.
 
-Same 154 walk-forward rows (eligible rainfall at t and at t+1; target years 2016–2024). Three treatments, two targets. Persistence on the change predicts 0, which is what persistence of the level implies.
+### Provisional forecast on the current table
 
-Walk-forward R² for the level of IVC at t+1:
+Walk-forward on the 126 pairs that have eligible rainfall at both t and t+1 inside 2013–2024 (2012 and 2026 already removed; most of 2013 and part of 2014 fall under 80% coverage). Same three treatments and the change target. Persistence on the change predicts 0.
 
-| Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
-|---|---:|---:|---:|
-| Persistence | 0.810 | 0.810 | 0.814 |
-| Random forest | 0.670 | 0.690 | 0.696 |
-| XGBoost | 0.613 | 0.629 | 0.666 |
-| Linear regression | 0.454 | 0.355 | 0.495 |
-
-The subindex column rebuilds IVC, so its persistence (0.814) is the baseline for that column only. Rainfall as a predictor lifts random forest by 0.020 and XGBoost by 0.016 and lowers linear regression by 0.099. None of those models passes persistence.
-
-Walk-forward R² for the change IVC at t+1 minus IVC at t (negative means worse than predicting the mean change):
+R² for the level of IVC at t+1:
 
 | Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
 |---|---:|---:|---:|
-| Persistence (predict 0) | −0.003 | −0.003 | −0.002 |
-| Random forest | −0.812 | −0.719 | −0.561 |
-| XGBoost | −1.163 | −0.680 | −0.772 |
-| Linear regression | −1.890 | −2.413 | −1.716 |
+| Persistence | 0.811 | 0.811 | 0.814 |
+| Linear regression | 0.545 | 0.518 | 0.722 |
+| Random forest | 0.668 | 0.688 | 0.717 |
+| XGBoost | 0.671 | 0.656 | 0.671 |
 
-Every fitted change model is worse than predicting no change. Adding the predicted change back onto IVC at t, the best rainfall model (random forest, rainfall inside IVC) reaches a level R² of 0.710, against 0.814 for persistence of that same index. Rainfall does not add predictive value beyond persistence. The small tree-model gains on the level are real on this sample and too small to change that conclusion.
+R² for the change (negative means worse than predicting the mean change):
+
+| Model | No rainfall | Rainfall as predictor | Rainfall inside IVC |
+|---|---:|---:|---:|
+| Persistence (predict 0) | −0.002 | −0.002 | 0.000 |
+| Linear regression | −1.409 | −1.551 | −0.494 |
+| Random forest | −0.654 | −0.593 | −0.398 |
+| XGBoost | −0.838 | −1.037 | −0.704 |
+
+Persistence still leads the level forecast. Putting rainfall inside IVC raises the linear model to 0.722, which is the largest rainfall gain on this sample and still short of persistence (0.814). No change model beats predicting no change. The best change model, put back onto the level (random forest with rainfall inside IVC), reaches 0.739 against 0.814 for persistence. These figures are provisional until the re-run brings station 352 into Popular and applies the 80% rule gauge by gauge.
 
 ## Historical allocation
 

@@ -1,4 +1,4 @@
-estacion_id,anio,precip_anual_mm,dias_ge_50mm,max_24h_mm,max_horario_mm,n_horas_validas,cobertura_horaria,lat,lon,unidad_territorial_oficial
-10,2019,65.0,1.0,65.0,60.0,2,0.00022831050228310502,6.3153338,-75.657627,Corregimiento de San Cristóbal
-10,2020,10.0,0.0,10.0,10.0,1,0.00011384335154826958,6.3153338,-75.657627,Corregimiento de San Cristóbal
-12,2019,6.0,0.0,6.0,6.0,1,0.00011415525114155251,6.258,-75.6005,La América
+estacion_id,anio,precip_anual_mm,dias_ge_50mm,max_24h_mm,max_horario_mm,n_horas_validas,cobertura_horaria,lat,lon,unidad_territorial_oficial,fuente_asignacion
+10,2019,65.0,0.0,,60.0,2,0.00022831050228310502,6.3153338,-75.657627,Corregimiento de San Cristóbal,oficial
+10,2020,10.0,0.0,,10.0,1,0.00011384335154826958,6.3153338,-75.657627,Corregimiento de San Cristóbal,oficial
+12,2019,6.0,0.0,,6.0,1,0.00011415525114155251,6.258,-75.6005,La América,oficial
