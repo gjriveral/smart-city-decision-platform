@@ -267,7 +267,7 @@ class RainQualityTests(unittest.TestCase):
         self.assertNotIn("274", str(row["estaciones_ids"]).split(","))
         later = self.raw[(self.raw["unidad_territorial"] == "Popular") & (self.raw["anio"] == 2019)].iloc[0]
         self.assertEqual(later["metodo_agregacion"], "estaciones_interior")
-        self.assertEqual(str(later["estaciones_ids"]), "274")
+        self.assertEqual(set(str(later["estaciones_ids"]).split(",")), {"274", "352"})
 
     def test_high_coverage_totals_match_medellin_climatology(self):
         interior = self.raw[
