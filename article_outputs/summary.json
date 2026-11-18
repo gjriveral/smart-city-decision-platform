@@ -1,0 +1,808 @@
+{
+  "elapsed_s": 58.4,
+  "python": "3.12.3",
+  "xgboost": "2.1.3",
+  "sklearn": "1.5.2",
+  "numpy": "2.1.3",
+  "pandas": "2.2.3",
+  "published_mean_R2": 0.9481053938302593,
+  "published_cv_t0": 0.187532,
+  "published_cv_t10": 0.058193,
+  "published_cv_reduction_pct": 68.9692,
+  "hypothesis": {
+    "n_rows": 378,
+    "n_complete_ivc_rows": 252,
+    "years_complete": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "n_territories": 21,
+    "climate_unique_values": [
+      0.5
+    ],
+    "coded_weight_max_abs_error": 1.1102230246251565e-16,
+    "uniform_weight_max_abs_error": 0.025396508414244845,
+    "coded_weights_normalized": {
+      "idx_desempleo": 0.18181818181818182,
+      "idx_habitat": 0.18181818181818182,
+      "idx_educacion": 0.18181818181818182,
+      "idx_riesgo_clima": 0.09090909090909091,
+      "idx_pobreza": 0.18181818181818182,
+      "idx_tejido_social": 0.18181818181818182
+    },
+    "year_2020_scaled_with_2024_in_denominator": 0.6363636363636364,
+    "year_2020_scaled_on_2013_2021_only": 0.875,
+    "saved_mean_R2": 0.9481053938302593,
+    "saved_best_params_match_last_fold": true,
+    "territories_without_official_station": [
+      "Santa Cruz",
+      "Aranjuez",
+      "Robledo"
+    ],
+    "stations_assigned": 49,
+    "global_year_scale_check": [
+      0.0,
+      0.09090909090909091,
+      0.18181818181818182,
+      0.2727272727272727,
+      0.36363636363636365,
+      0.45454545454545453,
+      0.5454545454545454,
+      0.6363636363636364,
+      0.7272727272727273,
+      0.8181818181818182,
+      0.9090909090909091,
+      1.0
+    ]
+  },
+  "contemporaneous_linear": {
+    "n": 252,
+    "R2_in_sample": 1.0,
+    "max_abs_residual": 2.220446049250313e-16,
+    "note": "Same-year reconstruction of IVC from its own subindices. Not a forecast."
+  },
+  "forecast_pooled": [
+    {
+      "model": "linear",
+      "n": 168,
+      "RMSE": 0.05280215953803092,
+      "MAE": 0.03878869782253413,
+      "R2": 0.48778065843003526
+    },
+    {
+      "model": "persistence",
+      "n": 168,
+      "RMSE": 0.031173915182570584,
+      "MAE": 0.023827631352949335,
+      "R2": 0.8214600936983457
+    },
+    {
+      "model": "random_forest",
+      "n": 168,
+      "RMSE": 0.04015028965496177,
+      "MAE": 0.030966028255585355,
+      "R2": 0.703837567059304
+    },
+    {
+      "model": "xgboost",
+      "n": 168,
+      "RMSE": 0.042597550780635464,
+      "MAE": 0.032101534549195766,
+      "R2": 0.6666335715313874
+    }
+  ],
+  "loto_pooled": [
+    {
+      "model": "linear",
+      "n": 231,
+      "RMSE": 0.03407638865210461,
+      "MAE": 0.025957703826138094,
+      "R2": 0.7992548291741565
+    },
+    {
+      "model": "persistence",
+      "n": 231,
+      "RMSE": 0.03541816639870208,
+      "MAE": 0.02615557126567832,
+      "R2": 0.7831346693138109
+    },
+    {
+      "model": "random_forest",
+      "n": 231,
+      "RMSE": 0.03748113661029316,
+      "MAE": 0.028626473528708795,
+      "R2": 0.757135808806606
+    },
+    {
+      "model": "xgboost",
+      "n": 231,
+      "RMSE": 0.03506162891451833,
+      "MAE": 0.026895585538780627,
+      "R2": 0.7874788493019481
+    }
+  ],
+  "selected_params_by_fold": {
+    "persistence": [
+      {
+        "test_year": 2017,
+        "train_years": [
+          2014,
+          2015,
+          2016
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2018,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2019,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2020,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2021,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2022,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2023,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2024,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "params": {}
+      }
+    ],
+    "linear": [
+      {
+        "test_year": 2017,
+        "train_years": [
+          2014,
+          2015,
+          2016
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2018,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2019,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2020,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2021,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2022,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2023,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "params": {}
+      },
+      {
+        "test_year": 2024,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "params": {}
+      }
+    ],
+    "random_forest": [
+      {
+        "test_year": 2017,
+        "train_years": [
+          2014,
+          2015,
+          2016
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 6,
+          "min_samples_leaf": 1
+        }
+      },
+      {
+        "test_year": 2018,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "min_samples_leaf": 1
+        }
+      },
+      {
+        "test_year": 2019,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "min_samples_leaf": 1
+        }
+      },
+      {
+        "test_year": 2020,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": null,
+          "min_samples_leaf": 3
+        }
+      },
+      {
+        "test_year": 2021,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "min_samples_leaf": 1
+        }
+      },
+      {
+        "test_year": 2022,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": null,
+          "min_samples_leaf": 3
+        }
+      },
+      {
+        "test_year": 2023,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "min_samples_leaf": 3
+        }
+      },
+      {
+        "test_year": 2024,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "min_samples_leaf": 1
+        }
+      }
+    ],
+    "xgboost": [
+      {
+        "test_year": 2017,
+        "train_years": [
+          2014,
+          2015,
+          2016
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "learning_rate": 0.05,
+          "min_child_weight": 1
+        }
+      },
+      {
+        "test_year": 2018,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017
+        ],
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 2,
+          "learning_rate": 0.05,
+          "min_child_weight": 1
+        }
+      },
+      {
+        "test_year": 2019,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 3,
+          "learning_rate": 0.1,
+          "min_child_weight": 5
+        }
+      },
+      {
+        "test_year": 2020,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019
+        ],
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 3,
+          "learning_rate": 0.05,
+          "min_child_weight": 1
+        }
+      },
+      {
+        "test_year": 2021,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 2,
+          "learning_rate": 0.05,
+          "min_child_weight": 5
+        }
+      },
+      {
+        "test_year": 2022,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021
+        ],
+        "params": {
+          "n_estimators": 200,
+          "max_depth": 3,
+          "learning_rate": 0.05,
+          "min_child_weight": 5
+        }
+      },
+      {
+        "test_year": 2023,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022
+        ],
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 2,
+          "learning_rate": 0.05,
+          "min_child_weight": 5
+        }
+      },
+      {
+        "test_year": 2024,
+        "train_years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "params": {
+          "n_estimators": 100,
+          "max_depth": 2,
+          "learning_rate": 0.05,
+          "min_child_weight": 1
+        }
+      }
+    ]
+  },
+  "abm": [
+    {
+      "specification": "focused_yearly_ivc",
+      "strategy": "focalizado",
+      "ranking_rule": "dynamic_ivc",
+      "reparto_top": "igual",
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.059367373105866525,
+      "cv_reduction_pct": 68.34284866718806,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.03300836975100941,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.20721365831814478,
+      "mean_ivc_reduction_pct": 42.65745406967745
+    },
+    {
+      "specification": "focused_yearly_ivc_proportional",
+      "strategy": "focalizado",
+      "ranking_rule": "dynamic_ivc",
+      "reparto_top": "proporcional",
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.057809007182326136,
+      "cv_reduction_pct": 69.17383416128165,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.032135477943255254,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.20719270810023196,
+      "mean_ivc_reduction_pct": 42.66325165484952
+    },
+    {
+      "specification": "focused_fixed_shap",
+      "strategy": "focalizado",
+      "ranking_rule": "fixed_shap",
+      "reparto_top": "proporcional",
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.425465699187788,
+      "cv_reduction_pct": -126.87599806866754,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.23059145075201654,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.24053805780091064,
+      "mean_ivc_reduction_pct": 33.43554310371681
+    },
+    {
+      "specification": "focused_fixed_shap_saturation_on",
+      "strategy": "focalizado",
+      "ranking_rule": "fixed_shap",
+      "reparto_top": "proporcional",
+      "saturation_active": true,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.25900704618365317,
+      "cv_reduction_pct": -38.1133243453258,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.14640971755790658,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.26721919200603,
+      "mean_ivc_reduction_pct": 26.052032885094395
+    },
+    {
+      "specification": "focused_yearly_ivc_saturation_on",
+      "strategy": "focalizado",
+      "ranking_rule": "dynamic_ivc",
+      "reparto_top": "igual",
+      "saturation_active": true,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.06322991517876317,
+      "cv_reduction_pct": 66.28318066212084,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.028858958062269464,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.24985627202715385,
+      "mean_ivc_reduction_pct": 30.856899728594534
+    },
+    {
+      "specification": "equal",
+      "strategy": "distribuido",
+      "ranking_rule": NaN,
+      "reparto_top": NaN,
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.18753226555900993,
+      "cv_reduction_pct": 2.960085352021216e-14,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.10619141835831397,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.21636024270800164,
+      "mean_ivc_reduction_pct": 40.126306076162145
+    },
+    {
+      "specification": "equal_saturation_on",
+      "strategy": "distribuido",
+      "ranking_rule": NaN,
+      "reparto_top": NaN,
+      "saturation_active": true,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.16980355276113268,
+      "cv_reduction_pct": 9.453686673613335,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.09569227112374297,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.263411958406007,
+      "mean_ivc_reduction_pct": 27.105614339853496
+    },
+    {
+      "specification": "adaptive",
+      "strategy": "adaptativo",
+      "ranking_rule": NaN,
+      "reparto_top": NaN,
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.12519798147099923,
+      "cv_reduction_pct": 33.239231607531714,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.0700622855542771,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.21396806763056353,
+      "mean_ivc_reduction_pct": 40.78829626717918
+    },
+    {
+      "specification": "adaptive_saturation_on",
+      "strategy": "adaptativo",
+      "ranking_rule": NaN,
+      "reparto_top": NaN,
+      "saturation_active": true,
+      "noise_sd": 0.0,
+      "cv_t0": 0.18753226555900998,
+      "cv_tH": 0.13982025539696916,
+      "cv_reduction_pct": 25.442027279848272,
+      "gini_t0": 0.1061914183583143,
+      "gini_tH": 0.07831744031409911,
+      "mean_ivc_t0": 0.3613611062367757,
+      "mean_ivc_tH": 0.26208947891439743,
+      "mean_ivc_reduction_pct": 27.471586069733867
+    },
+    {
+      "specification": "focused_yearly_ivc_observed_start",
+      "strategy": "focalizado",
+      "ranking_rule": "dynamic_ivc",
+      "reparto_top": "igual",
+      "saturation_active": false,
+      "noise_sd": 0.0,
+      "cv_t0": 0.21056949341693154,
+      "cv_tH": 0.05804749090250046,
+      "cv_reduction_pct": 72.43309562056773,
+      "gini_t0": 0.11922905270383242,
+      "gini_tH": 0.03163970224011133,
+      "mean_ivc_t0": 0.35864029959970506,
+      "mean_ivc_tH": 0.2046825487003892,
+      "mean_ivc_reduction_pct": 42.928179312574514
+    }
+  ],
+  "historical_investment": {
+    "state": "missing",
+    "message": "No historical investment file at /workspace/data/external/inversion_historica_por_territorio.csv. Scenario skipped.",
+    "path": "/workspace/data/external/inversion_historica_por_territorio.csv",
+    "rows": 0
+  },
+  "historical_rows_loaded": 0,
+  "legacy_mean_R2": 0.9589026856446553,
+  "legacy_best_test_fold": 5,
+  "legacy_hyperparameters_from_best_test_fold": {
+    "colsample_bytree": 0.7,
+    "gamma": 0.0,
+    "learning_rate": 0.1,
+    "max_depth": 2,
+    "min_child_weight": 3,
+    "n_estimators": 200,
+    "reg_alpha": 0.0,
+    "reg_lambda": 2.0,
+    "subsample": 0.7
+  },
+  "sobol_n": 128,
+  "predictor_columns": [
+    "idx_desempleo",
+    "idx_habitat",
+    "idx_educacion",
+    "idx_pobreza",
+    "idx_tejido_social",
+    "anio"
+  ],
+  "clima_uso": "ninguno"
+}

@@ -52,6 +52,11 @@ ModeloDatos/ModeloDatos/data/raw/
 !evidencia/resultados_simulacion_escenarios.csv
 !Datos_*_Beta/**/*.csv
 !Datos_*_Beta/**/*.pkl
+!models/ivc_predictions_oos.csv
+!data/fixtures/**
+!data/external/**
+!article_outputs/**
+!METHODS_CHANGES.md
 
 # ── Modelos serializados: excluir en general; permitir el de producción ──────
 *.pkl

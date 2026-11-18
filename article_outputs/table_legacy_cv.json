@@ -1,0 +1,171 @@
+{
+  "protocol": "legacy_same_year_timeseries_split_nontemporal_inner_grid",
+  "xgboost_version": "2.1.3",
+  "folds": [
+    {
+      "fold": 1,
+      "train_years": [
+        2013,
+        2014
+      ],
+      "test_years": [
+        2015,
+        2016
+      ],
+      "n": 42,
+      "RMSE": 0.014940032737858966,
+      "MAE": 0.012061004430543315,
+      "R2": 0.9634092082662555,
+      "best_params": {
+        "colsample_bytree": 0.7,
+        "gamma": 0.0,
+        "learning_rate": 0.1,
+        "max_depth": 3,
+        "min_child_weight": 3,
+        "n_estimators": 200,
+        "reg_alpha": 0.0,
+        "reg_lambda": 2.0,
+        "subsample": 0.8
+      }
+    },
+    {
+      "fold": 2,
+      "train_years": [
+        2013,
+        2014,
+        2015,
+        2016
+      ],
+      "test_years": [
+        2017,
+        2018
+      ],
+      "n": 42,
+      "RMSE": 0.012499943230359488,
+      "MAE": 0.009740182599869184,
+      "R2": 0.9676026450274942,
+      "best_params": {
+        "colsample_bytree": 0.7,
+        "gamma": 0.0,
+        "learning_rate": 0.05,
+        "max_depth": 2,
+        "min_child_weight": 3,
+        "n_estimators": 200,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "subsample": 0.8
+      }
+    },
+    {
+      "fold": 3,
+      "train_years": [
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "test_years": [
+        2019,
+        2020
+      ],
+      "n": 42,
+      "RMSE": 0.014462675786367486,
+      "MAE": 0.011225938130021392,
+      "R2": 0.9564027506761841,
+      "best_params": {
+        "colsample_bytree": 0.7,
+        "gamma": 0.0,
+        "learning_rate": 0.1,
+        "max_depth": 2,
+        "min_child_weight": 3,
+        "n_estimators": 200,
+        "reg_alpha": 0.0,
+        "reg_lambda": 2.0,
+        "subsample": 0.8
+      }
+    },
+    {
+      "fold": 4,
+      "train_years": [
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020
+      ],
+      "test_years": [
+        2021,
+        2022
+      ],
+      "n": 42,
+      "RMSE": 0.020896231163684015,
+      "MAE": 0.016876261055841817,
+      "R2": 0.9245197879171687,
+      "best_params": {
+        "colsample_bytree": 0.7,
+        "gamma": 0.0,
+        "learning_rate": 0.1,
+        "max_depth": 2,
+        "min_child_weight": 3,
+        "n_estimators": 200,
+        "reg_alpha": 0.0,
+        "reg_lambda": 1.0,
+        "subsample": 0.7
+      }
+    },
+    {
+      "fold": 5,
+      "train_years": [
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ],
+      "test_years": [
+        2023,
+        2024
+      ],
+      "n": 42,
+      "RMSE": 0.01034776064594597,
+      "MAE": 0.008053130899850063,
+      "R2": 0.9825790363361744,
+      "best_params": {
+        "colsample_bytree": 0.7,
+        "gamma": 0.0,
+        "learning_rate": 0.1,
+        "max_depth": 2,
+        "min_child_weight": 3,
+        "n_estimators": 200,
+        "reg_alpha": 0.0,
+        "reg_lambda": 2.0,
+        "subsample": 0.7
+      }
+    }
+  ],
+  "mean_R2": 0.9589026856446553,
+  "mean_RMSE": 0.014629328712843188,
+  "hyperparameters_from_best_test_fold": {
+    "colsample_bytree": 0.7,
+    "gamma": 0.0,
+    "learning_rate": 0.1,
+    "max_depth": 2,
+    "min_child_weight": 3,
+    "n_estimators": 200,
+    "reg_alpha": 0.0,
+    "reg_lambda": 2.0,
+    "subsample": 0.7
+  },
+  "best_test_fold": 5,
+  "note": "mean_R2 averages outer test folds. Each fold's hyperparameters come from GridSearchCV with an integer cv (KFold, not a temporal inner split). hyperparameters_from_best_test_fold is chosen by comparing those outer test scores, which is how the saved model was specified."
+}
