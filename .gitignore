@@ -59,6 +59,8 @@ ModeloDatos/ModeloDatos/data/raw/
 !data/external/**
 !article_outputs/**
 !METHODS_CHANGES.md
+!manuscript_assets/README.md
+!manuscript_assets/**/*.csv
 
 # ── Modelos serializados: excluir en general; permitir el de producción ──────
 *.pkl
