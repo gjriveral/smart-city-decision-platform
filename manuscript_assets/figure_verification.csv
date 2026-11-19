@@ -1,0 +1,7 @@
+stem,target_width_mm,pdf_width_mm,pdf_height_mm,png_px,png_dpi,tif_px,tif_dpi,tif_compression,eps,svg,number
+fig_01_territories,190.0,190.0,120.0,4488x2834,600,4488x2834,600,tiff_lzw,True,True,1
+fig_02_forecast_r2,190.0,190.0,80.0,4488x1889,600,4488x1889,600,tiff_lzw,True,True,2
+fig_03_forecast_by_year,90.0,90.0,95.0,2125x2244,600,2125x2244,600,tiff_lzw,True,True,3
+fig_04_abm_cv,190.0,190.0,85.0,4488x2007,600,4488x2007,600,tiff_lzw,True,True,4
+fig_05_rain_forecast,190.0,190.0,100.0,4488x2362,600,4488x2362,600,tiff_lzw,True,True,5
+fig_06_sobol_cv,190.0,190.0,95.0,4488x2244,600,4488x2244,600,tiff_lzw,True,True,6

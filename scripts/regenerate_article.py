@@ -39,9 +39,25 @@ from abm.dispersion import coefficient_of_variation, gini
 from abm.historical_allocation import load_historical_allocation
 from bigdata import siata_territory_annual as siata
 from ml.clima_hook import DEFAULT_WEIGHTS, SUBINDEX_COLS, composite_ivc
+from elsevier_assets import (
+    BLUE,
+    DOUBLE_MM,
+    GREEN,
+    ORANGE,
+    SINGLE_MM,
+    VERMILLION,
+    apply_elsevier_style,
+    export_table,
+    new_figure,
+    panel_letter,
+    save_figure,
+    verify_figure,
+)
 from ml.lagged_forecast import legacy_contemporaneous_cv, run_climate_comparison, run_lagged_suite
 
 OUT = ROOT / "article_outputs"
+ASSETS = ROOT / "manuscript_assets"
+FIG_DIRS = [OUT, ASSETS / "figures"]
 PANEL = ROOT / "ModeloDatos/ModeloDatos/data/processed/indices_comunas.csv"
 OOS = ROOT / "models/ivc_predictions_oos.csv"
 SHAP = ROOT / "models/shap_values.csv"
@@ -83,26 +99,8 @@ def _sensitivity():
     return mod
 
 
-def save_figure(fig: plt.Figure, stem: str) -> None:
-    fig.savefig(OUT / f"{stem}.png", dpi=300, bbox_inches="tight", facecolor="white")
-    fig.savefig(OUT / f"{stem}.pdf", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-
-
 def apply_style() -> None:
-    import logging
-    logging.getLogger("fontTools").setLevel(logging.ERROR)
-    plt.rcParams.update({
-        "font.family": "DejaVu Sans",
-        "font.size": 10,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "axes.unicode_minus": False,
-        "pdf.fonttype": 42,
-        "ps.fonttype": 42,
-        "figure.facecolor": "white",
-        "savefig.facecolor": "white",
-    })
+    apply_elsevier_style()
 
 
 def terminal_metrics(df: pd.DataFrame, ivc0: dict[str, float], horizon: int) -> dict:
@@ -289,50 +287,65 @@ def run_abm_grid(urban, predicted, observed, shap) -> tuple[pd.DataFrame, pd.Dat
 
 def plot_forecast(pooled: pd.DataFrame, by_year: pd.DataFrame, loto: pd.DataFrame) -> None:
     order = ["persistence", "linear", "random_forest", "xgboost"]
-    fig, ax = plt.subplots(figsize=(7.2, 4.2))
+    fig = new_figure(DOUBLE_MM, 80)
+    ax = fig.add_subplot(111)
     x = np.arange(len(order))
     width = 0.36
     temp = pooled.set_index("model").loc[order, "R2"]
     spat = loto.set_index("model").loc[order, "R2"]
-    ax.bar(x - width / 2, temp, width, label="Temporal walk-forward", color="#1f4e79")
-    ax.bar(x + width / 2, spat, width, label="Leave-one-territory-out", color="#e07a3d")
-    ax.axhline(0, color="#444444", linewidth=0.6)
+    ax.bar(x - width / 2, temp, width, label="Temporal walk-forward", color=BLUE, edgecolor="black", linewidth=0.3)
+    ax.bar(
+        x + width / 2, spat, width, label="Leave-one-territory-out",
+        color=ORANGE, edgecolor="black", linewidth=0.3, hatch="///",
+    )
+    ax.axhline(0, color="black", linewidth=0.5)
     ax.set_xticks(x)
-    ax.set_xticklabels([MODEL_LABELS[m] for m in order], rotation=15, ha="right")
-    ax.set_ylabel("Out-of-sample R²")
-    ax.set_title("IVC at t+1 predicted from subindices at t")
-    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.28), ncol=2)
-    fig.tight_layout()
-    save_figure(fig, "fig_forecast_r2")
-
-    fig, ax = plt.subplots(figsize=(7.2, 4.2))
-    for model, color in zip(order, ("#4d4d4d", "#1f4e79", "#2a9d8f", "#e07a3d")):
-        g = by_year[by_year["model"] == model].sort_values("anio_objetivo")
-        ax.plot(g["anio_objetivo"], g["R2"], marker="o", label=MODEL_LABELS[model], color=color)
-    ax.axhline(0, color="#444444", linewidth=0.6)
-    ax.set_xlabel("Target year (IVC at t+1)")
-    ax.set_ylabel("R² in that target year")
-    ax.set_title("Walk-forward R² by target year")
+    ax.set_xticklabels([MODEL_LABELS[m] for m in order])
+    ax.set_ylabel("Out-of-sample R² (dimensionless)")
+    ax.set_xlabel("Model")
     ax.legend(frameon=False, ncol=2)
-    save_figure(fig, "fig_forecast_by_year")
+    save_figure(fig, "fig_02_forecast_r2", FIG_DIRS)
+
+    fig = new_figure(SINGLE_MM, 95)
+    ax = fig.add_subplot(111)
+    styles = [
+        ("persistence", BLUE, "o"),
+        ("linear", VERMILLION, "s"),
+        ("random_forest", GREEN, "D"),
+        ("xgboost", "black", "^"),
+    ]
+    for model, color, marker in styles:
+        g = by_year[by_year["model"] == model].sort_values("anio_objetivo")
+        ax.plot(
+            g["anio_objetivo"], g["R2"], marker=marker, label=MODEL_LABELS[model],
+            color=color, markerfacecolor="white", markeredgewidth=0.6,
+        )
+    ax.axhline(0, color="black", linewidth=0.5)
+    ax.set_xlabel("Target year")
+    ax.set_ylabel("R² in the target year (dimensionless)")
+    fig.legend(frameon=False, ncol=2, loc="outside lower center")
+    save_figure(fig, "fig_03_forecast_by_year", FIG_DIRS)
 
 
 def plot_abm(paths: pd.DataFrame) -> None:
     show = [
-        ("focused_yearly_ivc", "Focused, yearly IVC rank", "#1f4e79"),
-        ("focused_fixed_shap", "Focused, fixed SHAP rank", "#b00020"),
-        ("equal", "Equal allocation", "#4d4d4d"),
-        ("adaptive", "Adaptive allocation", "#2a9d8f"),
+        ("focused_yearly_ivc", "Focused, yearly IVC rank", BLUE, "o"),
+        ("focused_fixed_shap", "Focused, fixed SHAP rank", VERMILLION, "s"),
+        ("equal", "Equal allocation", "black", "D"),
+        ("adaptive", "Adaptive allocation", GREEN, "^"),
     ]
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
-    for key, label, color in show:
+    fig = new_figure(DOUBLE_MM, 85)
+    ax = fig.add_subplot(111)
+    for key, label, color, marker in show:
         g = paths[paths["specification"] == key]
-        ax.plot(g["year"], g["cv"], marker="o", label=label, color=color)
+        ax.plot(
+            g["year"], g["cv"], marker=marker, label=label, color=color,
+            markerfacecolor="white", markeredgewidth=0.6,
+        )
     ax.set_xlabel("Simulation year")
-    ax.set_ylabel("Coefficient of variation of IVC")
-    ax.set_title("Dispersion of IVC across 21 territories")
-    ax.legend(frameon=False, fontsize=8)
-    save_figure(fig, "fig_abm_cv_paths")
+    ax.set_ylabel("Coefficient of variation of IVC (dimensionless)")
+    fig.legend(frameon=False, ncol=2, loc="outside lower center")
+    save_figure(fig, "fig_04_abm_cv", FIG_DIRS)
 
 
 SOBOL_LABELS = {
@@ -354,30 +367,39 @@ def plot_rain(metrics: pd.DataFrame) -> None:
         "predictor": "Rainfall as predictor",
         "subindice": "Rainfall inside IVC",
     }
-    colors = {"ninguno": "#4d4d4d", "predictor": "#1f4e79", "subindice": "#e07a3d"}
-    fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.4), sharey=False)
-    for ax, target, title, column in (
-        (axes[0], "level", "IVC level at t+1", "R2"),
-        (axes[1], "change", "Change in IVC (t+1 minus t)", "R2"),
+    colors = {
+        "ninguno": ("black", ""),
+        "predictor": (BLUE, "///"),
+        "subindice": (ORANGE, "..."),
+    }
+    fig = new_figure(DOUBLE_MM, 100)
+    axes = [fig.add_subplot(121), fig.add_subplot(122)]
+    for ax, target, letter, ylabel in (
+        (axes[0], "level", "(a)", "Walk-forward R² of IVC at t+1 (dimensionless)"),
+        (axes[1], "change", "(b)", "Walk-forward R² of the IVC change (dimensionless)"),
     ):
         sub = metrics[metrics["target"] == target]
         x = np.arange(len(order))
         width = 0.25
         for i, uso in enumerate(usos):
             vals = [
-                float(sub[(sub["clima_uso"] == uso) & (sub["model"] == m)][column].iloc[0])
+                float(sub[(sub["clima_uso"] == uso) & (sub["model"] == m)]["R2"].iloc[0])
                 for m in order
             ]
-            ax.bar(x + (i - 1) * width, vals, width, label=uso_labels[uso], color=colors[uso])
-        ax.axhline(0, color="#444444", linewidth=0.6)
+            color, hatch = colors[uso]
+            ax.bar(
+                x + (i - 1) * width, vals, width,
+                label=uso_labels[uso] if ax is axes[0] else None,
+                color=color, edgecolor="black", linewidth=0.3, hatch=hatch,
+            )
+        ax.axhline(0, color="black", linewidth=0.5)
         ax.set_xticks(x)
-        ax.set_xticklabels([MODEL_LABELS[m] for m in order], rotation=15, ha="right")
-        ax.set_ylabel("Walk-forward R²")
-        ax.set_title(title)
-    axes[1].legend(frameon=False, fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.32), ncol=1)
-    fig.suptitle("Does rainfall improve the IVC forecast?", y=1.02)
-    fig.tight_layout()
-    save_figure(fig, "fig_rain_forecast_r2")
+        ax.set_xticklabels([MODEL_LABELS[m] for m in order], rotation=20, ha="right")
+        ax.set_ylabel(ylabel)
+        ax.set_xlabel("Model")
+        panel_letter(ax, letter)
+    fig.legend(frameon=False, ncol=3, loc="outside lower center")
+    save_figure(fig, "fig_05_rain_forecast", FIG_DIRS)
 
 
 def rain_qc_table(raw: pd.DataFrame, adjusted: pd.DataFrame) -> pd.DataFrame:
@@ -402,20 +424,73 @@ def rain_qc_table(raw: pd.DataFrame, adjusted: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_sobol(indices: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(9.6, 4.6), sharey=True)
+    fig = new_figure(DOUBLE_MM, 95)
+    axes = [fig.add_subplot(131), fig.add_subplot(132), fig.add_subplot(133)]
     sub = indices[indices["output"] == "cv"].copy()
     order = list(SOBOL_LABELS)
-    sub["label"] = sub["parameter"].map(SOBOL_LABELS)
-    for ax, scenario in zip(axes, ("focalizado", "distribuido", "adaptativo")):
+    letters = ("(a)", "(b)", "(c)")
+    for ax, scenario, letter in zip(axes, ("focalizado", "distribuido", "adaptativo"), letters):
         g = sub[sub["scenario"] == scenario].set_index("parameter").loc[order]
-        ax.barh(list(SOBOL_LABELS.values()), g["ST"], xerr=g["ST_conf"], color="#1f4e79", alpha=0.9, capsize=2)
-        ax.axvline(0, color="#444444", linewidth=0.6)
-        ax.set_title(SCENARIO_LABELS[scenario])
-        ax.set_xlabel("Total-order index")
+        ax.barh(
+            list(SOBOL_LABELS.values()), g["ST"], xerr=g["ST_conf"],
+            color=BLUE, edgecolor="black", linewidth=0.3, capsize=2, ecolor="black",
+        )
+        ax.axvline(0, color="black", linewidth=0.5)
+        panel_letter(ax, letter)
     axes[0].set_ylabel("Parameter")
-    fig.suptitle("Sobol total-order indices for the CV of IVC", y=1.02)
-    fig.tight_layout()
-    save_figure(fig, "fig_sobol_cv")
+    axes[1].set_xlabel("Total-order Sobol index (dimensionless)")
+    save_figure(fig, "fig_06_sobol_cv", FIG_DIRS)
+
+
+def plot_territory_map() -> None:
+    """Numbered boundaries of the 21 study territories. Names are listed beside the map."""
+    from matplotlib.patches import Polygon as MplPolygon
+
+    from bigdata.siata_territory_annual import load_territory_polygons
+    from config_loader import get_config
+
+    cfg = get_config()
+    polygons = {p["nombre"]: p for p in load_territory_polygons(ROOT / "data" / "geo" / "comunas.geojson")}
+    names = [t.nombre for t in cfg.territorios]
+    candidates = []
+    fig = new_figure(DOUBLE_MM, 120)
+    ax = fig.add_subplot(121)
+    key = fig.add_subplot(122)
+    key.axis("off")
+    for i, name in enumerate(names, start=1):
+        poly = polygons[name]
+        ring = max(poly["rings"], key=len)
+        ax.add_patch(MplPolygon(
+            ring, closed=True, facecolor="#F2F2F2", edgecolor="black", linewidth=0.4, zorder=1,
+        ))
+        for extra in poly["rings"]:
+            if extra is ring:
+                continue
+            ax.add_patch(MplPolygon(
+                extra, closed=True, facecolor="#F2F2F2", edgecolor="black", linewidth=0.4, zorder=1,
+            ))
+        xs = [pt[0] for pt in ring]
+        ys = [pt[1] for pt in ring]
+        candidates.append((
+            max(max(xs) - min(xs), max(ys) - min(ys)),
+            i,
+            float(np.mean(xs)),
+            float(np.mean(ys)),
+        ))
+    # Label the largest polygons first and skip a numeral that would sit on another.
+    placed = []
+    for _span, i, cx, cy in sorted(candidates, reverse=True):
+        if any((cx - px) ** 2 + (cy - py) ** 2 < 0.0012 for px, py in placed):
+            continue
+        ax.text(cx, cy, str(i), ha="center", va="center", fontsize=7, zorder=2)
+        placed.append((cx, cy))
+    ax.set_aspect(1.0 / np.cos(np.deg2rad(6.25)))
+    ax.autoscale_view()
+    ax.set_xlabel("Longitude (degrees)")
+    ax.set_ylabel("Latitude (degrees)")
+    lines = [f"{i}  {name}" for i, name in enumerate(names, start=1)]
+    key.text(0.0, 1.0, "\n".join(lines), va="top", ha="left", fontsize=7, linespacing=1.15)
+    save_figure(fig, "fig_01_territories", FIG_DIRS)
 
 
 def main() -> None:
@@ -427,6 +502,9 @@ def main() -> None:
     apply_style()
     started = time.time()
     panel = pd.read_csv(PANEL, encoding="utf-8-sig")
+
+    print("Territory map...", flush=True)
+    plot_territory_map()
 
     print("Hypothesis checks...", flush=True)
     checks = hypothesis_block(panel)
@@ -535,7 +613,113 @@ def main() -> None:
         "rain_qc_by_year": qc.to_dict(orient="records"),
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
-    print(f"Done in {summary['elapsed_s']}s. Outputs in {OUT}")
+    export_manuscript_assets()
+    print(f"Done in {summary['elapsed_s']}s. Outputs in {OUT} and {ASSETS}")
+
+
+FIGURES = [
+    ("1", "fig_01_territories", DOUBLE_MM, "plot_territory_map",
+     "The 21 study territories of Medellín. Every territory is numbered in the key. Numerals are drawn on the map only where the polygon is large enough to hold 7 pt type. Longitude is negative west of Greenwich."),
+    ("2", "fig_02_forecast_r2", DOUBLE_MM, "plot_forecast",
+     "Out-of-sample R² for IVC at t+1. Solid blue bars are the temporal walk-forward test. Hatched orange bars are leave-one-territory-out. R² is dimensionless."),
+    ("3", "fig_03_forecast_by_year", SINGLE_MM, "plot_forecast",
+     "Walk-forward R² by target year for IVC at t+1. The horizontal line is R² = 0."),
+    ("4", "fig_04_abm_cv", DOUBLE_MM, "plot_abm",
+     "Coefficient of variation of IVC across the 21 territories over a 10-year simulation. Saturation is off and the noise term is zero."),
+    ("5", "fig_05_rain_forecast", DOUBLE_MM, "plot_rain",
+     "Walk-forward R² with rainfall unused (black), used as a predictor (hatched blue) or placed inside IVC (dotted orange). (a) Level of IVC at t+1. (b) Change in IVC from t to t+1. R² is dimensionless."),
+    ("6", "fig_06_sobol_cv", DOUBLE_MM, "plot_sobol",
+     "Total-order Sobol indices for the coefficient of variation of IVC at year 10. (a) Focused allocation. (b) Equal allocation. (c) Adaptive allocation. Whiskers are the SALib confidence intervals. The index is dimensionless."),
+]
+
+TABLES = [
+    ("1", "table_forecast_metrics.csv", "table_01_forecast_metrics",
+     "Walk-forward forecast of IVC at t+1 from subindices at t. R², RMSE and MAE are computed on the pooled out-of-sample rows.",
+     "ml.lagged_forecast.run_lagged_suite"),
+    ("2", "table_loto_metrics.csv", "table_02_loto_metrics",
+     "Leave-one-territory-out R², RMSE and MAE for the same lagged IVC task. This is a spatial check, not a temporal forecast.",
+     "ml.lagged_forecast.leave_one_territory_out"),
+    ("3", "table_forecast_by_year.csv", "table_03_forecast_by_year",
+     "Walk-forward R², RMSE and MAE by target year.",
+     "ml.lagged_forecast.walk_forward"),
+    ("4", "table_rain_forecast.csv", "table_04_rain_forecast",
+     "Walk-forward comparison of no rainfall, rainfall as a predictor, and rainfall inside IVC, for the level of IVC and for the annual change.",
+     "ml.lagged_forecast.run_climate_comparison"),
+    ("5", "table_abm_dispersion.csv", "table_05_abm_dispersion",
+     "Change in the coefficient of variation and in mean IVC after 10 simulated years under each allocation rule.",
+     "scripts/regenerate_article.py::run_abm_grid"),
+    ("6", "table_abm_monte_carlo.csv", "table_06_abm_monte_carlo",
+     "Monte Carlo distribution of the percentage change in the coefficient of variation of IVC. Thirty replications, noise standard deviation 0.05.",
+     "scripts/regenerate_article.py::run_abm_grid"),
+    ("7", "table_sobol_indices.csv", "table_07_sobol_indices",
+     "First-order and total-order Sobol indices for mean IVC, the coefficient of variation and the Gini coefficient.",
+     "abm/05_sensitivity_analysis.py::run_sobol_scenarios"),
+    ("8", "table_rain_qc_by_year.csv", "table_08_rain_qc",
+     "Rainfall coverage and annual totals by calendar year after the station-level 80 percent rule.",
+     "scripts/regenerate_article.py::rain_qc_table"),
+    ("S1", "table_loto_by_territory.csv", "table_s1_loto_by_territory",
+     "Leave-one-territory-out metrics for each held-out territory.",
+     "ml.lagged_forecast.leave_one_territory_out"),
+    ("S2", "table_legacy_cv_folds.csv", "table_s2_legacy_cv",
+     "Re-run of the legacy same-year XGBoost grid on the pinned package versions.",
+     "ml.lagged_forecast.legacy_contemporaneous_cv"),
+    ("S3", "table_circularity_linear.csv", "table_s3_circularity",
+     "In-sample linear reconstruction of IVC from the six same-year subindices.",
+     "ml.lagged_forecast.contemporaneous_linear_r2"),
+]
+
+
+def export_manuscript_assets() -> None:
+    tables = ASSETS / "tables"
+    figures = ASSETS / "figures"
+    tables.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "# Manuscript assets",
+        "",
+        "Files for Socio-Economic Planning Sciences (Elsevier).",
+        "Figure files contain no titles; the caption in this list is the figure caption.",
+        "CSV files are the unrounded code output. DOCX files are three-line Word tables",
+        "with R², RMSE and MAE rounded to 3 decimal places and percentages to 2.",
+        "Vector fonts are embedded (PDF/EPS font type 42; SVG text stored as paths).",
+        "PNG and TIFF are 600 dpi. TIFF uses LZW compression.",
+        "One-column width is 90 mm. Two-column width is 190 mm.",
+        "The smallest type is 7 pt DejaVu Sans.",
+        "",
+        "## Figures",
+        "",
+        "| Number | File stem | Width (mm) | Generator | Caption |",
+        "|---|---|---:|---|---|",
+    ]
+    checks = []
+    for number, stem, width, generator, caption in FIGURES:
+        lines.append(
+            f"| {number} | `{stem}` | {width:.0f} | `scripts/regenerate_article.py::{generator}` | {caption} |"
+        )
+        info = verify_figure(figures, stem, width)
+        info["number"] = number
+        checks.append(info)
+        if abs(info["pdf_width_mm"] - width) > 1.0:
+            raise RuntimeError(f"{stem} PDF width {info['pdf_width_mm']} mm is not {width} mm")
+        if info["png_dpi"] != "600" or info["tif_dpi"] != "600":
+            raise RuntimeError(f"{stem} raster DPI is png={info['png_dpi']} tif={info['tif_dpi']}")
+    pd.DataFrame(checks).to_csv(ASSETS / "figure_verification.csv", index=False)
+
+    lines += [
+        "",
+        "## Tables",
+        "",
+        "| Number | CSV | DOCX | Generator | Title |",
+        "|---|---|---|---|---|",
+    ]
+    for number, source_name, stem, title, generator in TABLES:
+        source = OUT / source_name
+        export_table(source, tables / f"{stem}.csv", tables / f"{stem}.docx", f"Table {number}. {title}")
+        lines.append(
+            f"| {number} | `{stem}.csv` | `{stem}.docx` | `{generator}` | {title} |"
+        )
+    text = "\n".join(lines) + "\n"
+    (ASSETS / "README.md").write_text(text, encoding="utf-8")
+    print(f"Manuscript assets written to {ASSETS}")
 
 
 if __name__ == "__main__":
