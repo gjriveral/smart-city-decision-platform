@@ -61,6 +61,12 @@ ModeloDatos/ModeloDatos/data/raw/
 !METHODS_CHANGES.md
 !manuscript_assets/README.md
 !manuscript_assets/**/*.csv
+!manuscript_assets/**/*.pdf
+!manuscript_assets/**/*.docx
+!manuscript_assets/**/*.eps
+!manuscript_assets/**/*.svg
+!manuscript_assets/**/*.tif
+!manuscript_assets/**/*.png
 
 # ── Modelos serializados: excluir en general; permitir el de producción ──────
 *.pkl
