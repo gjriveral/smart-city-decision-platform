@@ -20,6 +20,8 @@ En el repositorio los mismos productos están en `article_outputs/` (`table_sobo
 
 https://github.com/gjriveral/smart-city-decision-platform/pull/5
 
+Esta carpeta es `Entregables_UrbanScience/Prompt1_Sobol`, dentro del directorio de trabajo. Ese directorio se sincroniza solo con Google Drive; no hace falta subir nada por el conector. Los nombres son `_v2`, así que no reemplazan archivos que ya estuvieran en Drive.
+
 ## Problemas pendientes
 
-No hay acceso de escritura a la carpeta de Google Drive: la autenticación del conector se rechazó. Los archivos quedaron en `deliverables/Prompt1/` del repositorio, con los nombres `_v2`. No se borró ni se reemplazó ningún archivo de Drive. El intervalo del ST del tamaño del conjunto prioritario todavía llega a 1,11: el estimador de Jansen no está acotado y la estimación puntual (0,95) ya está dentro de [0, 1].
+El intervalo del ST del tamaño del conjunto prioritario todavía llega a 1,11: el estimador de Jansen no está acotado y la estimación puntual (0,95) ya está dentro de [0, 1].
