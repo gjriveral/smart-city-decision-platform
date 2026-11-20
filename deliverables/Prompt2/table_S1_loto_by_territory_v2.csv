@@ -1,0 +1,85 @@
+Territory,Model,Territory-years,RMSE,R²
+Aranjuez,Persistence,11,0.024,-0.982
+Aranjuez,Linear regression,11,0.024,-0.968
+Aranjuez,Random forest,11,0.027,-1.460
+Aranjuez,XGBoost,11,0.021,-0.527
+Belén,Persistence,11,0.035,-0.917
+Belén,Linear regression,11,0.034,-0.812
+Belén,Random forest,11,0.030,-0.347
+Belén,XGBoost,11,0.022,0.263
+Buenos Aires,Persistence,11,0.023,-0.514
+Buenos Aires,Linear regression,11,0.021,-0.231
+Buenos Aires,Random forest,11,0.023,-0.506
+Buenos Aires,XGBoost,11,0.022,-0.401
+Castilla,Persistence,11,0.024,-0.603
+Castilla,Linear regression,11,0.023,-0.419
+Castilla,Random forest,11,0.029,-1.365
+Castilla,XGBoost,11,0.024,-0.612
+Corregimiento de Altavista,Persistence,11,0.054,-0.602
+Corregimiento de Altavista,Linear regression,11,0.048,-0.293
+Corregimiento de Altavista,Random forest,11,0.059,-0.912
+Corregimiento de Altavista,XGBoost,11,0.061,-1.023
+Corregimiento de San Antonio de Prado,Persistence,11,0.034,-0.489
+Corregimiento de San Antonio de Prado,Linear regression,11,0.030,-0.174
+Corregimiento de San Antonio de Prado,Random forest,11,0.039,-0.935
+Corregimiento de San Antonio de Prado,XGBoost,11,0.035,-0.609
+Corregimiento de San Cristóbal,Persistence,11,0.038,-0.342
+Corregimiento de San Cristóbal,Linear regression,11,0.035,-0.153
+Corregimiento de San Cristóbal,Random forest,11,0.026,0.359
+Corregimiento de San Cristóbal,XGBoost,11,0.031,0.122
+Corregimiento de San Sebastián de Palmitas,Persistence,11,0.057,-0.682
+Corregimiento de San Sebastián de Palmitas,Linear regression,11,0.051,-0.355
+Corregimiento de San Sebastián de Palmitas,Random forest,11,0.051,-0.307
+Corregimiento de San Sebastián de Palmitas,XGBoost,11,0.048,-0.185
+Corregimiento de Santa Elena,Persistence,11,0.035,-0.988
+Corregimiento de Santa Elena,Linear regression,11,0.028,-0.326
+Corregimiento de Santa Elena,Random forest,11,0.031,-0.537
+Corregimiento de Santa Elena,XGBoost,11,0.031,-0.586
+Doce de Octubre,Persistence,11,0.019,-0.826
+Doce de Octubre,Linear regression,11,0.018,-0.655
+Doce de Octubre,Random forest,11,0.030,-3.708
+Doce de Octubre,XGBoost,11,0.023,-1.806
+El Poblado,Persistence,11,0.009,-0.502
+El Poblado,Linear regression,11,0.031,-17.020
+El Poblado,Random forest,11,0.049,-45.904
+El Poblado,XGBoost,11,0.048,-44.068
+Guayabal,Persistence,11,0.029,-0.454
+Guayabal,Linear regression,11,0.027,-0.307
+Guayabal,Random forest,11,0.029,-0.448
+Guayabal,XGBoost,11,0.026,-0.161
+La América,Persistence,11,0.028,-0.708
+La América,Linear regression,11,0.031,-1.182
+La América,Random forest,11,0.037,-1.984
+La América,XGBoost,11,0.033,-1.329
+La Candelaria,Persistence,11,0.025,0.179
+La Candelaria,Linear regression,11,0.026,0.153
+La Candelaria,Random forest,11,0.022,0.403
+La Candelaria,XGBoost,11,0.026,0.149
+Laureles Estadio,Persistence,11,0.014,-0.235
+Laureles Estadio,Linear regression,11,0.022,-1.956
+Laureles Estadio,Random forest,11,0.019,-1.073
+Laureles Estadio,XGBoost,11,0.013,-0.040
+Manrique,Persistence,11,0.036,-1.346
+Manrique,Linear regression,11,0.035,-1.271
+Manrique,Random forest,11,0.036,-1.327
+Manrique,XGBoost,11,0.023,0.011
+Popular,Persistence,11,0.064,-1.379
+Popular,Linear regression,11,0.060,-1.111
+Popular,Random forest,11,0.055,-0.784
+Popular,XGBoost,11,0.058,-0.993
+Robledo,Persistence,11,0.018,-1.289
+Robledo,Linear regression,11,0.016,-0.897
+Robledo,Random forest,11,0.023,-3.011
+Robledo,XGBoost,11,0.024,-3.357
+San Javier,Persistence,11,0.031,-0.828
+San Javier,Linear regression,11,0.029,-0.589
+San Javier,Random forest,11,0.040,-2.068
+San Javier,XGBoost,11,0.036,-1.479
+Santa Cruz,Persistence,11,0.051,-1.075
+Santa Cruz,Linear regression,11,0.049,-0.880
+Santa Cruz,Random forest,11,0.053,-1.246
+Santa Cruz,XGBoost,11,0.042,-0.388
+Villa Hermosa,Persistence,11,0.036,-1.027
+Villa Hermosa,Linear regression,11,0.036,-1.003
+Villa Hermosa,Random forest,11,0.042,-1.726
+Villa Hermosa,XGBoost,11,0.041,-1.593

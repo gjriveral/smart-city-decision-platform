@@ -72,3 +72,6 @@ evidencia/*.html
 !docs/sobol_update.md
 !deliverables/Prompt1/
 !deliverables/Prompt1/**
+!docs/figures_tables_changes.md
+!deliverables/Prompt2/
+!deliverables/Prompt2/**

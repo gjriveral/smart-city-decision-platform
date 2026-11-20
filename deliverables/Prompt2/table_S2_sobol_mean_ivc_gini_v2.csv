@@ -1,0 +1,43 @@
+Outcome,Allocation rule,Parameter,S1,S1 2.5%,S1 97.5%,ST,ST 2.5%,ST 97.5%
+Mean index,Focused,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Focused,Index response,0.729,0.665,0.799,0.735,0.672,0.803
+Mean index,Focused,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Focused,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Focused,Budget share,0.030,0.010,0.053,0.061,0.050,0.073
+Mean index,Focused,Priority-set size,0.208,0.158,0.255,0.228,0.200,0.257
+Mean index,Focused,Noise standard deviation,-0.000,-0.003,0.002,0.001,0.001,0.001
+Mean index,Equal,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Equal,Index response,1.000,0.926,1.076,1.000,0.940,1.066
+Mean index,Equal,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Equal,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Equal,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Equal,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Equal,Noise standard deviation,0.001,-0.002,0.003,0.001,0.001,0.001
+Mean index,Adaptive,Wellbeing rate,0.000,-0.000,0.000,0.000,0.000,0.000
+Mean index,Adaptive,Index response,1.000,0.926,1.076,1.000,0.940,1.066
+Mean index,Adaptive,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Adaptive,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Adaptive,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Adaptive,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Mean index,Adaptive,Noise standard deviation,0.001,-0.002,0.003,0.001,0.001,0.001
+Gini coefficient,Focused,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Focused,Index response,0.006,-0.003,0.014,0.047,0.031,0.068
+Gini coefficient,Focused,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Focused,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Focused,Budget share,0.004,-0.022,0.031,0.130,0.091,0.180
+Gini coefficient,Focused,Priority-set size,0.815,0.642,0.992,0.953,0.817,1.109
+Gini coefficient,Focused,Noise standard deviation,-0.001,-0.002,0.001,0.001,0.001,0.001
+Gini coefficient,Equal,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Equal,Index response,0.047,0.026,0.071,0.076,0.067,0.087
+Gini coefficient,Equal,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Equal,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Equal,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Equal,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Equal,Noise standard deviation,0.924,0.845,0.999,0.951,0.887,1.025
+Gini coefficient,Adaptive,Wellbeing rate,0.000,-0.001,0.001,0.000,0.000,0.000
+Gini coefficient,Adaptive,Index response,0.994,0.919,1.070,0.994,0.936,1.061
+Gini coefficient,Adaptive,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Adaptive,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Adaptive,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Adaptive,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Gini coefficient,Adaptive,Noise standard deviation,0.006,-0.001,0.013,0.006,0.006,0.007

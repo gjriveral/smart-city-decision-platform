@@ -1,0 +1,5 @@
+Model,Territory-years,RMSE,MAE,R²
+Persistence,231,0.035,0.026,0.783
+Linear regression,231,0.034,0.026,0.799
+Random forest,231,0.037,0.029,0.757
+XGBoost,231,0.035,0.027,0.787

@@ -1,0 +1,25 @@
+Rainfall treatment,Target,Model,Territory-years,R²,RMSE,MAE
+No rainfall,Index level at t+1,Persistence,126,0.811,0.032,0.024
+No rainfall,Index level at t+1,Linear regression,126,0.545,0.049,0.036
+No rainfall,Index level at t+1,Random forest,126,0.668,0.042,0.032
+No rainfall,Index level at t+1,XGBoost,126,0.671,0.042,0.032
+Rainfall as predictor,Index level at t+1,Persistence,126,0.811,0.032,0.024
+Rainfall as predictor,Index level at t+1,Linear regression,126,0.518,0.051,0.039
+Rainfall as predictor,Index level at t+1,Random forest,126,0.688,0.041,0.031
+Rainfall as predictor,Index level at t+1,XGBoost,126,0.656,0.043,0.034
+Rainfall inside the index,Index level at t+1,Persistence,126,0.814,0.035,0.029
+Rainfall inside the index,Index level at t+1,Linear regression,126,0.721,0.043,0.034
+Rainfall inside the index,Index level at t+1,Random forest,126,0.717,0.044,0.034
+Rainfall inside the index,Index level at t+1,XGBoost,126,0.671,0.047,0.038
+No rainfall,Change in the index,Persistence,126,-0.002,0.032,0.024
+No rainfall,Change in the index,Linear regression,126,-1.409,0.049,0.036
+No rainfall,Change in the index,Random forest,126,-0.654,0.041,0.030
+No rainfall,Change in the index,XGBoost,126,-0.838,0.043,0.033
+Rainfall as predictor,Change in the index,Persistence,126,-0.002,0.032,0.024
+Rainfall as predictor,Change in the index,Linear regression,126,-1.551,0.051,0.039
+Rainfall as predictor,Change in the index,Random forest,126,-0.593,0.040,0.030
+Rainfall as predictor,Change in the index,XGBoost,126,-1.037,0.045,0.036
+Rainfall inside the index,Change in the index,Persistence,126,-0.000,0.035,0.029
+Rainfall inside the index,Change in the index,Linear regression,126,-0.494,0.043,0.034
+Rainfall inside the index,Change in the index,Random forest,126,-0.398,0.042,0.033
+Rainfall inside the index,Change in the index,XGBoost,126,-0.704,0.046,0.038
