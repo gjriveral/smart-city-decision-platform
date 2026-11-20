@@ -402,26 +402,48 @@ def rain_qc_table(raw: pd.DataFrame, adjusted: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_sobol(indices: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(9.6, 4.6), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(9.6, 5.4), sharey=True)
     sub = indices[indices["output"] == "cv"].copy()
     order = list(SOBOL_LABELS)
-    sub["label"] = sub["parameter"].map(SOBOL_LABELS)
+    y = np.arange(len(order))
+    height = 0.36
+    hi = float(np.nanmax(sub[["S1_ci_high", "ST_ci_high"]].to_numpy()))
     for ax, scenario in zip(axes, ("focalizado", "distribuido", "adaptativo")):
         g = sub[sub["scenario"] == scenario].set_index("parameter").loc[order]
-        ax.barh(list(SOBOL_LABELS.values()), g["ST"], xerr=g["ST_conf"], color="#1f4e79", alpha=0.9, capsize=2)
+        s1_err = np.vstack([
+            np.clip(g["S1"] - g["S1_ci_low"], 0, None),
+            np.clip(g["S1_ci_high"] - g["S1"], 0, None),
+        ])
+        st_err = np.vstack([
+            np.clip(g["ST"] - g["ST_ci_low"], 0, None),
+            np.clip(g["ST_ci_high"] - g["ST"], 0, None),
+        ])
+        ax.barh(y + height / 2, g["S1"], height=height, xerr=s1_err, color="#5b7c99",
+                label="First order (S1)", capsize=2, error_kw={"elinewidth": 0.6})
+        ax.barh(y - height / 2, g["ST"], height=height, xerr=st_err, color="#1f4e79",
+                label="Total order (ST)", capsize=2, error_kw={"elinewidth": 0.6})
         ax.axvline(0, color="#444444", linewidth=0.6)
+        ax.axvline(1, color="#888888", linewidth=0.5, linestyle=":")
         ax.set_title(SCENARIO_LABELS[scenario])
-        ax.set_xlabel("Total-order index")
+        ax.set_xlabel("Sobol index")
+        ax.set_yticks(y)
+        ax.set_yticklabels(list(SOBOL_LABELS.values()))
+        ax.set_xlim(-0.2, max(1.08, hi + 0.05))
     axes[0].set_ylabel("Parameter")
-    fig.suptitle("Sobol total-order indices for the CV of IVC", y=1.02)
+    axes[0].legend(frameon=False, fontsize=8, loc="lower right")
+    fig.suptitle("Sobol indices for the CV of IVC (95% bootstrap interval)", y=1.02)
     fig.tight_layout()
-    save_figure(fig, "fig_sobol_cv")
+    fig.savefig(OUT / "fig_sobol_cv.png", dpi=300, bbox_inches="tight", facecolor="white")
+    fig.savefig(OUT / "fig_sobol_cv.pdf", bbox_inches="tight", facecolor="white")
+    fig.savefig(OUT / "fig_sobol_cv.tiff", dpi=600, bbox_inches="tight", facecolor="white",
+                pil_kwargs={"compression": "tiff_lzw"})
+    plt.close(fig)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Regenerate revised article outputs")
     parser.add_argument("--skip-legacy", action="store_true")
-    parser.add_argument("--sobol-n", type=int, default=128)
+    parser.add_argument("--sobol-n", type=int, default=1024)
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     apply_style()

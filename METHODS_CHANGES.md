@@ -102,17 +102,17 @@ Confirmed. Re-running the legacy same-year grid on xgboost 2.1.3 gives mean oute
 
 Confirmed for the previous script: `abm/05_sensitivity_analysis.py` sampled only the focused scenario and analysed only mean IVC at t=10. The structural coefficients were beta, gamma, delta, and theta.
 
-The new sample uses Saltelli’s design with second-order terms off, N = 128, which is 1,152 evaluations, on all three scenarios. Outputs are mean IVC, CV, and Gini. The ranges are ±20% on the four structural coefficients, rho in [0.50, 0.95], priority-set size in [1, 10] (rounded), and noise SD in [0, 0.10]. Saturation is off and the focused rule re-ranks by current IVC, matching the Medellín config. Total-order indices (ST) for the CV:
+The sample uses Saltelli’s design with second-order terms off, so sampling and estimation share one design. N = 1024 (a power of two), which is 9,216 evaluations, on all three scenarios. Outputs are mean IVC, CV, and Gini. The ranges are ±20% on the four structural coefficients, rho in [0.50, 0.95], priority-set size in [1, 10] (rounded), and noise SD in [0, 0.10]. Saturation is off and the focused rule re-ranks by current IVC, matching the Medellín config. The model seed and the 1,000 bootstrap resamples are fixed at 42. Intervals are the 2.5 and 97.5 percentiles of those resamples. Total-order indices (ST) for the CV:
 
 | Parameter | Focused | Equal | Adaptive |
 |---|---:|---:|---:|
-| Priority-set size | 0.90 | 0.00 | 0.00 |
-| Budget share rho | 0.09 | 0.00 | 0.00 |
-| IVC response (gamma) | 0.05 | 0.07 | 1.00 |
-| Noise SD | 0.00 | 0.97 | 0.01 |
+| Priority-set size | 0.95 | 0.00 | 0.00 |
+| Budget share rho | 0.14 | 0.00 | 0.00 |
+| IVC response (gamma) | 0.05 | 0.06 | 0.99 |
+| Noise SD | 0.00 | 0.95 | 0.01 |
 | Wellbeing rate, depreciation, infrastructure recovery | 0.00 | 0.00 | 0.00 |
 
-Confidence intervals on the focused priority-set index are still wide (ST confidence about 0.45). The zeros are structural: with saturation off, capacity does not enter the IVC update, so depreciation and infrastructure recovery cannot move IVC, CV, or Gini. Rho and the priority-set size affect only the focused rule. Under equal allocation the deterministic CV is invariant, so the CV’s sample variance is the noise term. For mean IVC, gamma dominates in every scenario (focused ST 0.69, with priority-set size ST 0.25). Gini tracks the CV ranking. Full indices are in `article_outputs/table_sobol_indices.csv`.
+The focused priority-set index is 0.95 (95% interval 0.80–1.11). At N = 128 the same index was 1.49, outside [0, 1]; that value was a small-sample artefact, and the new interval still reaches above 1 because the Jansen estimator is not bounded. Every interval intersects the feasible ordering 0 ≤ S1 ≤ ST ≤ 1. The zeros are structural: with saturation off, capacity does not enter the IVC update, so depreciation and infrastructure recovery cannot move IVC, CV, or Gini. Rho and the priority-set size affect only the focused rule. Under equal allocation the deterministic CV is invariant, so the CV’s sample variance is the noise term. For mean IVC, gamma dominates in every scenario. Gini tracks the CV ranking. Full indices are in `article_outputs/table_sobol_indices.csv`. The comparison with the N = 128 table is in `docs/sobol_update.md`.
 
 ## Rainfall from the local full run
 

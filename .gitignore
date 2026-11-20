@@ -67,3 +67,8 @@ ModeloDatos/ModeloDatos/data/raw/
 evidencia/*.png
 evidencia/*.jpg
 evidencia/*.html
+
+# Sobol N=1024 deliverables (the general document rules above would hide them)
+!docs/sobol_update.md
+!deliverables/Prompt1/
+!deliverables/Prompt1/**

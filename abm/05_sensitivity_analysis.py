@@ -69,7 +69,14 @@ SCENARIO = "focalizado"  # escenario de referencia para la crítica doctoral
 SEED = 42
 # ρ / horizonte / presupuesto desde config.yaml vía abm module
 RHO = float(abm.RHO_FOCALIZADO_DEFAULT)
-N_SOBOL = 64        # Saltelli: N*(2D+2) = 64*10 = 640 evaluaciones
+# Saltelli base sample. With calc_second_order=False the design has
+# N*(D+2) rows. N is a power of two, as SALib recommends for the Sobol sequence.
+N_SOBOL = 1024
+# S1 and ST only. sample() and analyze() must use the same flag: second-order
+# indices are not reported, so the extra N*D block is not drawn.
+CALC_SECOND_ORDER = False
+SOBOL_BOOTSTRAP = 1000
+SOBOL_CONF_LEVEL = 0.95
 
 OUT_DIR = ROOT / "data" / "processed" / "sensitivity"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -257,6 +264,87 @@ def plot_boxplots(grid_df: pd.DataFrame, oat_df: pd.DataFrame, out_path: Path):
 # ═══════════════════════════════════════════════════════════════════════════
 # 3. Sobol (SALib) — opcional
 # ═══════════════════════════════════════════════════════════════════════════
+def sobol_index_table(
+    problem: dict,
+    values: np.ndarray,
+    n_sobol: int,
+    n_evaluations: int,
+    seed: int,
+    scenario: str | None = None,
+    output: str | None = None,
+    ranking_rule: str | None = None,
+    reparto_top: str | None = None,
+    saturation_active: bool | None = None,
+) -> pd.DataFrame:
+    """
+    Saltelli S1 and ST with a 95% percentile bootstrap interval.
+
+    `calc_second_order` matches the design used to build `values`. The Saltelli
+    matrix itself is a deterministic Sobol sequence; `seed` fixes the bootstrap
+    resamples. SALib's S1_conf / ST_conf remain the normal half-widths
+    (z * bootstrap standard deviation). The reported interval is the 2.5–97.5
+    percentile of the same resamples.
+    """
+    from SALib.analyze import sobol as sobol_analyze
+
+    analyzed = sobol_analyze.analyze(
+        problem,
+        np.asarray(values, dtype=float),
+        calc_second_order=CALC_SECOND_ORDER,
+        num_resamples=SOBOL_BOOTSTRAP,
+        conf_level=SOBOL_CONF_LEVEL,
+        print_to_console=False,
+        keep_resamples=True,
+        seed=seed,
+    )
+    rows = []
+    for j, name in enumerate(problem["names"]):
+        s1 = float(analyzed["S1"][j])
+        st = float(analyzed["ST"][j])
+        s1_boot = np.asarray(analyzed["S1_conf_all"][:, j], dtype=float)
+        st_boot = np.asarray(analyzed["ST_conf_all"][:, j], dtype=float)
+        s1_low, s1_high = (float(x) for x in np.percentile(s1_boot, [2.5, 97.5]))
+        st_low, st_high = (float(x) for x in np.percentile(st_boot, [2.5, 97.5]))
+        # The Jansen / Saltelli estimators are not constrained to [0, 1].
+        # The inequality holds inside the interval when each CI meets [0, 1]
+        # and the first-order interval is not entirely above the total-order one.
+        within_ci = bool(
+            s1_high >= 0.0 and s1_low <= 1.0
+            and st_high >= 0.0 and st_low <= 1.0
+            and s1_low <= st_high
+        )
+        row = {
+            "parameter": name,
+            "S1": s1,
+            "S1_ci_low": s1_low,
+            "S1_ci_high": s1_high,
+            "S1_conf": float(analyzed["S1_conf"][j]),
+            "ST": st,
+            "ST_ci_low": st_low,
+            "ST_ci_high": st_high,
+            "ST_conf": float(analyzed["ST_conf"][j]),
+            "point_in_unit_interval": bool(0.0 <= s1 <= st <= 1.0),
+            "within_ci": within_ci,
+            "n_sobol": int(n_sobol),
+            "n_evaluations": int(n_evaluations),
+            "calc_second_order": bool(CALC_SECOND_ORDER),
+            "bootstrap_resamples": int(SOBOL_BOOTSTRAP),
+            "conf_level": float(SOBOL_CONF_LEVEL),
+            "seed": int(seed),
+        }
+        if scenario is not None:
+            row["scenario"] = scenario
+            row["output"] = output
+            row["ranking_rule"] = ranking_rule
+            row["reparto_top"] = reparto_top
+            row["saturation_active"] = bool(saturation_active)
+        rows.append(row)
+    frame = pd.DataFrame(rows)
+    front = [c for c in ("scenario", "output", "parameter") if c in frame.columns]
+    rest = [c for c in frame.columns if c not in front]
+    return frame[front + rest]
+
+
 def run_sobol(ivc_data, shap_priority):
     try:
         from SALib.analyze import sobol as sobol_analyze
@@ -273,7 +361,7 @@ def run_sobol(ivc_data, shap_priority):
             [BASE[n] * (1 - PCT), BASE[n] * (1 + PCT)] for n in BASE
         ],
     }
-    param_values = sobol_sample.sample(problem, N_SOBOL, calc_second_order=False)
+    param_values = sobol_sample.sample(problem, N_SOBOL, calc_second_order=CALC_SECOND_ORDER)
     print(f"  Sobol: {len(param_values)} evaluaciones...")
     Y = np.empty(len(param_values))
     t0 = time.time()
@@ -291,14 +379,9 @@ def run_sobol(ivc_data, shap_priority):
         if (i + 1) % 100 == 0 or i + 1 == len(param_values):
             print(f"    {i + 1}/{len(param_values)} ({time.time() - t0:.1f}s)")
 
-    Si = sobol_analyze.analyze(problem, Y, calc_second_order=False, print_to_console=False)
-    idx_df = pd.DataFrame({
-        "parametro": problem["names"],
-        "S1": Si["S1"],
-        "S1_conf": Si["S1_conf"],
-        "ST": Si["ST"],
-        "ST_conf": Si["ST_conf"],
-    })
+    idx_df = sobol_index_table(
+        problem, Y, n_sobol=N_SOBOL, n_evaluations=len(param_values), seed=SEED,
+    ).rename(columns={"parameter": "parametro"})
     return pd.DataFrame(rows), idx_df
 
 
@@ -381,7 +464,7 @@ def _unpack_sobol_row(values, n_territories: int) -> dict:
 def run_sobol_scenarios(
     ivc_data: dict,
     shap_priority: dict,
-    n_sobol: int = 16,
+    n_sobol: int = 1024,
     seed: int = 42,
     saturation_active: bool | None = None,
     ranking_rule: str | None = None,
@@ -394,7 +477,6 @@ def run_sobol_scenarios(
     Evaluated on all three allocation rules. Outputs are mean IVC, the
     coefficient of variation, and the Gini coefficient at the horizon.
     """
-    from SALib.analyze import sobol as sobol_analyze
     from SALib.sample import sobol as sobol_sample
 
     from abm.dispersion import coefficient_of_variation, gini
@@ -419,7 +501,7 @@ def run_sobol_scenarios(
             [0.0, 0.10],
         ],
     }
-    sample = sobol_sample.sample(problem, n_sobol, calc_second_order=False)
+    sample = sobol_sample.sample(problem, n_sobol, calc_second_order=CALC_SECOND_ORDER)
     scenarios = ["focalizado", "distribuido", "adaptativo"]
     outputs = ("mean_ivc", "cv", "gini")
     store = {
@@ -468,28 +550,29 @@ def run_sobol_scenarios(
     finally:
         abm.logger.setLevel(prev)
 
-    index_rows = []
+    index_frames = []
     for scenario in scenarios:
         for out in outputs:
-            analyzed = sobol_analyze.analyze(
-                problem, store[scenario][out], calc_second_order=False, print_to_console=False
-            )
-            for j, name in enumerate(problem["names"]):
-                index_rows.append({
-                    "scenario": scenario,
-                    "output": out,
-                    "parameter": name,
-                    "S1": float(analyzed["S1"][j]),
-                    "S1_conf": float(analyzed["S1_conf"][j]),
-                    "ST": float(analyzed["ST"][j]),
-                    "ST_conf": float(analyzed["ST_conf"][j]),
-                    "n_sobol": int(n_sobol),
-                    "n_evaluations": int(len(sample)),
-                    "ranking_rule": ranking_rule,
-                    "reparto_top": reparto_top,
-                    "saturation_active": bool(saturation_active),
-                })
-    return pd.DataFrame(index_rows), pd.DataFrame(detail_rows)
+            index_frames.append(sobol_index_table(
+                problem,
+                store[scenario][out],
+                n_sobol=n_sobol,
+                n_evaluations=len(sample),
+                seed=seed,
+                scenario=scenario,
+                output=out,
+                ranking_rule=ranking_rule,
+                reparto_top=reparto_top,
+                saturation_active=saturation_active,
+            ))
+    indices = pd.concat(index_frames, ignore_index=True)
+    failed = indices.loc[~indices["within_ci"], ["scenario", "output", "parameter", "S1", "ST", "S1_ci_low", "S1_ci_high", "ST_ci_low", "ST_ci_high"]]
+    if failed.empty:
+        print("Sobol check passed: 0 <= S1 <= ST <= 1 inside every 95% interval.")
+    else:
+        print("Sobol check failed for:")
+        print(failed.to_string(index=False))
+    return indices, pd.DataFrame(detail_rows)
 
 
 if __name__ == "__main__":

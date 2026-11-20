@@ -1,0 +1,6 @@
+{
+  "elapsed_seconds": 49.15361579999444,
+  "n_sobol": 1024,
+  "n_failed_within_ci": 0,
+  "n_point_outside": 7
+}
