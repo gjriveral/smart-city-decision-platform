@@ -24,7 +24,7 @@ Los escenarios y el Monte Carlo se volvieron a correr con γ = 0,0144. La baja d
 
 ## Pull request
 
-Pendiente: el enlace del pull request se agrega al abrir el PR.
+https://github.com/gjriveral/smart-city-decision-platform/pull/7
 
 Esta carpeta es `Entregables_UrbanScience/Prompt4_Calibracion`, dentro del directorio de trabajo. Ese directorio se sincroniza solo con https://drive.google.com/drive/u/0/folders/1t3a20nixkH2IsaaEHzBVO_eiPbqpH6Hp. No se usó el conector de Drive. Los nombres llevan sufijo de versión, así que no reemplazan archivos que ya estuvieran en Drive.
 
