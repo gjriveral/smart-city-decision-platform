@@ -81,3 +81,11 @@ evidencia/*.html
 !deliverables/Prompt4/**
 !data/external/inversion_ejecutada_oficial_territorio_anio.csv
 _preview_cal/
+
+# Urban Science correction (Prompt 5) and the Prompt 3 manuscript missing from the remote
+!docs/data_inventory.md
+!docs/figures_tables_changes_v2.md
+!deliverables/Prompt3/manuscript_UrbanScience_v1.docx
+!deliverables/Prompt3/changes_UrbanScience.md
+!deliverables/Prompt5/
+!deliverables/Prompt5/**

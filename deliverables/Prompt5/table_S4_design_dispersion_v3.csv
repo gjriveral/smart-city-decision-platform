@@ -1,0 +1,11 @@
+Allocation rule,CV at t = 0,CV at t = 10,Reduction in CV (%),Gini at t = 10,Reduction in mean index (%)
+"Focused, yearly index rank, equal shares",0.188,0.059,68.3,0.033,42.7
+"Focused, yearly index rank, proportional shares",0.188,0.058,69.2,0.032,42.7
+"Focused, fixed priority rank",0.188,0.425,-126.9,0.231,33.4
+"Focused, fixed priority rank, saturation on",0.188,0.259,-38.1,0.146,26.1
+"Focused, yearly index rank, saturation on",0.188,0.063,66.3,0.029,30.9
+Equal allocation,0.188,0.188,0.0,0.106,40.1
+"Equal allocation, saturation on",0.188,0.170,9.5,0.096,27.1
+Adaptive allocation,0.188,0.125,33.2,0.070,40.8
+"Adaptive allocation, saturation on",0.188,0.140,25.4,0.078,27.5
+"Focused, yearly index rank, observed initial index",0.211,0.058,72.4,0.032,42.9

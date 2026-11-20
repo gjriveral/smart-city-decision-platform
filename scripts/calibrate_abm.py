@@ -838,12 +838,12 @@ def main() -> None:
         str(row["year"]), num(row["cv_observed"], 3), num(row["cv_simulated"], 3),
         num(row["spearman"], 3), str(row["n"]),
     ] for row in patterns]
-    disp_cols = ["Allocation rule", "CV at t = 0", "CV at t = 10", "Change in CV (%)", "Gini at t = 10", "Change in mean index (%)"]
+    disp_cols = ["Allocation rule", "CV at t = 0", "CV at t = 10", "Reduction in CV (%)", "Gini at t = 10", "Reduction in mean index (%)"]
     disp_rows = [[
         SPEC_LABELS[row["specification"]], num(row["cv_t0"], 3), num(row["cv_tH"], 3),
         num(row["cv_reduction_pct"], 1), num(row["gini_tH"], 3), num(row["mean_ivc_reduction_pct"], 1),
     ] for _, row in disp.iterrows()]
-    monte_cols = ["Allocation rule", "Replications", "Mean change in CV (%)", "SD", "Minimum", "Maximum"]
+    monte_cols = ["Allocation rule", "Replications", "Mean reduction in CV (%)", "SD", "Minimum", "Maximum"]
     monte_rows = [[
         SPEC_LABELS[row["specification"]], str(int(row["n_replications"])), num(row["mean"], 1),
         num(row["sd"], 1), num(row["minimum"], 1), num(row["maximum"], 1),
@@ -863,11 +863,13 @@ def main() -> None:
     )
     note_disp = (
         "Source: authors' elaboration. Ten-year scenarios at the calibrated index response. "
-        "A positive change in the coefficient of variation means dispersion increased."
+        "A positive value in Reduction in CV (%) means the coefficient of variation fell. "
+        "A negative value means dispersion increased."
     )
     note_monte = (
         "Source: authors' elaboration based on 30 replications at the calibrated index response, "
-        "with idiosyncratic noise (standard deviation 0.05)."
+        "with idiosyncratic noise (standard deviation 0.05). "
+        "A positive mean reduction means the coefficient of variation fell."
     )
     tables = [
         ("table_calibration_parameters_v1", "Table. Parameters of the allocation model.", param_cols, param_rows, note_param),

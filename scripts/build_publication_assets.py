@@ -124,11 +124,14 @@ NOTE_03 = (
 NOTE_04 = (
     "Source: authors' elaboration based on the agent-based allocation model "
     "(21 territories, 10-year horizon, no idiosyncratic noise). "
-    "A positive change in the coefficient of variation means dispersion increased."
+    "A positive value in Reduction in CV (%) means the coefficient of variation fell: "
+    "(value at year 0 − value at year 10) / value at year 0, in percent. "
+    "A negative value means dispersion increased."
 )
 NOTE_05 = (
     "Source: authors' elaboration based on 30 replications of the same model "
-    "with idiosyncratic noise (standard deviation 0.05)."
+    "with idiosyncratic noise (standard deviation 0.05). "
+    "A positive mean reduction means the coefficient of variation fell."
 )
 NOTE_06 = (
     "Source: authors' elaboration based on the quality-of-life panel and the territorial rainfall series. "
@@ -986,13 +989,13 @@ def main() -> None:
     publish_table(
         dirs, f"table_04_abm_dispersion{suffix}",
         "Table 4. Index dispersion after 10 simulated years.",
-        ["Allocation rule", "CV at t = 0", "CV at t = 10", "Change in CV (%)", "Gini at t = 10", "Change in mean index (%)"],
+        ["Allocation rule", "CV at t = 0", "CV at t = 10", "Reduction in CV (%)", "Gini at t = 10", "Reduction in mean index (%)"],
         dispersion_rows(dispersion), NOTE_04,
     )
     publish_table(
         dirs, f"table_05_abm_monte_carlo{suffix}",
         "Table 5. Change in the coefficient of variation across 30 replications.",
-        ["Allocation rule", "Replications", "Mean change in CV (%)", "SD", "Minimum", "Maximum"],
+        ["Allocation rule", "Replications", "Mean reduction in CV (%)", "SD", "Minimum", "Maximum"],
         monte_carlo_rows(monte), NOTE_05,
     )
     publish_table(
