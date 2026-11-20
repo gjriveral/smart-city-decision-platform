@@ -18,7 +18,7 @@ En el repositorio los mismos productos están en `article_outputs/` (`table_sobo
 
 ## Pull request
 
-El enlace se completa cuando el PR queda abierto en `gjriveral/smart-city-decision-platform`, rama `sobol-confidence-intervals`.
+https://github.com/gjriveral/smart-city-decision-platform/pull/5
 
 ## Problemas pendientes
 
