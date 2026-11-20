@@ -1,0 +1,22 @@
+Allocation rule,Parameter,S1,S1 2.5%,S1 97.5%,ST,ST 2.5%,ST 97.5%
+Focused,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Focused,Index response,0.005,-0.005,0.013,0.052,0.034,0.076
+Focused,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Focused,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Focused,Budget share,-0.004,-0.031,0.023,0.143,0.100,0.199
+Focused,Priority-set size,0.789,0.612,0.972,0.946,0.805,1.110
+Focused,Noise standard deviation,-0.001,-0.002,0.001,0.001,0.000,0.001
+Equal,Wellbeing rate,0.000,0.000,0.000,0.000,0.000,0.000
+Equal,Index response,0.045,0.025,0.067,0.065,0.057,0.073
+Equal,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Equal,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Equal,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Equal,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Equal,Noise standard deviation,0.935,0.863,1.006,0.955,0.892,1.025
+Adaptive,Wellbeing rate,0.000,-0.001,0.001,0.000,0.000,0.000
+Adaptive,Index response,0.995,0.919,1.071,0.995,0.936,1.061
+Adaptive,Depreciation,0.000,0.000,0.000,0.000,0.000,0.000
+Adaptive,Infrastructure recovery,0.000,0.000,0.000,0.000,0.000,0.000
+Adaptive,Budget share,0.000,0.000,0.000,0.000,0.000,0.000
+Adaptive,Priority-set size,0.000,0.000,0.000,0.000,0.000,0.000
+Adaptive,Noise standard deviation,0.005,-0.001,0.012,0.005,0.005,0.006

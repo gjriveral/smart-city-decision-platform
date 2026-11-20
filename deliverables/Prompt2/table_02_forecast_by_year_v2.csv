@@ -1,0 +1,33 @@
+Target year,Model,Territory-years,RMSE,MAE,R²
+2017,Persistence,21,0.024,0.020,0.883
+2017,Linear regression,21,0.072,0.066,-0.093
+2017,Random forest,21,0.039,0.030,0.691
+2017,XGBoost,21,0.044,0.034,0.590
+2018,Persistence,21,0.029,0.023,0.826
+2018,Linear regression,21,0.034,0.024,0.756
+2018,Random forest,21,0.031,0.023,0.805
+2018,XGBoost,21,0.032,0.024,0.783
+2019,Persistence,21,0.023,0.019,0.880
+2019,Linear regression,21,0.026,0.020,0.847
+2019,Random forest,21,0.023,0.019,0.883
+2019,XGBoost,21,0.021,0.017,0.896
+2020,Persistence,21,0.030,0.027,0.820
+2020,Linear regression,21,0.038,0.033,0.703
+2020,Random forest,21,0.038,0.034,0.703
+2020,XGBoost,21,0.036,0.032,0.733
+2021,Persistence,21,0.031,0.023,0.836
+2021,Linear regression,21,0.030,0.025,0.847
+2021,Random forest,21,0.046,0.037,0.648
+2021,XGBoost,21,0.033,0.025,0.817
+2022,Persistence,21,0.053,0.043,0.411
+2022,Linear regression,21,0.106,0.101,-1.379
+2022,Random forest,21,0.054,0.044,0.372
+2022,XGBoost,21,0.076,0.067,-0.213
+2023,Persistence,21,0.028,0.021,0.879
+2023,Linear regression,21,0.035,0.027,0.809
+2023,Random forest,21,0.050,0.035,0.628
+2023,XGBoost,21,0.048,0.037,0.649
+2024,Persistence,21,0.020,0.015,0.929
+2024,Linear regression,21,0.018,0.014,0.940
+2024,Random forest,21,0.031,0.026,0.830
+2024,XGBoost,21,0.024,0.021,0.896

@@ -1,0 +1,45 @@
+Allocation rule,Year,Coefficient of variation,Gini coefficient,Mean index
+"Focused, yearly index rank",0,0.188,0.106,0.361
+"Focused, yearly index rank",1,0.147,0.078,0.340
+"Focused, yearly index rank",2,0.131,0.071,0.321
+"Focused, yearly index rank",3,0.111,0.058,0.304
+"Focused, yearly index rank",4,0.090,0.044,0.287
+"Focused, yearly index rank",5,0.087,0.045,0.272
+"Focused, yearly index rank",6,0.078,0.040,0.257
+"Focused, yearly index rank",7,0.063,0.031,0.244
+"Focused, yearly index rank",8,0.064,0.034,0.231
+"Focused, yearly index rank",9,0.068,0.038,0.219
+"Focused, yearly index rank",10,0.059,0.033,0.207
+"Focused, fixed priority rank",0,0.188,0.106,0.361
+"Focused, fixed priority rank",1,0.146,0.078,0.340
+"Focused, fixed priority rank",2,0.144,0.081,0.322
+"Focused, fixed priority rank",3,0.173,0.099,0.306
+"Focused, fixed priority rank",4,0.214,0.122,0.293
+"Focused, fixed priority rank",5,0.257,0.146,0.281
+"Focused, fixed priority rank",6,0.299,0.168,0.271
+"Focused, fixed priority rank",7,0.336,0.187,0.262
+"Focused, fixed priority rank",8,0.370,0.203,0.254
+"Focused, fixed priority rank",9,0.399,0.218,0.247
+"Focused, fixed priority rank",10,0.425,0.231,0.241
+Equal allocation,0,0.188,0.106,0.361
+Equal allocation,1,0.188,0.106,0.343
+Equal allocation,2,0.188,0.106,0.326
+Equal allocation,3,0.188,0.106,0.310
+Equal allocation,4,0.188,0.106,0.294
+Equal allocation,5,0.188,0.106,0.280
+Equal allocation,6,0.188,0.106,0.266
+Equal allocation,7,0.188,0.106,0.252
+Equal allocation,8,0.188,0.106,0.240
+Equal allocation,9,0.188,0.106,0.228
+Equal allocation,10,0.188,0.106,0.216
+Adaptive allocation,0,0.188,0.106,0.361
+Adaptive allocation,1,0.179,0.101,0.343
+Adaptive allocation,2,0.174,0.098,0.325
+Adaptive allocation,3,0.168,0.095,0.309
+Adaptive allocation,4,0.162,0.091,0.293
+Adaptive allocation,5,0.156,0.088,0.278
+Adaptive allocation,6,0.149,0.084,0.264
+Adaptive allocation,7,0.143,0.080,0.250
+Adaptive allocation,8,0.137,0.077,0.238
+Adaptive allocation,9,0.131,0.073,0.225
+Adaptive allocation,10,0.125,0.070,0.214
