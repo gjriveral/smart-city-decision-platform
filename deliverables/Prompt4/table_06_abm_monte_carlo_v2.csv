@@ -1,0 +1,5 @@
+Allocation rule,Replications,Mean change in CV (%),SD,Minimum,Maximum
+"Focused, yearly index rank, equal shares",30,43.0,0.2,42.7,43.5
+"Focused, fixed priority rank",30,13.9,0.5,13.1,14.9
+Equal allocation,30,-0.0,0.2,-0.6,0.5
+Adaptive allocation,30,10.6,0.2,10.0,11.1

@@ -1,0 +1,3 @@
+Year,Observed CV,Simulated CV,Spearman rank correlation,Territories
+2020,0.182,0.183,0.979,21
+2021,0.193,0.182,0.897,21

@@ -75,3 +75,9 @@ evidencia/*.html
 !docs/figures_tables_changes.md
 !deliverables/Prompt2/
 !deliverables/Prompt2/**
+!docs/calibration_update.md
+!docs/ODD_protocol.md
+!deliverables/Prompt4/
+!deliverables/Prompt4/**
+!data/external/inversion_ejecutada_oficial_territorio_anio.csv
+_preview_cal/

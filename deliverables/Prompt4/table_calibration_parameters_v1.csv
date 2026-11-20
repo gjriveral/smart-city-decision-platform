@@ -1,0 +1,9 @@
+Parameter,Role in the index transition,Estimate,Interval,Status
+Index response,Multiplies relative investment,0.0144,0.0083 to 0.0218,Calibrated; territory-block bootstrap
+Wellbeing rate,Does not enter the index,0.1500,,Design value; not identified
+Capacity decay,Enters only if saturation is on,0.0300,,Design value; not identified
+Infrastructure recovery,Enters only if saturation is on,0.1000,,Design value; not identified
+Budget share,"Allocation rule, not a transition parameter",0.8000,,Held at the scenario value
+Priority-set size,"Allocation rule, not a transition parameter",5,,Held at the scenario value
+Noise standard deviation,Off on the calibration path,0,,0.05 only in the Monte Carlo
+Rainfall sensitivity,No term in the transition,,,Not a parameter of this model
